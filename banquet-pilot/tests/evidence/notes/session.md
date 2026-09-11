@@ -1,3 +1,5 @@
+> **HISTORICAL / WEAK ISOLATION (pre staged-A):** This session was produced under non-isolated conditions: `--no-sandbox`, `cleanChildEnv` via `{...process.env}` then delete, fixed ports 8877/9333, http.server without `--bind 127.0.0.1`, shared DISPLAY possible. Retained as historical REJECT-fix proof only; **not** valid isolation evidence. See `notes/isolation-staged-A.md`.
+
 # T-003 REJECT-fix 证据说明
 
 - 输入标注:

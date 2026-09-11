@@ -43,7 +43,8 @@
   "isolation": {
     "chromeProfile": "temp clean",
     "authEnvStripped": true,
-    "origin": "https://github.com/zhousong-xd/demo001.git (no embedded creds)"
+    "origin": "https://github.com/zhousong-xd/demo001.git (no embedded creds)",
+    "status": "historical-weak-pre-staged-A"
   },
   "supplementalProofs": {
     "blur_teardown": {
@@ -89,5 +90,6 @@
     "after_cancel_ops": {
       "ok": true
     }
-  }
+  },
+  "isolationHistoricalNote": "WEAK: pre staged-A; --no-sandbox + env-spread delete; not isolation-valid. See notes/isolation-staged-A.md"
 }

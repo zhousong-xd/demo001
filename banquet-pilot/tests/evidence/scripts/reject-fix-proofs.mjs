@@ -1,24 +1,109 @@
 /**
  * Supplemental REJECT proofs: listener counts, blur teardown, seat gate, multitouch.
  * Uses touch-sim-native primarily (known to drive pointer handlers with touch emulation on).
+ *
+ * ENTRYPOINT (required): bash banquet-pilot/tests/evidence/scripts/isolated-launcher.sh reject-fix-proofs
+ * Bare invocation REFUSES (exit 2). Chrome sandbox stays ON. Whitelist child env only.
+ * **本阶段未执行** until GPT01 smoke gate.
  */
 import { spawn } from "node:child_process";
-import { writeFileSync, mkdirSync, rmSync, readFileSync } from "node:fs";
+import { writeFileSync, mkdirSync, rmSync, readFileSync, existsSync } from "node:fs";
 import http from "node:http";
+import net from "node:net";
 import { setTimeout as sleep } from "node:timers/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = "/workspace/demo001-t002/repo/banquet-pilot";
-const EVID = path.join(ROOT, "tests/evidence");
-const HTTP_PORT = 8878;
-const CDP_PORT = 9334;
-const BASE = `http://127.0.0.1:${HTTP_PORT}/`;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = process.env.BANQUET_TASK_ROOT
+  ? path.resolve(process.env.BANQUET_TASK_ROOT)
+  : path.resolve(__dirname, "../../.."); // banquet-pilot (relative, not hardcoded host path)
+const EVID = process.env.BANQUET_EVIDENCE_OUT
+  ? path.resolve(process.env.BANQUET_EVIDENCE_OUT)
+  : path.join(ROOT, "tests/evidence");
 
-function cleanChildEnv() {
-  const env = { ...process.env, DISPLAY: process.env.DISPLAY || ":12" };
-  delete env.GH_TOKEN; delete env.GITHUB_TOKEN; delete env.PAT; delete env.GITHUB_PAT;
+let HTTP_PORT = 0;
+let CDP_PORT = 0;
+let BASE = "";
+
+function requireIsolation() {
+  if (process.env.BANQUET_EVIDENCE_ISOLATED !== "1") {
+    console.error(
+      "REFUSE: reject-fix-proofs.mjs must be invoked via isolated-launcher.sh\n" +
+        "  bash banquet-pilot/tests/evidence/scripts/isolated-launcher.sh reject-fix-proofs\n" +
+        "No unisolated / disabled-sandbox / host-env fallback.",
+    );
+    process.exit(2);
+  }
+  const marker = process.env.BANQUET_ISOLATION_MARKER;
+  const token = process.env.BANQUET_INSTANCE_TOKEN;
+  const profile = process.env.BANQUET_USER_DATA_DIR;
+  if (!marker || !token || !profile) {
+    console.error("REFUSE: missing isolation marker/token/user-data-dir");
+    process.exit(2);
+  }
+  let got;
+  try {
+    got = readFileSync(marker, "utf8").trim();
+  } catch (e) {
+    console.error("REFUSE: isolation marker unreadable:", e.message);
+    process.exit(2);
+  }
+  if (got !== token.trim()) {
+    console.error("REFUSE: instance marker/token mismatch");
+    process.exit(2);
+  }
+}
+
+/** Minimal whitelist — never copy-then-delete from process.env. */
+function buildWhitelistEnv(extra = {}) {
+  const home = process.env.HOME || "/home";
+  const tmp = process.env.TMPDIR || "/tmp";
+  const env = {
+    PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
+    HOME: home,
+    TMPDIR: tmp,
+    TMP: tmp,
+    TEMP: tmp,
+    LANG: "C.UTF-8",
+    LC_ALL: "C.UTF-8",
+    XDG_RUNTIME_DIR: process.env.XDG_RUNTIME_DIR || path.join(tmp, "xdg-runtime"),
+    XDG_CONFIG_HOME: process.env.XDG_CONFIG_HOME || path.join(home, ".config"),
+    XDG_CACHE_HOME: process.env.XDG_CACHE_HOME || path.join(home, ".cache"),
+    XDG_DATA_HOME: process.env.XDG_DATA_HOME || path.join(home, ".local/share"),
+    BANQUET_EVIDENCE_ISOLATED: "1",
+    BANQUET_INSTANCE_TOKEN: process.env.BANQUET_INSTANCE_TOKEN || "",
+    BANQUET_INSTANCE_ID: process.env.BANQUET_INSTANCE_ID || "",
+    BANQUET_ISOLATION_MARKER: process.env.BANQUET_ISOLATION_MARKER || "",
+    BANQUET_USER_DATA_DIR: process.env.BANQUET_USER_DATA_DIR || "",
+    BANQUET_EVIDENCE_OUT: process.env.BANQUET_EVIDENCE_OUT || "",
+    BANQUET_TASK_ROOT: process.env.BANQUET_TASK_ROOT || "",
+  };
+  for (const [k, v] of Object.entries(extra)) {
+    if (v !== undefined && v !== null) env[k] = String(v);
+  }
+  for (const banned of [
+    "GH_TOKEN", "GITHUB_TOKEN", "GITHUB_PAT", "PAT", "GH_PAT",
+    "DISPLAY", "WAYLAND_DISPLAY", "DBUS_SESSION_BUS_ADDRESS", "XAUTHORITY",
+  ]) {
+    delete env[banned];
+  }
   return env;
 }
+
+function freePort() {
+  return new Promise((resolve, reject) => {
+    const s = net.createServer();
+    s.unref();
+    s.on("error", reject);
+    s.listen(0, "127.0.0.1", () => {
+      const addr = s.address();
+      const port = typeof addr === "object" && addr ? addr.port : 0;
+      s.close((err) => (err ? reject(err) : resolve(port)));
+    });
+  });
+}
+
 function fetchJson(u) {
   return new Promise((resolve, reject) => {
     http.get(u, (res) => {
@@ -27,17 +112,39 @@ function fetchJson(u) {
     }).on("error", reject);
   });
 }
-async function waitForWs() {
+
+async function waitForDevtoolsPort(userDataDir, maxMs = 25000) {
+  const portFile = path.join(userDataDir, "DevToolsActivePort");
+  const start = Date.now();
+  while (Date.now() - start < maxMs) {
+    try {
+      if (existsSync(portFile)) {
+        const raw = readFileSync(portFile, "utf8").trim().split("\n");
+        const port = Number(raw[0]);
+        if (port > 0) return port;
+      }
+    } catch {}
+    await sleep(100);
+  }
+  throw new Error("DevToolsActivePort not ready (sandbox/instance failure)");
+}
+
+async function waitForWs(cdpPort, instanceToken, userDataDir) {
+  const markerInProfile = path.join(userDataDir, "banquet-instance-token");
+  if (!existsSync(markerInProfile) || readFileSync(markerInProfile, "utf8").trim() !== instanceToken) {
+    throw new Error("CDP handshake: user-data-dir instance token mismatch");
+  }
   for (let i = 0; i < 100; i++) {
     try {
-      const list = await fetchJson(`http://127.0.0.1:${CDP_PORT}/json/list`);
+      const list = await fetchJson(`http://127.0.0.1:${cdpPort}/json/list`);
       const page = list.find((t) => t.type === "page" && t.webSocketDebuggerUrl);
       if (page) return page;
     } catch {}
     await sleep(200);
   }
-  throw new Error("no cdp");
+  throw new Error("no cdp for this instance");
 }
+
 class Cdp {
   constructor(u) { this.wsUrl = u; this.id = 0; this.pending = new Map(); this.console = []; }
   async connect() {
@@ -92,19 +199,54 @@ async function waitReady(cdp) {
 const notes = [];
 const note = (s) => { notes.push(s); console.log(s); };
 
-const httpProc = spawn("python3", ["-m", "http.server", String(HTTP_PORT)], { cwd: ROOT, stdio: "ignore", env: cleanChildEnv() });
-const profile = `/tmp/banquet-proof-${Date.now()}`;
+requireIsolation();
+if (typeof WebSocket === "undefined") throw new Error("need --experimental-websocket");
+
+const instanceToken = process.env.BANQUET_INSTANCE_TOKEN;
+const profile = process.env.BANQUET_USER_DATA_DIR;
 mkdirSync(profile, { recursive: true });
-const chrome = spawn("google-chrome", [
-  `--remote-debugging-port=${CDP_PORT}`, `--user-data-dir=${profile}`,
-  "--no-first-run", "--no-default-browser-check", "--no-sandbox", "--disable-dev-shm-usage",
-  "--window-size=420,900", "about:blank",
-], { env: cleanChildEnv(), stdio: "ignore" });
+writeFileSync(path.join(profile, "banquet-instance-token"), instanceToken, { mode: 0o600 });
+
+HTTP_PORT = await freePort();
+BASE = `http://127.0.0.1:${HTTP_PORT}/`;
+const childEnv = buildWhitelistEnv();
+
+const httpProc = spawn(
+  "python3",
+  ["-m", "http.server", String(HTTP_PORT), "--bind", "127.0.0.1"],
+  { cwd: ROOT, stdio: "ignore", env: childEnv },
+);
+
+const chromeArgs = [
+  "--headless=new",
+  "--remote-debugging-address=127.0.0.1",
+  "--remote-debugging-port=0",
+  `--user-data-dir=${profile}`,
+  "--no-first-run",
+  "--no-default-browser-check",
+  "--disable-dev-shm-usage",
+  "--window-size=420,900",
+  "about:blank",
+];
+const SANDBOX_DISABLE_FLAG = "--" + "no-sandbox";
+if (chromeArgs.some((a) => a === SANDBOX_DISABLE_FLAG || a.startsWith(SANDBOX_DISABLE_FLAG + "="))) {
+  throw new Error("internal error: sandbox-disable flag must never be passed");
+}
+const chrome = spawn("google-chrome", chromeArgs, { env: childEnv, stdio: "ignore" });
+let chromeExit = null;
+chrome.on("exit", (code, signal) => { chromeExit = { code, signal }; });
 
 const results = {};
 try {
-  await sleep(600);
-  const page = await waitForWs();
+  await sleep(300);
+  CDP_PORT = await waitForDevtoolsPort(profile, 25000);
+  if (chromeExit && chromeExit.code) {
+    throw new Error(
+      `Chrome exited before CDP ready (code=${chromeExit.code}). Sandbox/instance failed — no disabled-sandbox fallback.`,
+    );
+  }
+  note(`instance http=${HTTP_PORT} cdp=${CDP_PORT}`);
+  const page = await waitForWs(CDP_PORT, instanceToken, profile);
   const cdp = new Cdp(page.webSocketDebuggerUrl);
   await cdp.connect();
   await cdp.send("Page.enable");
