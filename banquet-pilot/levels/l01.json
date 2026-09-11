@@ -1,0 +1,14 @@
+{
+  "id": "L01",
+  "title": "先让大家坐下",
+  "layout": "4",
+  "seats": ["A1", "A2", "B1", "B2"],
+  "characters": ["fox", "rabbit", "crane", "otter"],
+  "props": [],
+  "rules": [
+    {"id": "L01-r1", "kind": "at", "subject": "fox", "seat": "A1"},
+    {"id": "L01-r2", "kind": "at", "subject": "crane", "seat": "B1"},
+    {"id": "L01-r3", "kind": "not_beside", "subject": "rabbit", "other": "fox"}
+  ],
+  "known_solution": {"fox": "A1", "otter": "A2", "crane": "B1", "rabbit": "B2"}
+}

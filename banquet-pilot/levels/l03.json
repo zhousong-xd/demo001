@@ -1,0 +1,31 @@
+{
+  "id": "L03",
+  "title": "不是所有矛盾都要换座",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [{"id": "calm_bell", "stock": 1, "valid_targets": ["rabbit"]}],
+  "rules": [
+    {"id": "L03-r1", "kind": "at", "subject": "fox", "seat": "A1"},
+    {"id": "L03-r2", "kind": "at", "subject": "crane", "seat": "B2"},
+    {"id": "L03-r3", "kind": "faces", "subject": "otter", "other": "crane"},
+    {"id": "L03-r4", "kind": "end", "subject": "hedgehog"},
+    {"id": "L03-r5", "kind": "same_row", "subject": "hedgehog", "other": "fox"},
+    {"id": "L03-r6", "kind": "faces", "subject": "tanuki", "other": "hedgehog"},
+    {
+      "id": "L03-r7",
+      "kind": "not_faces_unless",
+      "subject": "rabbit",
+      "other": "fox",
+      "unless_state": "calm"
+    }
+  ],
+  "known_solution_with_calm_rabbit": {
+    "fox": "A1",
+    "otter": "A2",
+    "hedgehog": "A3",
+    "rabbit": "B1",
+    "crane": "B2",
+    "tanuki": "B3"
+  }
+}
