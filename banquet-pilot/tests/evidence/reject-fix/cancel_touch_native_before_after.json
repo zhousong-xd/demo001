@@ -1,0 +1,60 @@
+{
+  "before": {
+    "asg": {
+      "fox": null,
+      "rabbit": null,
+      "crane": null,
+      "otter": null
+    },
+    "hist": 0,
+    "ls": {
+      "register": 0,
+      "unregister": 0,
+      "activeWindow": 0,
+      "commits": 0,
+      "cancels": 0
+    }
+  },
+  "after": {
+    "levelId": "L01",
+    "assignment": {
+      "fox": null,
+      "rabbit": null,
+      "crane": null,
+      "otter": null
+    },
+    "historyLen": 0,
+    "selectedChar": null,
+    "won": false,
+    "evalOk": true,
+    "rules": [
+      {
+        "id": "L01-r1",
+        "status": "PENDING"
+      },
+      {
+        "id": "L01-r2",
+        "status": "PENDING"
+      },
+      {
+        "id": "L01-r3",
+        "status": "PENDING"
+      }
+    ],
+    "viewport": {
+      "innerWidth": 360,
+      "innerHeight": 640,
+      "dpr": 1
+    },
+    "gestureActive": false,
+    "ghostPresent": false,
+    "listenerStats": {
+      "register": 3,
+      "unregister": 3,
+      "activeWindow": 0,
+      "commits": 0,
+      "cancels": 1
+    }
+  },
+  "label": "touch-sim-native touchCancel"
+}

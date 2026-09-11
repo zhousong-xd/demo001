@@ -39,11 +39,39 @@ let selectedChar = null;
 /** @type {string|null} */
 let highlightRuleId = null;
 
-/** Active gesture (single primary pointer only). */
-let gesture = null; // { pointerId, charId, mode:'drag'|'tap', startX, startY, moved, ghostEl }
+/**
+ * Active gesture (single primary pointer only).
+ * @type {{
+ *   pointerId: number,
+ *   charId: string,
+ *   mode: 'drag'|'tap',
+ *   startX: number,
+ *   startY: number,
+ *   moved: boolean,
+ *   ghostEl: HTMLElement|null,
+ *   targetEl: Element|null,
+ *   onMove: (e: PointerEvent) => void,
+ *   onUp: (e: PointerEvent) => void,
+ *   onCancel: (e: PointerEvent) => void,
+ *   onLostCapture: (e: PointerEvent) => void,
+ * } | null}
+ */
+let gesture = null;
 let suppressClickUntil = 0;
+/** Prevent re-entrant teardown / double commit. */
+let tearingDown = false;
 
 const DRAG_THRESHOLD = 8;
+
+/** Reviewable listener instrumentation (register/unregister counts). */
+const listenerStats = {
+  register: 0,
+  unregister: 0,
+  /** Currently attached window gesture listeners (move+up+cancel). */
+  activeWindow: 0,
+  commits: 0,
+  cancels: 0,
+};
 
 const app = document.getElementById("app");
 
@@ -63,17 +91,17 @@ function resetLevel(keepHistoryClear = true) {
   assignment = createInitialAssignment(level);
   if (keepHistoryClear) history = createHistory();
   selectedChar = null;
-  cancelGesture("reset");
+  endGesture("reset", { commit: false });
   render();
 }
 
 async function switchLevel(id) {
+  endGesture("level-switch", { commit: false });
   level = await loadLevelJson(id);
   history = createHistory();
   selectedChar = null;
   highlightRuleId = null;
   assignment = createInitialAssignment(level);
-  cancelGesture("level-switch");
   render();
   log("level", level.id, level.title);
 }
@@ -93,32 +121,98 @@ function commitAction(charId, seat) {
   assignment = result.next;
   assertBoardIntegrity(assignment, level.characters, availableSeats());
   selectedChar = null;
+  listenerStats.commits += 1;
   log("action", result.kind, charId, "->", seat);
   render();
   return true;
 }
 
 function undo() {
+  if (gesture) {
+    endGesture("undo", { commit: false });
+  }
   const prev = popHistory(history);
   if (!prev) return;
   assignment = prev;
   selectedChar = null;
-  cancelGesture("undo");
   assertBoardIntegrity(assignment, level.characters, availableSeats());
   render();
 }
 
-function cancelGesture(reason) {
-  if (!gesture) return;
-  log("gesture-cancel", reason, gesture.charId);
-  if (gesture.ghostEl && gesture.ghostEl.parentNode) {
-    gesture.ghostEl.parentNode.removeChild(gesture.ghostEl);
-  }
-  const el = document.querySelector(`.char[data-char="${gesture.charId}"]`);
-  if (el) el.classList.remove("dragging");
+/**
+ * Idempotent gesture teardown: always remove onMove/onUp/onCancel,
+ * clear ghost/capture/gesture. Never commits.
+ * Safe to call when gesture is already null.
+ *
+ * @param {string} reason
+ * @param {{ commit?: boolean, seat?: string|null, charId?: string|null }} [opts]
+ *   If commit=true, perform seat action AFTER teardown (pointerup path only).
+ */
+function endGesture(reason, opts = {}) {
+  const { commit = false, seat = null, charId = null } = opts;
+  if (tearingDown) return;
+  if (!gesture && !commit) return;
+
+  tearingDown = true;
+  const g = gesture;
   gesture = null;
-  // clear drop highlights
-  document.querySelectorAll(".seat.drop-target").forEach((s) => s.classList.remove("drop-target"));
+
+  try {
+    if (g) {
+      // Detach window listeners (idempotent removeEventListener)
+      if (g.onMove) {
+        window.removeEventListener("pointermove", g.onMove, true);
+        listenerStats.unregister += 1;
+        listenerStats.activeWindow = Math.max(0, listenerStats.activeWindow - 1);
+      }
+      if (g.onUp) {
+        window.removeEventListener("pointerup", g.onUp, true);
+        listenerStats.unregister += 1;
+        listenerStats.activeWindow = Math.max(0, listenerStats.activeWindow - 1);
+      }
+      if (g.onCancel) {
+        window.removeEventListener("pointercancel", g.onCancel, true);
+        listenerStats.unregister += 1;
+        listenerStats.activeWindow = Math.max(0, listenerStats.activeWindow - 1);
+      }
+      if (g.targetEl && g.onLostCapture) {
+        g.targetEl.removeEventListener("lostpointercapture", g.onLostCapture);
+      }
+      // Release capture if still held (may fire lostpointercapture — gesture already null)
+      if (g.targetEl && g.pointerId != null) {
+        try {
+          if (g.targetEl.hasPointerCapture?.(g.pointerId)) {
+            g.targetEl.releasePointerCapture(g.pointerId);
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+      if (g.ghostEl && g.ghostEl.parentNode) {
+        g.ghostEl.parentNode.removeChild(g.ghostEl);
+      }
+      const el = document.querySelector(`.char[data-char="${g.charId}"]`);
+      if (el) el.classList.remove("dragging");
+      document.querySelectorAll(".seat.drop-target").forEach((s) => s.classList.remove("drop-target"));
+      if (!commit) {
+        listenerStats.cancels += 1;
+        log("gesture-cancel", reason, g.charId);
+      } else {
+        log("gesture-end", reason, g.charId);
+      }
+    }
+
+    if (commit && charId && seat) {
+      commitAction(charId, seat);
+    }
+  } finally {
+    tearingDown = false;
+  }
+}
+
+/** Alias used by older call sites / clarity for cancel-only paths. */
+function cancelGesture(reason) {
+  endGesture(reason, { commit: false });
 }
 
 function evalState() {
@@ -166,23 +260,24 @@ function makeCharEl(charId) {
 function onCharPointerDown(ev) {
   if (ev.button !== undefined && ev.button !== 0) return;
   const charId = ev.currentTarget.dataset.char;
-  // multi-touch: ignore if another gesture active with different pointer
+
+  // multi-touch: ignore second finger / different pointer while gesture active
   if (gesture && gesture.pointerId !== ev.pointerId) {
     ev.preventDefault();
     return;
   }
-  ev.preventDefault();
-  ev.currentTarget.setPointerCapture?.(ev.pointerId);
+  // If a gesture somehow still exists for same pointer, tear it down first
+  if (gesture) {
+    endGesture("re-down", { commit: false });
+  }
 
-  gesture = {
-    pointerId: ev.pointerId,
-    charId,
-    mode: "tap",
-    startX: ev.clientX,
-    startY: ev.clientY,
-    moved: false,
-    ghostEl: null,
-  };
+  ev.preventDefault();
+  const targetEl = ev.currentTarget;
+  try {
+    targetEl.setPointerCapture?.(ev.pointerId);
+  } catch {
+    /* ignore */
+  }
 
   const onMove = (e) => {
     if (!gesture || e.pointerId !== gesture.pointerId) return;
@@ -208,44 +303,98 @@ function onCharPointerDown(ev) {
     }
   };
 
+  /** pointerup ONLY — may commit. Never used for pointercancel. */
   const onUp = (e) => {
     if (!gesture || e.pointerId !== gesture.pointerId) return;
-    window.removeEventListener("pointermove", onMove, true);
-    window.removeEventListener("pointerup", onUp, true);
-    window.removeEventListener("pointercancel", onUp, true);
+    if (e.type !== "pointerup") {
+      // Defensive: never treat non-up as drop
+      endGesture("non-up-" + e.type, { commit: false });
+      return;
+    }
 
     const g = gesture;
     const seatEl = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".seat");
+    const seat = seatEl?.dataset?.seat || null;
 
     if (g.mode === "drag") {
       suppressClickUntil = Date.now() + 400;
-      cancelGesture("drop-cleanup");
-      if (seatEl) {
-        commitAction(g.charId, seatEl.dataset.seat);
-      } else {
+      // Teardown first (never leave listeners), then commit if valid seat
+      endGesture("pointerup-drag", {
+        commit: !!seat,
+        seat,
+        charId: g.charId,
+      });
+      if (!seat) {
         log("invalid-drop");
         render();
       }
       return;
     }
 
-    // tap path: select or place
-    cancelGesture("tap-end");
-    if (selectedChar === g.charId) {
+    // tap path: select, deselect, or complete prior selection onto this char's seat
+    const tappedChar = g.charId;
+    const priorSelected = selectedChar;
+    endGesture("pointerup-tap", { commit: false });
+
+    // Center-of-occupied-seat: if another char was already selected, tapping
+    // this seated char completes swap/displace (same as clicking empty seat area).
+    if (priorSelected && priorSelected !== tappedChar) {
+      const targetSeat = assignment[tappedChar];
+      if (targetSeat) {
+        commitAction(priorSelected, targetSeat);
+        return;
+      }
+      // Target is waiting (no seat): switch selection to tapped char
+      selectedChar = tappedChar;
+      render();
+      return;
+    }
+
+    if (priorSelected === tappedChar) {
       selectedChar = null;
       render();
       return;
     }
-    if (selectedChar && seatEl) {
-      // shouldn't happen on char tap
-    }
-    selectedChar = g.charId;
+
+    selectedChar = tappedChar;
     render();
+  };
+
+  /** Independent cancel path — NEVER commits / drops. */
+  const onCancel = (e) => {
+    if (!gesture || e.pointerId !== gesture.pointerId) return;
+    endGesture("pointercancel", { commit: false });
+    render(); // restore UI; fox stays waiting / history unchanged
+  };
+
+  const onLostCapture = (e) => {
+    if (!gesture || e.pointerId !== gesture.pointerId) return;
+    // Capture lost unexpectedly — cancel without commit (idempotent if already torn down)
+    endGesture("lostpointercapture", { commit: false });
+    render();
+  };
+
+  gesture = {
+    pointerId: ev.pointerId,
+    charId,
+    mode: "tap",
+    startX: ev.clientX,
+    startY: ev.clientY,
+    moved: false,
+    ghostEl: null,
+    targetEl,
+    onMove,
+    onUp,
+    onCancel,
+    onLostCapture,
   };
 
   window.addEventListener("pointermove", onMove, true);
   window.addEventListener("pointerup", onUp, true);
-  window.addEventListener("pointercancel", onUp, true);
+  window.addEventListener("pointercancel", onCancel, true);
+  targetEl.addEventListener("lostpointercapture", onLostCapture);
+  listenerStats.register += 3;
+  listenerStats.activeWindow += 3;
 }
 
 function updateDropTarget(x, y) {
@@ -256,10 +405,24 @@ function updateDropTarget(x, y) {
 
 function onSeatClick(ev) {
   if (Date.now() < suppressClickUntil) return;
+  // Gate while a gesture is active (second finger must not commit/rewrite)
+  if (gesture) return;
   const seat = ev.currentTarget.dataset.seat;
   if (!selectedChar) return;
-  // click-character-then-click-seat
+  // click-character-then-click-seat (empty area of seat, or after center handled via char tap)
   commitAction(selectedChar, seat);
+}
+
+/** Gate control clicks while a primary gesture is incomplete. */
+function gatedControl(fn) {
+  return (ev) => {
+    if (gesture) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      return;
+    }
+    fn(ev);
+  };
 }
 
 function render() {
@@ -285,7 +448,7 @@ function render() {
     b.className = "btn" + (level.id === id ? " active" : "");
     b.type = "button";
     b.textContent = id;
-    b.addEventListener("click", () => switchLevel(id));
+    b.addEventListener("click", gatedControl(() => switchLevel(id)));
     sw.appendChild(b);
   }
   header.appendChild(sw);
@@ -295,14 +458,14 @@ function render() {
   undoBtn.type = "button";
   undoBtn.textContent = "撤销";
   undoBtn.disabled = history.length === 0;
-  undoBtn.addEventListener("click", () => undo());
+  undoBtn.addEventListener("click", gatedControl(() => undo()));
   header.appendChild(undoBtn);
 
   const resetBtn = document.createElement("button");
   resetBtn.className = "btn";
   resetBtn.type = "button";
   resetBtn.textContent = "重置";
-  resetBtn.addEventListener("click", () => resetLevel(true));
+  resetBtn.addEventListener("click", gatedControl(() => resetLevel(true)));
   header.appendChild(resetBtn);
 
   app.appendChild(header);
@@ -381,10 +544,10 @@ function render() {
       el.innerHTML = `<div class="sym" aria-label="${meta.text}">${meta.symbol}</div>
         <div><div>${describeRule(rule || { id: rr.id, kind: "?", subject: "?" })}</div>
         <div class="meta">${rr.id} · ${meta.symbol} ${meta.text}（${rr.status}）</div></div>`;
-      el.addEventListener("click", () => {
+      el.addEventListener("click", gatedControl(() => {
         highlightRuleId = highlightRuleId === rr.id ? null : rr.id;
         render();
-      });
+      }));
       rulesBox.appendChild(el);
     }
   }
@@ -396,8 +559,9 @@ function render() {
     "操作：拖拽角色到座位；或先点角色再点座位。空座移动；两入座交换；候客挤占则原住回候客。无效落点/原座不入撤销。";
   app.appendChild(hint);
 
-  // expose for evidence scripts
-  window.__BANQUET__ = {
+  // Read-only snapshot for evidence scripts — never write game state via this object.
+  // Live getters for gesture/listener fields (updated continuously; not only on render).
+  const snapshot = {
     levelId: level.id,
     assignment: cloneAssignment(assignment),
     historyLen: history.length,
@@ -411,6 +575,33 @@ function render() {
       dpr: window.devicePixelRatio,
     },
   };
+  Object.defineProperties(snapshot, {
+    gestureActive: {
+      enumerable: true,
+      get() {
+        return !!gesture;
+      },
+    },
+    ghostPresent: {
+      enumerable: true,
+      get() {
+        return !!document.querySelector(".ghost");
+      },
+    },
+    listenerStats: {
+      enumerable: true,
+      get() {
+        return {
+          register: listenerStats.register,
+          unregister: listenerStats.unregister,
+          activeWindow: listenerStats.activeWindow,
+          commits: listenerStats.commits,
+          cancels: listenerStats.cancels,
+        };
+      },
+    },
+  });
+  window.__BANQUET__ = snapshot;
 }
 
 function onVisibility() {

@@ -30,6 +30,10 @@ python3 -m http.server 8760
 - 拖拽入座；或先点角色再点座位
 - 空座移动；两入座原子交换；候客挤占 → 原住回候客
 - 无效落点 / 原座点击不入撤销；后台中断取消未完成手势
+- `pointercancel` / blur / visibility / pagehide：**取消**手势（不落子、不入历史）；监听器幂等卸载
+- 已选角色后再点被占座位中心：与点空白席面同语义（交换 / 顶替）
+- 活动手势期间门禁座位/控制点击；第二指不得提交或破坏第一指未完成操作
+- 证据：`tests/evidence/`（mouse-sim + touch-sim；真机未测）
 - 规则三态：○待定 / ✓满足 / ✗冲突（符号+文本）；可点规则关联高亮
 - 通关：`isWin`（`evaluateLevel.ok` 且全员入座且全部 `SATISFIED`）
 - UI **只**通过 `evaluateLevel` / `isWin` 评估，不调用 `evaluateRule` 绕开内核
