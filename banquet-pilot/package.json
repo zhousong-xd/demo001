@@ -1,0 +1,6 @@
+{
+  "name": "banquet-pilot",
+  "private": true,
+  "type": "module",
+  "description": "Banquet Pilot rule kernel (native JS production; Python reference)"
+}

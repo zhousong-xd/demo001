@@ -1,5 +1,7 @@
 """Seat geometry for Banquet Pilot.
 
+REFERENCE — production is geometry.js.
+
 Rows A (top) and B (bottom); column index increases left → right.
 - adjacent: same row and |index| == 1 (never across the table; never diagonal)
 - faces: different row and same column index

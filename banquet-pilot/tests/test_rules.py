@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Independent unit tests for Banquet Pilot T-002 rule kernel."""
+"""Independent unit tests for Banquet Pilot T-002 rule kernel (Python reference)."""
 
 from __future__ import annotations
 
+import copy
 import json
 import sys
 import unittest
@@ -20,9 +21,15 @@ from core.rules import (  # noqa: E402
     evaluate_level,
     evaluate_rule,
     is_win,
+    resolve_effective_calm,
     validate_assignment,
+    validate_level,
 )
 from core.solver import count_solutions, enumerate_solutions  # noqa: E402
+
+
+def _status_map(results):
+    return {rid: st for rid, st in results}
 
 
 class GeometryTests(unittest.TestCase):
@@ -41,12 +48,10 @@ class GeometryTests(unittest.TestCase):
     def test_end_four_vs_six(self):
         four = seats_for_layout("4")
         six = seats_for_layout("6")
-        # four-seat: both 1 and 2 are ends in each row
         self.assertTrue(is_end("A1", four))
         self.assertTrue(is_end("A2", four))
         self.assertTrue(is_end("B1", four))
         self.assertTrue(is_end("B2", four))
-        # six-seat: only 1 and 3
         self.assertTrue(is_end("A1", six))
         self.assertFalse(is_end("A2", six))
         self.assertTrue(is_end("A3", six))
@@ -58,11 +63,10 @@ class GeometryTests(unittest.TestCase):
 class PartialStateTests(unittest.TestCase):
     def test_unseated_is_pending_not_conflict(self):
         level = load_level("l01")
-        # fox not seated; rabbit at A2 next to where fox would be — still PENDING
         asg = {"fox": None, "rabbit": "A2", "crane": "B1", "otter": "B2"}
-        statuses = evaluate_level(level, asg)
+        statuses = _status_map(evaluate_level(level, asg))
         self.assertEqual(statuses["L01-r1"], PENDING)
-        self.assertEqual(statuses["L01-r3"], PENDING)  # fox missing
+        self.assertEqual(statuses["L01-r3"], PENDING)
         self.assertEqual(statuses["L01-r2"], SATISFIED)
 
     def test_not_beside_conflict_when_both_seated(self):
@@ -149,7 +153,9 @@ class L03Tests(unittest.TestCase):
             enumerate_solutions(level, calm={"rabbit"})[0],
             level["known_solution_with_calm_rabbit"],
         )
-        self.assertTrue(is_win(level, level["known_solution_with_calm_rabbit"], calm={"rabbit"}))
+        self.assertTrue(
+            is_win(level, level["known_solution_with_calm_rabbit"], calm={"rabbit"})
+        )
 
     def test_calm_other_five_still_zero(self):
         level = load_level("l03")
@@ -160,7 +166,6 @@ class L03Tests(unittest.TestCase):
 
     def test_calm_but_other_rules_fail_not_win(self):
         level = load_level("l03")
-        # rabbit calm and faces fox, but fox not at A1
         bad = {
             "fox": "A2",
             "otter": "A1",
@@ -172,6 +177,72 @@ class L03Tests(unittest.TestCase):
         self.assertFalse(is_win(level, bad, calm={"rabbit"}))
 
 
+class AntiCaseTests(unittest.TestCase):
+    def test_anti1_l01_calm_rabbit_no_props(self):
+        level = load_level("l01")
+        self.assertFalse(is_win(level, level["known_solution"], calm={"rabbit"}))
+        _, errs = resolve_effective_calm(level, {"rabbit"})
+        self.assertTrue(errs)
+
+    def test_anti2_l03_two_calms_stock1(self):
+        level = load_level("l03")
+        self.assertFalse(
+            is_win(
+                level,
+                level["known_solution_with_calm_rabbit"],
+                calm={"rabbit", "fox"},
+            )
+        )
+        _, errs = resolve_effective_calm(level, {"rabbit", "fox"})
+        self.assertTrue(errs)
+
+    def test_anti3_initial_calm_unknown_id(self):
+        level = copy.deepcopy(load_level("l03"))
+        level["initial_calm"] = ["rabbit", "ghost"]
+        errs = validate_level(level)
+        self.assertTrue(any("unknown character" in e or "ghost" in e for e in errs))
+        self.assertFalse(is_win(level, level["known_solution_with_calm_rabbit"]))
+
+    def test_anti4_duplicate_rule_id(self):
+        level = copy.deepcopy(load_level("l01"))
+        level["rules"].append(
+            {"id": "L01-r1", "kind": "at", "subject": "fox", "seat": "B2"}
+        )
+        errs = validate_level(level)
+        self.assertTrue(any("duplicate rule id" in e for e in errs))
+        self.assertFalse(is_win(level, level["known_solution"]))
+        results = evaluate_level(level, level["known_solution"])
+        self.assertEqual(len(results), 4)
+        self.assertTrue(any(rid == "L01-r1" and st == CONFLICT for rid, st in results))
+
+    def test_anti5_duplicate_seat(self):
+        level = copy.deepcopy(load_level("l01"))
+        level["seats"] = list(level["seats"]) + ["A1"]
+        errs = validate_level(level)
+        self.assertTrue(any("duplicate seat" in e for e in errs))
+        self.assertFalse(is_win(level, level["known_solution"]))
+
+
+class MissingRefTests(unittest.TestCase):
+    def test_subject_missing(self):
+        level = copy.deepcopy(load_level("l01"))
+        level["rules"][0]["subject"] = "ghost"
+        errs = validate_level(level)
+        self.assertTrue(any("subject not in characters" in e for e in errs))
+
+    def test_other_missing(self):
+        level = copy.deepcopy(load_level("l01"))
+        level["rules"][2]["other"] = "ghost"
+        errs = validate_level(level)
+        self.assertTrue(any("other not in characters" in e for e in errs))
+
+    def test_seat_missing(self):
+        level = copy.deepcopy(load_level("l01"))
+        level["rules"][0]["seat"] = "A9"
+        errs = validate_level(level)
+        self.assertTrue(any("seat not available" in e for e in errs))
+
+
 class SolverScriptSmoke(unittest.TestCase):
     def test_levels_json_roundtrip(self):
         for name in ("l01", "l02", "l03"):
@@ -180,6 +251,7 @@ class SolverScriptSmoke(unittest.TestCase):
                 data = json.load(f)
             self.assertIn("rules", data)
             self.assertIn("characters", data)
+            self.assertEqual(validate_level(data), [])
 
 
 if __name__ == "__main__":

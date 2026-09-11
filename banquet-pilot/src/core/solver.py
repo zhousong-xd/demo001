@@ -1,4 +1,7 @@
-"""Static full-seat enumerator (no UI)."""
+"""Static full-seat enumerator (no UI).
+
+REFERENCE — production is solver.js.
+"""
 
 from __future__ import annotations
 
