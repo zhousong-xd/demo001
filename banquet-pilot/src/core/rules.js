@@ -1,4 +1,9 @@
-/** Rule evaluation: PENDING / SATISFIED / CONFLICT + level/calm validation. */
+/** Rule evaluation: PENDING / SATISFIED / CONFLICT + level/calm validation.
+ *
+ * Public evaluation entry: evaluateLevel / isWin / validatePlayable.
+ * evaluateRule is low-level and assumes already-validated inputs —
+ * UI must not bypass evaluateLevel.
+ */
 
 import { adjacent, faces, isEnd, parseSeat, seatsForLayout } from "./geometry.js";
 
@@ -15,6 +20,9 @@ const KNOWN_KINDS = new Set([
   "not_faces_unless",
 ]);
 
+/** Kinds that require `other`. */
+const NEEDS_OTHER = new Set(["not_beside", "faces", "same_row", "not_faces_unless"]);
+
 /**
  * @param {Record<string, string|null|undefined>} assignment
  * @param {string} charId
@@ -27,6 +35,9 @@ function seated(assignment, charId) {
 }
 
 /**
+ * Low-level rule evaluator. Assumes inputs already passed validatePlayable /
+ * validateLevel. UI must not call this to bypass the public evaluateLevel path.
+ *
  * @param {object} rule
  * @param {Record<string, string|null|undefined>} assignment
  * @param {{ availableSeats: string[], calm?: Iterable<string> }} opts
@@ -133,7 +144,22 @@ export function validateAssignment(
 }
 
 /**
+ * True iff stock is a finite non-negative integer (no Number() coercion of strings).
+ * @param {unknown} stock
+ */
+function isValidStock(stock) {
+  return (
+    typeof stock === "number" &&
+    Number.isFinite(stock) &&
+    Number.isInteger(stock) &&
+    stock >= 0
+  );
+}
+
+/**
  * Effective calm = explicit calm ∪ initial_calm, with prop/stock/target checks.
+ * Does not Number()-coerce bad stock; invalid stock pushes an error and is
+ * excluded from the calm-stock sum.
  * @param {object} level
  * @param {Iterable<string>|null|undefined} calm
  * @returns {{ effective: Set<string>, errors: string[] }}
@@ -167,7 +193,13 @@ export function resolveEffectiveCalm(level, calm = null) {
     const targets = prop.valid_targets || [];
     for (const t of targets) validTargets.add(t);
     if (targets.length > 0) {
-      calmStock += Number(prop.stock ?? 0);
+      if (!isValidStock(prop.stock)) {
+        errors.push(
+          `prop ${prop.id ?? "(missing id)"} stock must be a finite non-negative integer, got ${JSON.stringify(prop.stock)}`,
+        );
+      } else {
+        calmStock += prop.stock;
+      }
     }
   }
 
@@ -196,6 +228,8 @@ export function validateLevel(level) {
   const characters = level.characters || [];
   const available = level.seats || seatsForLayout(level.layout);
   const rules = level.rules || [];
+  const props = Array.isArray(level.props) ? level.props : [];
+  const initial = level.initial_calm || [];
 
   const seenChars = new Set();
   for (const c of characters) {
@@ -219,90 +253,178 @@ export function validateLevel(level) {
   const seenRuleIds = new Set();
   for (const rule of rules) {
     const rid = rule.id;
-    if (rid != null && rid !== "") {
-      if (seenRuleIds.has(rid)) {
-        errors.push(`duplicate rule id: ${rid}`);
-      } else {
-        seenRuleIds.add(rid);
-      }
+    if (rid == null || rid === "") {
+      errors.push("rule missing required field: id");
+    } else if (seenRuleIds.has(rid)) {
+      errors.push(`duplicate rule id: ${rid}`);
+    } else {
+      seenRuleIds.add(rid);
     }
-    if (!KNOWN_KINDS.has(rule.kind)) {
+
+    if (rule.kind == null || rule.kind === "") {
+      errors.push(`rule ${rid ?? "(no id)"} missing required field: kind`);
+    } else if (!KNOWN_KINDS.has(rule.kind)) {
       errors.push(`unknown rule kind: ${JSON.stringify(rule.kind)}`);
     }
-    if (rule.subject != null && !seenChars.has(rule.subject)) {
+
+    if (rule.subject == null || rule.subject === "") {
+      errors.push(`rule ${rid ?? "(no id)"} missing required field: subject`);
+    } else if (!seenChars.has(rule.subject)) {
       errors.push(`rule subject not in characters: ${rule.subject}`);
     }
-    if (rule.other != null && !seenChars.has(rule.other)) {
-      errors.push(`rule other not in characters: ${rule.other}`);
+
+    if (rule.kind === "at") {
+      if (rule.seat == null || rule.seat === "") {
+        errors.push(`rule ${rid ?? "(no id)"} kind at missing required field: seat`);
+      } else if (!seenSeats.has(rule.seat)) {
+        errors.push(`rule seat not available: ${rule.seat}`);
+      }
     }
-    if (rule.kind === "at" && rule.seat != null && !seenSeats.has(rule.seat)) {
-      errors.push(`rule seat not available: ${rule.seat}`);
+
+    if (NEEDS_OTHER.has(rule.kind)) {
+      if (rule.other == null || rule.other === "") {
+        errors.push(
+          `rule ${rid ?? "(no id)"} kind ${rule.kind} missing required field: other`,
+        );
+      } else if (!seenChars.has(rule.other)) {
+        errors.push(`rule other not in characters: ${rule.other}`);
+      }
+    }
+
+    // not_faces_unless: missing unless_state OK (default calm);
+    // explicit null/''/unknown REJECT; only 'calm' allowed when present.
+    if (rule.kind === "not_faces_unless" && Object.prototype.hasOwnProperty.call(rule, "unless_state")) {
+      if (rule.unless_state !== "calm") {
+        errors.push(
+          `rule ${rid ?? "(no id)"} unless_state must be 'calm' when present, got ${JSON.stringify(rule.unless_state)}`,
+        );
+      }
     }
   }
 
-  // also validate initial_calm / props via calm resolver (no explicit calm)
+  const seenPropIds = new Set();
+  for (const prop of props) {
+    const pid = prop.id;
+    if (pid == null || pid === "") {
+      errors.push("prop missing required field: id");
+    } else if (seenPropIds.has(pid)) {
+      errors.push(`duplicate prop id: ${pid}`);
+    } else {
+      seenPropIds.add(pid);
+    }
+
+    if (!isValidStock(prop.stock)) {
+      errors.push(
+        `prop ${pid ?? "(missing id)"} stock must be a finite non-negative integer, got ${JSON.stringify(prop.stock)}`,
+      );
+    }
+
+    const targets = prop.valid_targets || [];
+    for (const t of targets) {
+      if (!seenChars.has(t)) {
+        errors.push(`prop ${pid ?? "(missing id)"} valid_targets includes unknown character: ${t}`);
+      }
+    }
+  }
+
+  for (const cid of initial) {
+    if (!seenChars.has(cid)) {
+      errors.push(`initial_calm unknown character: ${cid}`);
+    }
+  }
+
+  // calm grantability (stock/targets/no-props) via resolveEffectiveCalm
   const { errors: calmErrs } = resolveEffectiveCalm(level, null);
-  for (const e of calmErrs) errors.push(e);
+  for (const e of calmErrs) {
+    // avoid duplicating stock errors already reported above
+    if (e.includes("stock must be a finite")) continue;
+    errors.push(e);
+  }
 
   return errors;
 }
 
 /**
- * Evaluate every rule as a list (no silent id overwrite).
- * @returns {{ id: string, status: string }[]}
+ * Unified playable-state validation entry.
+ * 1) validateLevel — stop on config errors
+ * 2) resolveEffectiveCalm — collect errors
+ * 3) validateAssignment with effectiveCalm
+ * @param {object} level
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {{ calm?: Iterable<string>|null }} opts
+ * @returns {{ ok: boolean, errors: string[], effectiveCalm: Set<string> }}
  */
-export function evaluateLevel(level, assignment, { calm = null } = {}) {
-  const available = level.seats || seatsForLayout(level.layout);
-  const { effective } = resolveEffectiveCalm(level, calm);
-  const results = [];
-  for (const rule of level.rules) {
-    const rid = rule.id || `${rule.kind}:${rule.subject}`;
-    results.push({
-      id: rid,
-      status: evaluateRule(rule, assignment, {
-        availableSeats: available,
-        calm: effective,
-      }),
-    });
+export function validatePlayable(level, assignment, { calm = null } = {}) {
+  const levelErrors = validateLevel(level);
+  if (levelErrors.length > 0) {
+    return { ok: false, errors: levelErrors, effectiveCalm: new Set() };
   }
-  return results;
+
+  const available = level.seats || seatsForLayout(level.layout);
+  const { effective, errors: calmErrors } = resolveEffectiveCalm(level, calm);
+  const errors = [...calmErrors];
+
+  const asgErrors = validateAssignment(assignment, {
+    characters: level.characters,
+    availableSeats: available,
+    calm: effective,
+  });
+  for (const e of asgErrors) errors.push(e);
+
+  return {
+    ok: errors.length === 0,
+    errors,
+    effectiveCalm: effective,
+  };
 }
 
 /**
+ * Evaluate every rule. ALWAYS returns structured result:
+ *   legal:   { ok:true,  errors:[], rules:[{id,status}, ...] }
+ *   illegal: { ok:false, errors:[...], rules:[] }
+ * Never returns SATISFIED for illegal configs.
+ *
+ * @param {object} level
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {{ calm?: Iterable<string>|null }} opts
+ * @returns {{ ok: boolean, errors: string[], rules: {id:string,status:string}[] }}
+ */
+export function evaluateLevel(level, assignment, { calm = null } = {}) {
+  const playable = validatePlayable(level, assignment, { calm });
+  if (!playable.ok) {
+    return { ok: false, errors: playable.errors, rules: [] };
+  }
+
+  const available = level.seats || seatsForLayout(level.layout);
+  const results = [];
+  for (const rule of level.rules) {
+    results.push({
+      id: rule.id,
+      status: evaluateRule(rule, assignment, {
+        availableSeats: available,
+        calm: playable.effectiveCalm,
+      }),
+    });
+  }
+  return { ok: true, errors: [], rules: results };
+}
+
+/**
+ * Win iff evaluateLevel ok, every character seated, and all rules SATISFIED.
+ * Reuses the same validation path as evaluateLevel (no second checker).
+ *
  * @param {object} level
  * @param {Record<string, string|null|undefined>} assignment
  * @param {{ calm?: Iterable<string>|null }} opts
  */
 export function isWin(level, assignment, { calm = null } = {}) {
-  if (validateLevel(level).length > 0) return false;
+  const result = evaluateLevel(level, assignment, { calm });
+  if (!result.ok) return false;
 
   const characters = level.characters;
-  const available = level.seats || seatsForLayout(level.layout);
-  const { effective, errors: calmErrors } = resolveEffectiveCalm(level, calm);
-  if (calmErrors.length > 0) return false;
-
-  if (
-    validateAssignment(assignment, {
-      characters,
-      availableSeats: available,
-      calm: effective,
-    }).length > 0
-  ) {
-    return false;
+  for (const c of characters) {
+    if (seated(assignment, c) === null) return false;
   }
 
-  const seats = characters.map((c) => seated(assignment, c));
-  if (seats.some((s) => s === null)) return false;
-  if (new Set(seats).size !== seats.length) return false;
-  if (seats.some((s) => !available.includes(/** @type {string} */ (s)))) return false;
-
-  // iterate rules as a list — all must be SATISFIED
-  for (const rule of level.rules) {
-    const status = evaluateRule(rule, assignment, {
-      availableSeats: available,
-      calm: effective,
-    });
-    if (status !== SATISFIED) return false;
-  }
-  return true;
+  return result.rules.every((r) => r.status === SATISFIED);
 }

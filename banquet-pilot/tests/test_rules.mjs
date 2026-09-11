@@ -22,11 +22,13 @@ import {
   resolveEffectiveCalm,
   validateAssignment,
   validateLevel,
+  validatePlayable,
 } from "../src/core/rules.js";
 import { loadLevel } from "../src/core/loader.js";
 import { countSolutions, enumerateSolutions } from "../src/core/solver.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const CORE = path.join(ROOT, "src", "core");
 
 function clone(obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -64,9 +66,9 @@ test("geometry: end four vs six", () => {
 test("partial: unseated is PENDING not CONFLICT", () => {
   const level = loadLevel("l01");
   const asg = { fox: null, rabbit: "A2", crane: "B1", otter: "B2" };
-  const statuses = Object.fromEntries(
-    evaluateLevel(level, asg).map((r) => [r.id, r.status]),
-  );
+  const result = evaluateLevel(level, asg);
+  assert.equal(result.ok, true);
+  const statuses = Object.fromEntries(result.rules.map((r) => [r.id, r.status]));
   assert.equal(statuses["L01-r1"], PENDING);
   assert.equal(statuses["L01-r3"], PENDING);
   assert.equal(statuses["L01-r2"], SATISFIED);
@@ -79,6 +81,18 @@ test("partial: not_beside CONFLICT when both seated", () => {
     evaluateRule(level.rules[2], asg, { availableSeats: level.seats }),
     CONFLICT,
   );
+});
+
+test("partial: null/undefined/empty string all mean unseated", () => {
+  const level = loadLevel("l01");
+  for (const empty of [null, undefined, ""]) {
+    const asg = { fox: empty, rabbit: "A2", crane: "B1", otter: "B2" };
+    const result = evaluateLevel(level, asg);
+    assert.equal(result.ok, true, `empty=${JSON.stringify(empty)}`);
+    assert.equal(isWin(level, asg), false);
+    const statuses = Object.fromEntries(result.rules.map((r) => [r.id, r.status]));
+    assert.equal(statuses["L01-r1"], PENDING);
+  }
 });
 
 test("validation: illegal id and duplicate seat", () => {
@@ -108,6 +122,9 @@ test("validation: illegal seat", () => {
 test("L01 known solution wins + enumerate 24→1", () => {
   const level = loadLevel("l01");
   assert.equal(isWin(level, level.known_solution), true);
+  const winEval = evaluateLevel(level, level.known_solution);
+  assert.equal(winEval.ok, true);
+  assert.ok(winEval.rules.every((r) => r.status === SATISFIED));
   const [n, total] = countSolutions(level);
   assert.equal(total, 24);
   assert.equal(n, 1);
@@ -168,6 +185,11 @@ test("anti-1: L01 + calm={rabbit} must NOT win (no props)", () => {
   );
   const { errors } = resolveEffectiveCalm(level, new Set(["rabbit"]));
   assert.ok(errors.length > 0);
+  const ev = evaluateLevel(level, level.known_solution, {
+    calm: new Set(["rabbit"]),
+  });
+  assert.equal(ev.ok, false);
+  assert.deepEqual(ev.rules, []);
 });
 
 test("anti-2: L03 sol + calm={rabbit,fox} must NOT win", () => {
@@ -204,10 +226,11 @@ test("anti-4: duplicate rule id must reject (not overwrite)", () => {
   const errs = validateLevel(level);
   assert.ok(errs.some((e) => e.includes("duplicate rule id")));
   assert.equal(isWin(level, level.known_solution), false);
-  // even if someone bypassed validateLevel, list eval would see CONFLICT on 2nd L01-r1
+  // illegal config → structured fail, empty rules (no per-rule CONFLICT list)
   const results = evaluateLevel(level, level.known_solution);
-  assert.equal(results.length, 4);
-  assert.ok(results.some((r) => r.id === "L01-r1" && r.status === CONFLICT));
+  assert.equal(results.ok, false);
+  assert.ok(results.errors.some((e) => e.includes("duplicate rule id")));
+  assert.deepEqual(results.rules, []);
 });
 
 test("anti-5: duplicate seat in level.seats must reject", () => {
@@ -216,6 +239,114 @@ test("anti-5: duplicate seat in level.seats must reject", () => {
   const errs = validateLevel(level);
   assert.ok(errs.some((e) => e.includes("duplicate seat")));
   assert.equal(isWin(level, level.known_solution), false);
+});
+
+test("GPT01 R1: L03 sol + calm=[rabbit,fox] → evaluateLevel ok false, rules empty", () => {
+  const level = loadLevel("l03");
+  const r1 = evaluateLevel(level, level.known_solution_with_calm_rabbit, {
+    calm: ["rabbit", "fox"],
+  });
+  assert.equal(r1.ok, false);
+  assert.deepEqual(r1.rules, []);
+  assert.equal(
+    isWin(level, level.known_solution_with_calm_rabbit, {
+      calm: ["rabbit", "fox"],
+    }),
+    false,
+  );
+  // must NOT look like all-SATISFIED legal board
+  assert.equal(r1.rules.every?.((x) => x.status === SATISFIED), true); // vacuously true on []
+  assert.ok(r1.rules.length === 0);
+});
+
+test("GPT01 R2: L01 delete not_beside.other → validateLevel non-empty", () => {
+  const missing = clone(loadLevel("l01"));
+  delete missing.rules[2].other;
+  const errs = validateLevel(missing);
+  assert.ok(errs.length > 0);
+  assert.ok(errs.some((e) => e.includes("other")));
+});
+
+test("GPT01 R3: L03 stock='invalid' + rabbit calm → isWin false", () => {
+  const stock = clone(loadLevel("l03"));
+  stock.props[0].stock = "invalid";
+  assert.ok(validateLevel(stock).length > 0);
+  assert.equal(
+    isWin(stock, stock.known_solution_with_calm_rabbit, { calm: ["rabbit"] }),
+    false,
+  );
+  const { errors } = resolveEffectiveCalm(stock, ["rabbit"]);
+  assert.ok(errors.some((e) => e.includes("stock")));
+});
+
+test("GPT01 R4: L01 + not_faces_unless unless_state:'sleepy' → fail", () => {
+  const unknown = clone(loadLevel("l01"));
+  unknown.rules.push({
+    id: "invalid-state",
+    kind: "not_faces_unless",
+    subject: "rabbit",
+    other: "fox",
+    unless_state: "sleepy",
+  });
+  assert.ok(validateLevel(unknown).length > 0);
+  assert.equal(isWin(unknown, unknown.known_solution), false);
+});
+
+test("GPT01 R5: L03 valid_targets include 'ghost' → validateLevel errors", () => {
+  const target = clone(loadLevel("l03"));
+  target.props[0].valid_targets.push("ghost");
+  const errs = validateLevel(target);
+  assert.ok(errs.length > 0);
+  assert.ok(errs.some((e) => e.includes("ghost")));
+  assert.equal(
+    isWin(target, target.known_solution_with_calm_rabbit, { calm: ["rabbit"] }),
+    false,
+  );
+});
+
+test("not_faces_unless: missing unless_state OK; explicit null/'' reject", () => {
+  const base = clone(loadLevel("l01"));
+  // missing field — OK
+  base.rules.push({
+    id: "ok-default-calm",
+    kind: "not_faces_unless",
+    subject: "rabbit",
+    other: "fox",
+  });
+  assert.equal(validateLevel(base).length, 0);
+
+  const withNull = clone(loadLevel("l01"));
+  withNull.rules.push({
+    id: "bad-null",
+    kind: "not_faces_unless",
+    subject: "rabbit",
+    other: "fox",
+    unless_state: null,
+  });
+  assert.ok(validateLevel(withNull).some((e) => e.includes("unless_state")));
+
+  const withEmpty = clone(loadLevel("l01"));
+  withEmpty.rules.push({
+    id: "bad-empty",
+    kind: "not_faces_unless",
+    subject: "rabbit",
+    other: "fox",
+    unless_state: "",
+  });
+  assert.ok(validateLevel(withEmpty).some((e) => e.includes("unless_state")));
+});
+
+test("validatePlayable combines level+calm+assignment", () => {
+  const level = loadLevel("l01");
+  const ok = validatePlayable(level, level.known_solution);
+  assert.equal(ok.ok, true);
+  assert.deepEqual(ok.errors, []);
+
+  const bad = validatePlayable(level, level.known_solution, {
+    calm: ["rabbit"],
+  });
+  assert.equal(bad.ok, false);
+  assert.ok(bad.errors.length > 0);
 });
 
 test("missing-ref: rule subject not in characters", () => {
@@ -248,4 +379,41 @@ test("levels json roundtrip", () => {
     assert.ok(data.characters);
     assert.equal(validateLevel(data).length, 0);
   }
+});
+
+test("module-graph: index.js has zero node: imports", () => {
+  const visited = new Set();
+  /** @type {string[]} */
+  const queue = [path.join(CORE, "index.js")];
+  const nodeImports = [];
+
+  while (queue.length > 0) {
+    const file = queue.pop();
+    if (visited.has(file)) continue;
+    visited.add(file);
+    const src = fs.readFileSync(file, "utf8");
+    const re = /(?:from|import)\s+["']([^"']+)["']/g;
+    let m;
+    while ((m = re.exec(src)) !== null) {
+      const spec = m[1];
+      if (spec.startsWith("node:")) {
+        nodeImports.push(`${path.relative(CORE, file)} → ${spec}`);
+        continue;
+      }
+      if (spec.startsWith(".")) {
+        let next = path.resolve(path.dirname(file), spec);
+        if (!next.endsWith(".js")) next += ".js";
+        if (next.startsWith(CORE) && !visited.has(next)) queue.push(next);
+      }
+    }
+  }
+
+  assert.ok(visited.has(path.join(CORE, "index.js")));
+  assert.ok(visited.has(path.join(CORE, "rules.js")));
+  assert.ok(visited.has(path.join(CORE, "geometry.js")));
+  assert.ok(
+    !visited.has(path.join(CORE, "loader.js")),
+    "loader.js must not be in browser module graph",
+  );
+  assert.deepEqual(nodeImports, [], `unexpected node: imports: ${nodeImports.join(", ")}`);
 });

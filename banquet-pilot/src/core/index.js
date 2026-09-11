@@ -1,4 +1,8 @@
-/** Banquet Pilot production kernel (native JS / ESM). */
+/** Banquet Pilot production kernel (native JS / ESM).
+ * Pure browser entry: geometry + rules (+ optional solver).
+ * Node JSON loading lives in loader.js — do NOT re-export it here
+ * (keeps the static module graph free of node: dependencies).
+ */
 
 export {
   parseSeat,
@@ -15,11 +19,10 @@ export {
   evaluateRule,
   validateAssignment,
   validateLevel,
+  validatePlayable,
   resolveEffectiveCalm,
   evaluateLevel,
   isWin,
 } from "./rules.js";
-
-export { loadLevel, loadAllLevels, LEVELS_DIR } from "./loader.js";
 
 export { enumerateSolutions, countSolutions } from "./solver.js";
