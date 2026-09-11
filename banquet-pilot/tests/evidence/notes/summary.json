@@ -1,0 +1,29 @@
+{
+  "inputLabel": "mouse-sim",
+  "touchSim": false,
+  "realDevice": "未测",
+  "viewports": {
+    "360x640": {
+      "innerWidth": 360,
+      "innerHeight": 640,
+      "dpr": 1
+    },
+    "390x844": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1
+    }
+  },
+  "consoleErrors": [],
+  "paths": {
+    "l01_click": "ok",
+    "l01_drag": "ok",
+    "swap_undo": "ok",
+    "displace": "ok",
+    "invalid_drop": "ok",
+    "same_seat": "ok",
+    "interrupt": "ok",
+    "l02_drag": "ok",
+    "l02_click": "ok"
+  }
+}

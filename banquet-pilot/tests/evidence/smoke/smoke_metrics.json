@@ -1,0 +1,26 @@
+[
+  {
+    "w": 360,
+    "h": 640,
+    "name": "360x640",
+    "metrics": {
+      "innerWidth": 360,
+      "innerHeight": 640,
+      "dpr": 1,
+      "title": "inner=360x640 dpr=1"
+    },
+    "pngPath": "/workspace/demo001-t002/repo/banquet-pilot/tests/evidence/smoke/smoke_360x640.png"
+  },
+  {
+    "w": 390,
+    "h": 844,
+    "name": "390x844",
+    "metrics": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1,
+      "title": "inner=390x844 dpr=1"
+    },
+    "pngPath": "/workspace/demo001-t002/repo/banquet-pilot/tests/evidence/smoke/smoke_390x844.png"
+  }
+]
