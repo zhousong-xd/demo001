@@ -51,3 +51,8 @@
 ## 拼版
 
 打开同目录 `catalog.html` 可一眼浏览全部单件。
+
+
+## 生动分层（T-067）
+
+见 [`vivid/ASSETS.md`](vivid/ASSETS.md) · [`vivid/catalog.html`](vivid/catalog.html)。

@@ -1,9 +1,9 @@
 {
-  "task": "T-066",
+  "task": "T-068",
   "uniquePublicPlay": "https://zhousong-xd.github.io/demo001/",
-  "content": "T-065 mockups realistic landing (former presentation/)",
-  "tipSha": "928a6dc408a4d36f50ff59cb54e53e56103c95c8",
+  "content": "T-068 sprite-sheet frame-cut playable (placeholder strips; T-069 for hi-res sequences)",
+  "tipSha": "5db07bc567ca4fca93097b11ca6a6dd796898b4b",
   "frozenBackup": "/frozen/",
   "frozenHtmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
-  "note": "Only one outward playable URL. concept/mockups not parallel play. .nojekyll kept."
+  "note": "Only one outward playable URL. Frame cuts not CSS bob. concept/mockups not parallel play. .nojekyll kept."
 }
