@@ -1,0 +1,98 @@
+{
+  "task": "T-006",
+  "issue": 10,
+  "author": "宴席·美术",
+  "role": "BOT",
+  "dir": "banquet-pilot/candidates/art/meishu",
+  "assets": [
+    {
+      "id": "char_rabbit_neutral",
+      "file": "char_rabbit_neutral.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "e0441df8529b094975f52ac9360b46bc8bee003badf63867d822c33f2eb273c4",
+      "role": "rabbit/neutral",
+      "status": "candidate"
+    },
+    {
+      "id": "char_rabbit_satisfied",
+      "file": "char_rabbit_satisfied.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "97824a2caa6f688e35b4baf89e8a4d242e7bbe063bd6a3ba3d853fb691622a95",
+      "role": "rabbit/satisfied",
+      "status": "candidate"
+    },
+    {
+      "id": "char_rabbit_conflict",
+      "file": "char_rabbit_conflict.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "d815fa1c7b5c6960b9d181479bcd7827096e38ee54f9d2fdc0b661c64f3e10e0",
+      "role": "rabbit/conflict",
+      "status": "candidate"
+    },
+    {
+      "id": "seat_round",
+      "file": "seat_round.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "4a77d75112f604910c96b01815e2896a35fe941a5addfe5ad2a1174c8c8030e4",
+      "role": "seat",
+      "status": "candidate"
+    },
+    {
+      "id": "prop_calm_bell",
+      "file": "prop_calm_bell.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "7db0a299ad01082f48d137e9563a3c47706e8b50cdf703a0fc2509645b3230bd",
+      "role": "prop/calm_bell",
+      "status": "candidate"
+    },
+    {
+      "id": "screen_sample",
+      "file": "screen_sample_390x844.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "094460d62ff1fe3ae137341f724776a1de758401ceb11463209f39dc26d57b99",
+      "role": "screen",
+      "status": "candidate"
+    },
+    {
+      "id": "char_rabbit_conflict_svg",
+      "file": "char_rabbit_conflict.svg",
+      "sha256": "a2c075e84e2fa9b5b3344fa171fd02c96d9db3f6817cccc15f4c8a4b9f242515",
+      "role": "svg-source",
+      "status": "candidate"
+    },
+    {
+      "id": "char_rabbit_neutral_svg",
+      "file": "char_rabbit_neutral.svg",
+      "sha256": "851a60e643dcbd243cae83aac2677349ce4995233964bbed9399080c3e79fc2f",
+      "role": "svg-source",
+      "status": "candidate"
+    },
+    {
+      "id": "char_rabbit_satisfied_svg",
+      "file": "char_rabbit_satisfied.svg",
+      "sha256": "c89c32086156ffea1b0928eebee817330d22323f1dab0135b7d8a9469fde07a9",
+      "role": "svg-source",
+      "status": "candidate"
+    },
+    {
+      "id": "prop_calm_bell_svg",
+      "file": "prop_calm_bell.svg",
+      "sha256": "630b09c26ab4e75f3d64ea284969c7948a8e9a9dccc3c056178a1730bcd1e912",
+      "role": "svg-source",
+      "status": "candidate"
+    },
+    {
+      "id": "seat_round_svg",
+      "file": "seat_round.svg",
+      "sha256": "e0974d37300df462e41de70f2fcafc3b535663897e03b116323ef306cc873204",
+      "role": "svg-source",
+      "status": "candidate"
+    }
+  ]
+}
