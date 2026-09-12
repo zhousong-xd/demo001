@@ -4,10 +4,10 @@
   "count": 3,
   "fpsHint": 8,
   "order": [
-    "sit",
-    "rising",
-    "stand"
+    "weight_L",
+    "center",
+    "weight_R"
   ],
-  "note": "起身=坐下逆序",
+  "note": "站立重心微移（非 bob 整图）",
   "layout": "horizontal"
 }

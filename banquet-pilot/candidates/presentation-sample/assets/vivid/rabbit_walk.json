@@ -9,7 +9,7 @@
     "contact_R",
     "pass_B"
   ],
-  "note": "走循环；肢位每帧对侧交换，勿 CSS bob",
+  "note": "走循环肢位对侧",
   "layout": "horizontal",
   "source": "sheets/rabbit_walk.png"
 }

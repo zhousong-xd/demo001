@@ -11,7 +11,7 @@
     "half",
     "open"
   ],
-  "note": "坐姿 idle；眨眼为主，轻微呼吸位移",
+  "note": "坐姿眨眼",
   "layout": "horizontal",
   "source": "sheets/fox_idle.png"
 }
