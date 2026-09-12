@@ -125,7 +125,7 @@
   "push": {
     "branch": "bot/banquet-pilot",
     "scope": "reports/qa + evidence/t051 only",
-    "tip": "PENDING",
+    "tip": "34964e2353d4422cfa7ef9e4ce805521d9264daa",
     "comment": "PENDING"
   },
   "experience": "候选末批抽样关界面放撤顺——c06/c09/c12 六步全绿；真机触屏仍未测，正式包仍冻结。",

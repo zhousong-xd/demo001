@@ -128,5 +128,5 @@ c06/c09/c12 放+撤均 **PASS**；真机/多指记 **未测**（不记 PASS）�
 
 ## Push
 
-- tip: `PENDING` on `bot/banquet-pilot` (reports/evidence only)
+- tip: `34964e2353d4422cfa7ef9e4ce805521d9264daa` on `bot/banquet-pilot` (reports/evidence only)
 - issue comment: PENDING
