@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: after T-039 — product SHA frozen; frozen-product UI short smoke `evidence/t039-frozen-product-ui-smoke/`; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
+Docs tip: after T-041 — product SHA frozen; playtest critical harness re-green `evidence/t041-playtest-ui-critical-regression/`; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -56,7 +56,8 @@ Docs tip: after T-039 — product SHA frozen; frozen-product UI short smoke `evi
 | #39 | T-033 playtest UI mouse-sim 扩到交换+顶替 | done / ACCEPT · c02 swap + c01 displace；evidence/t033；真机未测；不改 dist |
 | #41 | T-035 playtest UI mouse-sim 安心铃（c03） | done / ACCEPT · 误投不扣 / 对兔有效；evidence/t035；真机未测；不改 dist |
 | #43 | T-037 playtest UI 关键路径一键回归 | done / ACCEPT · 放/撤/切/换/顶/铃；evidence/t037；真机未测；不改 dist |
-| #45 | T-039 冻结产品 L01–L03 浏览器 UI 短冒烟 | done / awaiting ACCEPT · 放/撤/切关/铃；evidence/t039；dist 只读；真机未测 |
+| #45 | T-039 冻结产品 L01–L03 浏览器 UI 短冒烟 | done / ACCEPT · 放/撤/切关/铃；evidence/t039；dist 只读；真机未测 |
+| #47 | T-041 候选 playtest 关键路径一键回归（T-040 tip 后再跑） | done / awaiting ACCEPT · t037 矩阵复跑 PASS；evidence/t041；dist 未改 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -276,6 +277,15 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Covers | L01 place+undo；L01→L02 tab 切关；L03 calm miss/hit |
 | Claim | **frozen dist read-only**；真机/多指未测；不改 dist |
 
+### T-041 playtest critical harness re-run after T-040
+
+| Item | Value |
+| --- | --- |
+| Script | `tests/evidence/scripts/t041-playtest-ui-critical-regression.mjs` |
+| Evidence | `evidence/t041-playtest-ui-critical-regression/` |
+| Baseline | tip ≥ `4b8e20d`；矩阵同 T-037 |
+| Claim | harness 仍绿；**不改 dist**；真机未测 |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -316,7 +326,8 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (candidates) | **#39 / T-033** UI swap+displace mouse-sim | evidence/t033; ACCEPT |
 | Done (candidates) | **#41 / T-035** UI calm_bell mouse-sim | evidence/t035; ACCEPT |
 | Done (candidates) | **#43 / T-037** UI critical one-command | evidence/t037; ACCEPT |
-| Done (product) | **#45 / T-039** frozen product UI short smoke | evidence/t039; await ACCEPT |
+| Done (product) | **#45 / T-039** frozen product UI short smoke | evidence/t039; ACCEPT |
+| Done (candidates) | **#47 / T-041** playtest critical re-run | evidence/t041; await ACCEPT |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
