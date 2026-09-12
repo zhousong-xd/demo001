@@ -200,3 +200,118 @@ test("validateSavePayload rejects double-occupy", () => {
     null,
   );
 });
+
+
+function l03LegalInitialPayload() {
+  const level = loadLevel("l03");
+  return {
+    version: SAVE_VERSION,
+    levelId: "L03",
+    assignment: createInitialAssignment(level),
+    calm: [],
+    inventory: { calm_bell: 1 },
+    history: [],
+    hintTier: 0,
+    clearedLevels: [],
+    savedAt: "2026-09-12T00:00:00Z",
+  };
+}
+
+test("L03 legal initial save still accepts", () => {
+  const level = loadLevel("l03");
+  const ok = validateSavePayload(l03LegalInitialPayload(), level);
+  assert.ok(ok);
+  assert.equal(ok.levelId, "L03");
+  assert.equal(ok.inventory.calm_bell, 1);
+  assert.deepEqual(ok.calm, []);
+  assert.equal(ok.hintTier, 0);
+});
+
+test("validateSavePayload rejects history calm object (not iterable)", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  base.history = [
+    {
+      assignment: createInitialAssignment(level),
+      calm: { bad: true },
+      inventory: { calm_bell: 1 },
+    },
+  ];
+  assert.equal(validateSavePayload(base, level), null);
+});
+
+test("validateSavePayload rejects non-integer inventory stock", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  base.inventory = { calm_bell: "oops" };
+  assert.equal(validateSavePayload(base, level), null);
+});
+
+test("validateSavePayload rejects calm vs inventory inconsistency", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  base.calm = ["rabbit"];
+  // stock still 1 ⇒ consumed 0 but calmHits 1
+  base.inventory = { calm_bell: 1 };
+  assert.equal(validateSavePayload(base, level), null);
+});
+
+test("validateSavePayload rejects fractional hintTier", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  base.hintTier = 1.5;
+  assert.equal(validateSavePayload(base, level), null);
+});
+
+test("validateSavePayload rejects unknown clearedLevels", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  base.clearedLevels = ["NOT_A_LEVEL"];
+  assert.equal(validateSavePayload(base, level), null);
+});
+
+test("validateSavePayload accepts legal undo history snapshot", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  // After calm applied: stock 0, calm rabbit
+  base.calm = ["rabbit"];
+  base.inventory = { calm_bell: 0 };
+  base.history = [
+    {
+      assignment: createInitialAssignment(level),
+      calm: [],
+      inventory: { calm_bell: 1 },
+    },
+  ];
+  base.hintTier = 2;
+  base.clearedLevels = ["L01", "L02"];
+  const ok = validateSavePayload(base, level);
+  assert.ok(ok);
+  assert.equal(ok.history.length, 1);
+  assert.deepEqual(ok.calm, ["rabbit"]);
+  assert.equal(ok.inventory.calm_bell, 0);
+});
+
+test("validateSavePayload rejects inventory exceeding initial stock", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  base.inventory = { calm_bell: 99 };
+  assert.equal(validateSavePayload(base, level), null);
+});
+
+test("validateSavePayload rejects unknown inventory prop id", () => {
+  const level = loadLevel("l03");
+  const base = l03LegalInitialPayload();
+  base.inventory = { calm_bell: 1, weird_prop: 1 };
+  assert.equal(validateSavePayload(base, level), null);
+});
+
+test("popPlayHistory returns null for non-iterable calm (defensive)", () => {
+  const hist = createHistory();
+  hist.push({
+    assignment: { fox: null },
+    calm: { bad: true },
+    inventory: { calm_bell: 1 },
+  });
+  assert.equal(popPlayHistory(hist), null);
+});

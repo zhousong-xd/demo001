@@ -70,9 +70,23 @@ export function snapshotPlay(state) {
  * @param {{ assignment: Record<string, string|null>, calm: string[], inventory: Record<string, number> }} snap
  */
 export function restorePlay(snap) {
+  if (!snap || typeof snap !== "object") {
+    return { assignment: {}, calm: new Set(), inventory: {} };
+  }
+  const calmSrc = snap.calm;
+  let calm;
+  if (calmSrc == null) {
+    calm = new Set();
+  } else if (typeof calmSrc[Symbol.iterator] === "function") {
+    calm = new Set(calmSrc);
+  } else {
+    // Non-iterable calm (e.g. plain object) would throw in Set — treat as empty.
+    // Primary gate is validateSavePayload; this is defensive only.
+    calm = new Set();
+  }
   return {
-    assignment: cloneAssignment(snap.assignment),
-    calm: new Set(snap.calm || []),
+    assignment: cloneAssignment(snap.assignment || {}),
+    calm,
     inventory: cloneInventory(snap.inventory || {}),
   };
 }
@@ -230,6 +244,13 @@ export function popPlayHistory(history) {
       calm: new Set(),
       inventory: {},
     };
+  }
+  // Invalid play snapshot (e.g. calm not iterable) → treat as no-op undo
+  if (
+    snap.calm != null &&
+    typeof snap.calm[Symbol.iterator] !== "function"
+  ) {
+    return null;
   }
   return restorePlay(snap);
 }
