@@ -1,65 +1,88 @@
 #!/usr/bin/env bash
-# T-003 staged-A isolation launcher (static draft).
+# T-003 staged-A isolation launcher (static draft, REJECT 5642018913 fix).
 # Entry: bash banquet-pilot/tests/evidence/scripts/isolated-launcher.sh <run-evidence|reject-fix-proofs|canary-probe>
-# Requires: unshare -Urm[pn], no sudo. Chrome sandbox kept ON (no --no-sandbox).
-# NEVER pass GH_*/PAT into the isolated env.
+# Requires: unshare --user --map-root-user --mount [--pid --fork --net]. No sudo.
+# Chrome sandbox stays ON. NEVER pass GH_*/PAT into the isolated env.
 # **本阶段未执行** — source for GPT01 static review only until smoke gate opens.
 set -euo pipefail
 
+unset BASH_ENV ENV SHELLOPTS CDPATH || true
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-EVID_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"          # .../tests/evidence
-TASK_ROOT="$(cd "${EVID_DIR}/../.." && pwd)"        # .../banquet-pilot
+EVID_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+TASK_ROOT="$(cd "${EVID_DIR}/../.." && pwd)"
 MODE="${1:-}"
 if [[ -z "${MODE}" ]]; then
   echo "usage: $0 <run-evidence|reject-fix-proofs|canary-probe>" >&2
   exit 2
 fi
 
-# Capability gate: user+mount ns required. Missing => BLOCKED (no bypass).
+die_blocked() { echo "BLOCKED: $*" >&2; exit 3; }
+
 if ! unshare --user --map-root-user --mount true 2>/dev/null; then
-  echo "BLOCKED: unshare user+mount (--map-root-user) unavailable" >&2
-  exit 3
+  die_blocked "unshare user+mount (--map-root-user) unavailable"
 fi
 
-# Host-side instance dirs (NOT mounted wholesale /tmp into ns — only this tree's pieces via allowlist).
 INSTANCE_ID="$(date +%s)-$$-${RANDOM}"
 HOST_STAGING="$(mktemp -d /tmp/banquet-iso-${INSTANCE_ID}-XXXXXX)"
-HOST_CANARY="${HOST_STAGING}/canary-outside.txt"
+HOST_CANARY_OUTSIDE="${HOST_STAGING}/canary-outside.txt"
+HOST_CANARY_RO="${HOST_STAGING}/canary-ro.txt"
 HOST_ISO_ROOT="${HOST_STAGING}/root"
 HOST_HOME="${HOST_STAGING}/home"
 HOST_TMP="${HOST_STAGING}/tmp"
 HOST_XDG_RUN="${HOST_STAGING}/xdg-runtime"
 HOST_MARKER_DIR="${HOST_STAGING}/marker"
 HOST_CHROME_PROFILE="${HOST_STAGING}/chrome-profile"
+HOST_OUT="${HOST_STAGING}/out"
+HOST_ETC_SSL="${HOST_STAGING}/etc-ssl"
 mkdir -p "${HOST_ISO_ROOT}" "${HOST_HOME}" "${HOST_TMP}" "${HOST_XDG_RUN}" \
-  "${HOST_MARKER_DIR}" "${HOST_CHROME_PROFILE}"
+  "${HOST_MARKER_DIR}" "${HOST_CHROME_PROFILE}" "${HOST_OUT}" \
+  "${HOST_ETC_SSL}/certs"
 
-# Harmless canary: readable on host OUTSIDE isolation; must NOT be bind-mounted into ns.
-echo "banquet-canary-harmless-${INSTANCE_ID}" > "${HOST_CANARY}"
-chmod 644 "${HOST_CANARY}"
+echo "banquet-canary-outside-${INSTANCE_ID}" > "${HOST_CANARY_OUTSIDE}"
+chmod 644 "${HOST_CANARY_OUTSIDE}"
+echo "banquet-canary-ro-${INSTANCE_ID}" > "${HOST_CANARY_RO}"
+chmod 444 "${HOST_CANARY_RO}"
 
 INSTANCE_TOKEN="$(head -c 24 /dev/urandom | od -An -tx1 | tr -d ' \n')"
-MARKER_FILE="${HOST_MARKER_DIR}/instance.marker"
-echo "${INSTANCE_TOKEN}" > "${MARKER_FILE}"
+echo "${INSTANCE_TOKEN}" > "${HOST_MARKER_DIR}/instance.marker"
+
+if [[ ! -f /etc/ssl/certs/ca-certificates.crt ]]; then
+  die_blocked "public CA bundle /etc/ssl/certs/ca-certificates.crt missing"
+fi
+cp -a /etc/ssl/certs/ca-certificates.crt "${HOST_ETC_SSL}/certs/ca-certificates.crt"
+find /etc/ssl/certs -maxdepth 1 -type f -exec cp -a {} "${HOST_ETC_SSL}/certs/" \;
+cat > "${HOST_ETC_SSL}/openssl.cnf" << 'OPENSSL_CNF'
+# Synthetic minimal openssl config for isolated evidence (no private keys).
+openssl_conf = openssl_init
+[openssl_init]
+ssl_conf = ssl_sect
+[ssl_sect]
+system_default = system_default_sect
+[system_default_sect]
+MinProtocol = TLSv1.2
+OPENSSL_CNF
 
 cleanup() {
-  # Only clean this task's verified staging tree.
   if [[ -n "${HOST_STAGING:-}" && -d "${HOST_STAGING}" ]]; then
     rm -rf "${HOST_STAGING}" || true
   fi
 }
 trap cleanup EXIT
 
-# Target script inside the isolated view (paths as seen AFTER mounts).
 case "${MODE}" in
   run-evidence)
-    INNER_CMD=(/usr/bin/node --experimental-websocket /task/banquet-pilot/tests/evidence/scripts/run-evidence.mjs)
+    NODE_EXTRA=(--experimental-websocket)
+    INNER_REL="run-evidence.mjs"
     ;;
   reject-fix-proofs)
-    INNER_CMD=(/usr/bin/node --experimental-websocket /task/banquet-pilot/tests/evidence/scripts/reject-fix-proofs.mjs)
+    NODE_EXTRA=(--experimental-websocket)
+    INNER_REL="reject-fix-proofs.mjs"
     ;;
   canary-probe)
-    INNER_CMD=(/usr/bin/node /task/banquet-pilot/tests/evidence/scripts/canary-probe.mjs)
+    NODE_EXTRA=()
+    INNER_REL="canary-probe.mjs"
     ;;
   *)
     echo "unknown mode: ${MODE}" >&2
@@ -67,198 +90,208 @@ case "${MODE}" in
     ;;
 esac
 
-# Export ONLY for the outer orchestrator; child env rebuilt inside unshare via env -i.
-export BANQUET_HOST_STAGING="${HOST_STAGING}"
-export BANQUET_HOST_CANARY="${HOST_CANARY}"
-export BANQUET_HOST_TASK_ROOT="${TASK_ROOT}"
-export BANQUET_HOST_EVID_DIR="${EVID_DIR}"
-export BANQUET_INSTANCE_TOKEN="${INSTANCE_TOKEN}"
-export BANQUET_INSTANCE_ID="${INSTANCE_ID}"
+# Serialize node argv for the inner script (no array leakage / injection).
+NODE_EXTRA_STR=""
+if [[ ${#NODE_EXTRA[@]} -gt 0 ]]; then
+  NODE_EXTRA_STR=$(printf '%q ' "${NODE_EXTRA[@]}")
+fi
 
-# Inner script: private mounts + whitelist env + exec node. Uses -Urmpn:
-#   U = user ns (uid 0 inside => chrome-sandbox setuid can work)
-#   r = map root / keep ranges for -r form with -U
-#   m = mount ns (all binds private; no host propagation)
-#   p = pid ns (fresh /proc; no host process bypass)
-#   n = net ns (lo only; static server + CDP on this instance loopback)
-#
-# UID mapping rationale: unshare -Ur makes the calling uid appear as 0 inside the
-# user namespace. Chrome's chrome-sandbox is setuid-root; inside the userns that
-# setuid targets ns-root, so nested sandbox can start WITHOUT --no-sandbox.
-# If sandbox still cannot start => non-zero exit, no fallback.
-unshare --user --map-root-user --mount --pid --fork --net bash -c '
+# Outer note: --map-root-user alone maps only uid0→caller. Secondary uids need
+# newuidmap (uidmap package) which is NOT installed here and must not be auto-installed.
+# Inner script will BLOCKED before exec if it cannot drop to a non-root mapped uid.
+unshare --user --map-root-user --mount --pid --fork --net \
+  env -i \
+  PATH="/usr/bin:/bin:/usr/sbin:/sbin" \
+  HOST_ISO_ROOT="${HOST_ISO_ROOT}" \
+  TASK_HOST="${TASK_ROOT}" \
+  HOME_HOST="${HOST_HOME}" \
+  TMP_HOST="${HOST_TMP}" \
+  XDG_HOST="${HOST_XDG_RUN}" \
+  MARKER_HOST="${HOST_MARKER_DIR}" \
+  PROFILE_HOST="${HOST_CHROME_PROFILE}" \
+  OUT_HOST="${HOST_OUT}" \
+  CANARY_OUTSIDE="${HOST_CANARY_OUTSIDE}" \
+  CANARY_RO_HOST="${HOST_CANARY_RO}" \
+  ETC_SSL_HOST="${HOST_ETC_SSL}" \
+  TOKEN="${INSTANCE_TOKEN}" \
+  INSTANCE_ID="${INSTANCE_ID}" \
+  INNER_REL="${INNER_REL}" \
+  NODE_EXTRA_STR="${NODE_EXTRA_STR}" \
+  bash --noprofile --norc -c '
 set -euo pipefail
-ISO="'"${HOST_ISO_ROOT}"'"
-TASK_HOST="'"${TASK_ROOT}"'"
-EVID_HOST="'"${EVID_DIR}"'"
-HOME_HOST="'"${HOST_HOME}"'"
-TMP_HOST="'"${HOST_TMP}"'"
-XDG_HOST="'"${HOST_XDG_RUN}"'"
-MARKER_HOST="'"${HOST_MARKER_DIR}"'"
-PROFILE_HOST="'"${HOST_CHROME_PROFILE}"'"
-CANARY_HOST="'"${HOST_CANARY}"'"
-TOKEN="'"${INSTANCE_TOKEN}"'"
-INSTANCE_ID="'"${INSTANCE_ID}"'"
+unset BASH_ENV ENV SHELLOPTS CDPATH || true
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
-# Ensure mounts do not propagate to host.
-mount --make-rprivate / 2>/dev/null || true
+die_blocked() { echo "BLOCKED: $*" >&2; exit 3; }
+must() { "$@" || die_blocked "security prerequisite failed: $*"; }
 
-# Fresh filesystem view: tmpfs root for allowlist-only layout (NOT binding host /).
-mount -t tmpfs -o mode=755 tmpfs "${ISO}"
+# Close inherited FDs except 0/1/2.
+if [[ -d /proc/self/fd ]]; then
+  for fd in /proc/self/fd/*; do
+    fdnum="${fd##*/}"
+    case "${fdnum}" in
+      *[!0-9]*|"") continue ;;
+      0|1|2) continue ;;
+      *) eval "exec ${fdnum}<&-" 2>/dev/null || true ;;
+    esac
+  done
+fi
 
-# Directory skeleton inside isolated root.
-mkdir -p \
+ISO="${HOST_ISO_ROOT}"
+
+must mount --make-rprivate /
+must mount -t tmpfs -o mode=755 tmpfs "${ISO}"
+
+must mkdir -p \
   "${ISO}/task/banquet-pilot" \
-  "${ISO}/task/banquet-pilot/tests/evidence" \
+  "${ISO}/task/scripts" \
+  "${ISO}/task/canary-ro" \
+  "${ISO}/evidence-out" \
   "${ISO}/home" \
   "${ISO}/tmp" \
   "${ISO}/run/user/0" \
   "${ISO}/marker" \
   "${ISO}/chrome-profile" \
-  "${ISO}/usr" \
-  "${ISO}/bin" \
-  "${ISO}/sbin" \
-  "${ISO}/lib" \
-  "${ISO}/lib64" \
-  "${ISO}/opt/google" \
-  "${ISO}/etc/alternatives" \
-  "${ISO}/etc/ssl" \
-  "${ISO}/etc/fonts" \
-  "${ISO}/dev" \
-  "${ISO}/proc" \
-  "${ISO}/sys" \
-  "${ISO}/var/tmp"
+  "${ISO}/usr" "${ISO}/bin" "${ISO}/sbin" "${ISO}/lib" "${ISO}/lib64" \
+  "${ISO}/opt/google" "${ISO}/etc/alternatives" "${ISO}/etc/ssl" "${ISO}/etc/fonts" \
+  "${ISO}/dev" "${ISO}/proc" "${ISO}/sys" "${ISO}/var/tmp" "${ISO}/.oldroot"
 
-# --- Mount table (explicit allowlist; see notes/isolation-staged-A.md) ---
-# Task source RO
-mount --bind "${TASK_HOST}" "${ISO}/task/banquet-pilot"
-mount -o remount,bind,ro "${ISO}/task/banquet-pilot"
+# Task source RO (scripts/notes stay read-only — not remounted RW)
+must mount --bind "${TASK_HOST}" "${ISO}/task/banquet-pilot"
+must mount -o remount,bind,ro "${ISO}/task/banquet-pilot"
+must mount --bind "${TASK_HOST}/tests/evidence/scripts" "${ISO}/task/scripts"
+must mount -o remount,bind,ro "${ISO}/task/scripts"
 
-# Evidence output RW (independent from RO tree via more-specific bind)
-mount --bind "${EVID_HOST}" "${ISO}/task/banquet-pilot/tests/evidence"
+# Per-run RW output directory — separated from input scripts
+must mount --bind "${OUT_HOST}" "${ISO}/evidence-out"
 
-# Isolated HOME / TMP / XDG (empty dirs created for this instance)
-mount --bind "${HOME_HOST}" "${ISO}/home"
-mount --bind "${TMP_HOST}" "${ISO}/tmp"
-mount --bind "${XDG_HOST}" "${ISO}/run/user/0"
-mount --bind "${MARKER_HOST}" "${ISO}/marker"
-mount --bind "${PROFILE_HOST}" "${ISO}/chrome-profile"
+# Task-local RO canary (write must fail)
+must touch "${ISO}/task/canary-ro/canary-ro.txt"
+must mount --bind "${CANARY_RO_HOST}" "${ISO}/task/canary-ro/canary-ro.txt"
+must mount -o remount,bind,ro "${ISO}/task/canary-ro/canary-ro.txt"
 
-# System runtime RO — listed explicitly (no wholesale /, /home, /workspace, /run, /tmp, /proc from host)
-mount --bind /usr "${ISO}/usr"
-mount -o remount,bind,ro "${ISO}/usr"
-mount --bind /bin "${ISO}/bin"
-mount -o remount,bind,ro "${ISO}/bin"
+must mount --bind "${HOME_HOST}" "${ISO}/home"
+must mount --bind "${TMP_HOST}" "${ISO}/tmp"
+must mount --bind "${XDG_HOST}" "${ISO}/run/user/0"
+must mount --bind "${MARKER_HOST}" "${ISO}/marker"
+must mount --bind "${PROFILE_HOST}" "${ISO}/chrome-profile"
+
+must mount --bind /usr "${ISO}/usr"
+must mount -o remount,bind,ro "${ISO}/usr"
+must mount --bind /bin "${ISO}/bin"
+must mount -o remount,bind,ro "${ISO}/bin"
 if [[ -d /sbin ]]; then
-  mount --bind /sbin "${ISO}/sbin"
-  mount -o remount,bind,ro "${ISO}/sbin"
+  must mount --bind /sbin "${ISO}/sbin"
+  must mount -o remount,bind,ro "${ISO}/sbin"
 fi
 if [[ -d /lib ]]; then
-  mount --bind /lib "${ISO}/lib"
-  mount -o remount,bind,ro "${ISO}/lib"
+  must mount --bind /lib "${ISO}/lib"
+  must mount -o remount,bind,ro "${ISO}/lib"
 fi
 if [[ -d /lib64 ]]; then
-  mount --bind /lib64 "${ISO}/lib64"
-  mount -o remount,bind,ro "${ISO}/lib64"
+  must mount --bind /lib64 "${ISO}/lib64"
+  must mount -o remount,bind,ro "${ISO}/lib64"
 fi
-mount --bind /opt/google "${ISO}/opt/google"
-mount -o remount,bind,ro "${ISO}/opt/google"
+[[ -d /opt/google ]] || die_blocked "host /opt/google missing"
+must mount --bind /opt/google "${ISO}/opt/google"
+must mount -o remount,bind,ro "${ISO}/opt/google"
 if [[ -d /etc/alternatives ]]; then
-  mount --bind /etc/alternatives "${ISO}/etc/alternatives"
-  mount -o remount,bind,ro "${ISO}/etc/alternatives"
-fi
-if [[ -d /etc/ssl ]]; then
-  mount --bind /etc/ssl "${ISO}/etc/ssl"
-  mount -o remount,bind,ro "${ISO}/etc/ssl"
-fi
-if [[ -d /etc/fonts ]]; then
-  mount --bind /etc/fonts "${ISO}/etc/fonts"
-  mount -o remount,bind,ro "${ISO}/etc/fonts"
+  must mount --bind /etc/alternatives "${ISO}/etc/alternatives"
+  must mount -o remount,bind,ro "${ISO}/etc/alternatives"
 fi
 
-# Individual /etc files only (NOT whole /etc — avoids secrets/config sprawl)
+# Public CA tree only (copied host-side; never /etc/ssl/private)
+must mount --bind "${ETC_SSL_HOST}" "${ISO}/etc/ssl"
+must mount -o remount,bind,ro "${ISO}/etc/ssl"
+if [[ -e "${ISO}/etc/ssl/private" ]]; then
+  die_blocked "ssl private path present in guest — refuse"
+fi
+
+if [[ -d /etc/fonts ]]; then
+  must mount --bind /etc/fonts "${ISO}/etc/fonts"
+  must mount -o remount,bind,ro "${ISO}/etc/fonts"
+fi
+
 for f in passwd group nsswitch.conf hosts ld.so.cache localtime machine-id; do
   if [[ -f "/etc/${f}" ]]; then
-    mkdir -p "$(dirname "${ISO}/etc/${f}")"
-    touch "${ISO}/etc/${f}"
-    mount --bind "/etc/${f}" "${ISO}/etc/${f}"
-    mount -o remount,bind,ro "${ISO}/etc/${f}" 2>/dev/null || true
+    must mkdir -p "$(dirname "${ISO}/etc/${f}")"
+    must touch "${ISO}/etc/${f}"
+    must mount --bind "/etc/${f}" "${ISO}/etc/${f}"
+    must mount -o remount,bind,ro "${ISO}/etc/${f}"
   fi
 done
 
-# Minimal /dev nodes (not host /dev wholesale)
-mount -t tmpfs -o mode=755 tmpfs "${ISO}/dev"
-mknod -m 666 "${ISO}/dev/null" c 1 3
-mknod -m 666 "${ISO}/dev/zero" c 1 5
-mknod -m 666 "${ISO}/dev/full" c 1 7
-mknod -m 666 "${ISO}/dev/random" c 1 8
-mknod -m 666 "${ISO}/dev/urandom" c 1 9
-mknod -m 666 "${ISO}/dev/tty" c 5 0
-mkdir -p "${ISO}/dev/shm"
-mount -t tmpfs -o mode=1777 tmpfs "${ISO}/dev/shm"
-ln -s /proc/self/fd "${ISO}/dev/fd" 2>/dev/null || true
+# /dev nodes via bind (mknod is often OPERM in userns — do not pretend it works)
+must mount -t tmpfs -o mode=755 tmpfs "${ISO}/dev"
+for node in null zero full random urandom tty; do
+  [[ -e "/dev/${node}" ]] || die_blocked "host /dev/${node} missing"
+  must touch "${ISO}/dev/${node}"
+  must mount --bind "/dev/${node}" "${ISO}/dev/${node}"
+done
+must mkdir -p "${ISO}/dev/shm"
+must mount -t tmpfs -o mode=1777 tmpfs "${ISO}/dev/shm"
+ln -sf /proc/self/fd "${ISO}/dev/fd"
 
-# Fresh proc for THIS pid ns (not host /proc bind)
-mount -t proc proc "${ISO}/proc"
+must mount -t proc proc "${ISO}/proc"
 
-# Netns: bring up loopback only (no public net, no other-project services)
 if command -v ip >/dev/null 2>&1; then
-  ip link set lo up
+  must ip link set lo up
 elif [[ -x /usr/sbin/ip ]]; then
-  /usr/sbin/ip link set lo up
+  must /usr/sbin/ip link set lo up
 else
-  # busybox/iproute may live under /usr after bind; try again after we have tools via PATH later
-  /usr/sbin/ip link set lo up 2>/dev/null || /bin/ip link set lo up 2>/dev/null || {
-    echo "BLOCKED: cannot bring up lo in new netns" >&2
-    exit 3
-  }
+  die_blocked "cannot bring up lo in new netns"
 fi
 
-# pivot into isolated root without leaving host-root cwd/fd escape
-mkdir -p "${ISO}/.oldroot"
-pivot_root "${ISO}" "${ISO}/.oldroot"
-cd /
-# Unmount old host root view completely
-mount --make-rprivate /.oldroot 2>/dev/null || true
-umount -l /.oldroot 2>/dev/null || umount -R /.oldroot 2>/dev/null || {
-  echo "BLOCKED: cannot detach old root after pivot_root" >&2
-  exit 3
-}
+# Prove RO remount before pivot
+if ( printf x > "${ISO}/task/scripts/.write-should-fail" ) 2>/dev/null; then
+  rm -f "${ISO}/task/scripts/.write-should-fail" || true
+  die_blocked "scripts mount still writable after RO remount"
+fi
+
+must pivot_root "${ISO}" "${ISO}/.oldroot"
+must cd /
+must mount --make-rprivate /.oldroot
+umount -l /.oldroot 2>/dev/null || umount -R /.oldroot 2>/dev/null \
+  || die_blocked "cannot detach old root after pivot_root"
 rmdir /.oldroot 2>/dev/null || true
+if [[ -e /home/box || -e /workspace ]]; then
+  die_blocked "old host paths still reachable after pivot_root"
+fi
 
-# Paths as seen inside isolated root
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
-export HOME="/home"
-export TMPDIR="/tmp"
-export TMP="/tmp"
-export TEMP="/tmp"
-export XDG_RUNTIME_DIR="/run/user/0"
-export XDG_CONFIG_HOME="/home/.config"
-export XDG_CACHE_HOME="/home/.cache"
-export XDG_DATA_HOME="/home/.local/share"
-mkdir -p "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_RUNTIME_DIR"
+mkdir -p /home/.config /home/.cache /home/.local/share /run/user/0 /evidence-out
 
-export BANQUET_EVIDENCE_ISOLATED=1
-export BANQUET_INSTANCE_TOKEN="${TOKEN}"
-export BANQUET_INSTANCE_ID="${INSTANCE_ID}"
-export BANQUET_ISOLATION_MARKER="/marker/instance.marker"
-export BANQUET_USER_DATA_DIR="/chrome-profile"
-export BANQUET_EVIDENCE_OUT="/task/banquet-pilot/tests/evidence"
-export BANQUET_TASK_ROOT="/task/banquet-pilot"
-# Outside-canary host path (must be unreadable inside — not mounted)
-export BANQUET_CANARY_OUTSIDE="'"${HOST_CANARY}"'"
-export LANG=C.UTF-8
-export LC_ALL=C.UTF-8
-# Headless only — never DISPLAY / DBUS / GTK
-unset DISPLAY WAYLAND_DISPLAY DBUS_SESSION_BUS_ADDRESS XAUTHORITY SSH_AUTH_SOCK || true
-unset GH_TOKEN GITHUB_TOKEN GITHUB_PAT PAT GH_PAT CURL_USER || true
+echo "${TOKEN}" | cmp -s - /marker/instance.marker \
+  || die_blocked "instance marker mismatch before exec"
 
-# Verify marker
-echo "${TOKEN}" | cmp -s - /marker/instance.marker
+INNER_JS="/task/scripts/${INNER_REL}"
+[[ -f "${INNER_JS}" ]] || die_blocked "inner script missing: ${INNER_JS}"
+[[ -x /usr/bin/node ]] || die_blocked "node missing"
 
-# Clear inherited env and exec with explicit whitelist only (env -i).
-# CDP controller (node) lives INSIDE this netns alongside Chrome.
-exec env -i \
+# --- Execute-phase UID / capability boundary ---
+# With only --map-root-user, uid_map is typically "0 <hostuid> 1".
+# setpriv --reuid to any other id fails (Invalid argument). newuidmap is absent
+# on this host and must not be installed by BOT. Refuse to exec Node/Chrome as
+# ns-root: that would keep remount/admin powers and break the non-root Chrome
+# sandbox story. Do not set BANQUET_EVIDENCE_ISOLATED for a root exec path.
+UID_MAP="$(tr -s ' ' </proc/self/uid_map | tr '\n' ';')"
+SECONDARY=""
+while read -r inner outer count; do
+  [[ -z "${inner}" ]] && continue
+  if [[ "${inner}" != "0" ]]; then SECONDARY="${inner}"; break; fi
+done < /proc/self/uid_map
+if [[ -z "${SECONDARY}" ]]; then
+  die_blocked "execute-phase non-root UID unavailable (uid_map=${UID_MAP}; newuidmap/uidmap not present). Mount/pivot prepare OK as ns-root, but dropping remount/admin rights before Node/Chrome cannot be done with existing tools. Need user/GPT-provided mature isolation env or authorized uidmap — no auto-install, no --no-sandbox, no C downgrade."
+fi
+
+# If a secondary uid exists, chown writables and drop before exec.
+EXEC_UID="${SECONDARY}"
+EXEC_GID="${SECONDARY}"
+chown -R "${EXEC_UID}:${EXEC_GID}" /home /tmp /run/user/0 /chrome-profile /evidence-out \
+  || die_blocked "chown for execute uid failed"
+
+# shellcheck disable=SC2086
+exec setpriv --reuid="${EXEC_UID}" --regid="${EXEC_GID}" --clear-groups --inh-caps=-all \
+  env -i \
   PATH="/usr/bin:/bin:/usr/sbin:/sbin" \
   HOME="/home" \
   TMPDIR="/tmp" \
@@ -270,13 +303,17 @@ exec env -i \
   XDG_DATA_HOME="/home/.local/share" \
   LANG="C.UTF-8" \
   LC_ALL="C.UTF-8" \
+  SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt" \
+  CURL_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt" \
   BANQUET_EVIDENCE_ISOLATED="1" \
   BANQUET_INSTANCE_TOKEN="${TOKEN}" \
   BANQUET_INSTANCE_ID="${INSTANCE_ID}" \
   BANQUET_ISOLATION_MARKER="/marker/instance.marker" \
   BANQUET_USER_DATA_DIR="/chrome-profile" \
-  BANQUET_EVIDENCE_OUT="/task/banquet-pilot/tests/evidence" \
+  BANQUET_EVIDENCE_OUT="/evidence-out" \
   BANQUET_TASK_ROOT="/task/banquet-pilot" \
-  BANQUET_CANARY_OUTSIDE="'"${HOST_CANARY}"'" \
-  "$@"
-' -- "${INNER_CMD[@]}"
+  BANQUET_CANARY_OUTSIDE="${CANARY_OUTSIDE}" \
+  BANQUET_CANARY_RO="/task/canary-ro/canary-ro.txt" \
+  BANQUET_SCRIPTS_DIR="/task/scripts" \
+  /usr/bin/node ${NODE_EXTRA_STR} "${INNER_JS}"
+'

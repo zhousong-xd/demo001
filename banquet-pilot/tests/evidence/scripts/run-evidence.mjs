@@ -137,16 +137,19 @@ function fetchJson(u) {
   });
 }
 
-/** Read DevToolsActivePort from THIS instance user-data-dir (not "first page on fixed port"). */
-async function waitForDevtoolsPort(userDataDir, maxMs = 25000) {
+/** Parse DevToolsActivePort: line0=port, line1=browser WS path (/devtools/browser/...). */
+async function waitForDevtoolsEndpoint(userDataDir, maxMs = 25000) {
   const portFile = path.join(userDataDir, "DevToolsActivePort");
   const start = Date.now();
   while (Date.now() - start < maxMs) {
     try {
       if (existsSync(portFile)) {
-        const raw = readFileSync(portFile, "utf8").trim().split("\n");
+        const raw = readFileSync(portFile, "utf8").trim().split(/\n/);
         const port = Number(raw[0]);
-        if (port > 0) return port;
+        const browserPath = (raw[1] || "").trim();
+        if (port > 0 && browserPath.startsWith("/devtools/browser/")) {
+          return { port, browserPath };
+        }
       }
     } catch {}
     await sleep(100);
@@ -154,22 +157,73 @@ async function waitForDevtoolsPort(userDataDir, maxMs = 25000) {
   throw new Error("DevToolsActivePort not ready for this user-data-dir (sandbox/instance failure)");
 }
 
-async function waitForWs(cdpPort, instanceToken, userDataDir, maxMs = 25000) {
+function assertLoopbackWs(url, label) {
+  let u;
+  try {
+    u = new URL(url);
+  } catch (e) {
+    throw new Error(`${label}: invalid ws url`);
+  }
+  if (u.protocol !== "ws:" && u.protocol !== "http:") {
+    throw new Error(`${label}: unexpected protocol ${u.protocol}`);
+  }
+  if (u.hostname !== "127.0.0.1" && u.hostname !== "localhost") {
+    throw new Error(`${label}: not loopback (${u.hostname})`);
+  }
+  return u;
+}
+
+/**
+ * Bind CDP to THIS profile's browser endpoint via /json/version (not token self-compare alone,
+ * not "first page on /json/list").
+ */
+async function waitForWs(cdpPort, instanceToken, userDataDir, browserPath, maxMs = 25000) {
   const start = Date.now();
   const markerInProfile = path.join(userDataDir, "banquet-instance-token");
   if (!existsSync(markerInProfile) || readFileSync(markerInProfile, "utf8").trim() !== instanceToken) {
     throw new Error("CDP handshake: user-data-dir instance token mismatch");
   }
+  let version;
+  while (Date.now() - start < maxMs) {
+    try {
+      version = await fetchJson(`http://127.0.0.1:${cdpPort}/json/version`);
+      break;
+    } catch {
+      await sleep(200);
+    }
+  }
+  if (!version || !version.webSocketDebuggerUrl) {
+    throw new Error("CDP /json/version not ready for this instance");
+  }
+  const verUrl = assertLoopbackWs(version.webSocketDebuggerUrl, "json/version");
+  if (Number(verUrl.port) !== Number(cdpPort)) {
+    throw new Error(`CDP version port mismatch: ${verUrl.port} != ${cdpPort}`);
+  }
+  if (verUrl.pathname !== browserPath) {
+    throw new Error(
+      `CDP browser endpoint mismatch: version=${verUrl.pathname} activePort=${browserPath}`,
+    );
+  }
+  // Page target must belong to this same loopback browser; match via list after version bind.
   while (Date.now() - start < maxMs) {
     try {
       const list = await fetchJson(`http://127.0.0.1:${cdpPort}/json/list`);
       const page = list.find((t) => t.type === "page" && t.webSocketDebuggerUrl);
-      if (page) return page;
-    } catch {}
+      if (page) {
+        const pageUrl = assertLoopbackWs(page.webSocketDebuggerUrl, "json/list-page");
+        if (Number(pageUrl.port) !== Number(cdpPort)) {
+          throw new Error("CDP page port mismatch vs DevToolsActivePort");
+        }
+        return page;
+      }
+    } catch (e) {
+      if (String(e.message || e).includes("mismatch")) throw e;
+    }
     await sleep(250);
   }
-  throw new Error("CDP page not ready for this instance");
+  throw new Error("CDP page not ready for this verified browser instance");
 }
+
 
 class Cdp {
   constructor(wsUrl) {
@@ -487,7 +541,7 @@ async function main() {
       sandbox: "enabled (fail if sandbox cannot start; no disable-sandbox fallback)",
       env: "minimal whitelist (not delete-from-spread)",
       httpBind: "127.0.0.1 dynamic port",
-      cdpHandshake: "DevToolsActivePort + user-data-dir instance token",
+      cdpHandshake: "DevToolsActivePort browser path + /json/version loopback bind + page on same port",
       authEnvStripped: true,
       origin: "https://github.com/zhousong-xd/demo001.git (creds outside isolation)",
       launcher: "scripts/isolated-launcher.sh",
@@ -495,7 +549,9 @@ async function main() {
   };
 
   try {
-    CDP_PORT = await waitForDevtoolsPort(profile, 25000);
+    const __devtools = await waitForDevtoolsEndpoint(profile, 25000);
+    CDP_PORT = __devtools.port;
+    const __browserPath = __devtools.browserPath;
     if (chromeExit && chromeExit.code) {
       throw new Error(
         `Chrome exited before CDP ready (code=${chromeExit.code}, signal=${chromeExit.signal}). ` +
@@ -503,7 +559,7 @@ async function main() {
       );
     }
     note(`instance http=${HTTP_PORT} cdp=${CDP_PORT} profile=${profile}`);
-    const page = await waitForWs(CDP_PORT, instanceToken, profile);
+    const page = await waitForWs(CDP_PORT, instanceToken, profile, __browserPath);
     const cdp = new Cdp(page.webSocketDebuggerUrl);
     await cdp.connect();
     await cdp.send("Page.enable");

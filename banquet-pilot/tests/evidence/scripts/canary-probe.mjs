@@ -1,20 +1,16 @@
 /**
  * T-003 staged-A canary probe (SOURCE ONLY — 本阶段未执行).
  *
- * Proves filesystem isolation with three checks:
- *   1) Outside canary exists & is readable on the HOST (launcher prepares it).
- *      Inside isolation that same host path must be UNREADABLE.
- *   2) Positive read of an allowlisted path succeeds inside isolation.
- *   3) Isolation/marker/token mismatch => non-zero exit (no fallback).
+ * Checks (booleans / counts / exit code only — no secrets):
+ *   1) Host-prepared outside canary path is UNREADABLE inside isolation.
+ *   2) Allowlisted RO path is readable (positive).
+ *   3) Write to RO canary is denied; write to independent evidence-out succeeds.
+ *   4) Marker/token mismatch => non-zero (no fallback).
  *
- * Does NOT read real credentials, PAT files, or GH tokens.
- * Invoke ONLY via: bash .../isolated-launcher.sh canary-probe
+ * Does NOT probe real credential paths. Invoke ONLY via isolated-launcher.sh.
  */
-import { readFileSync, accessSync, constants, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, accessSync, constants, existsSync, unlinkSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function fail(msg, code = 1) {
   console.error(`CANARY_FAIL: ${msg}`);
@@ -51,59 +47,84 @@ function assertUnreadable(p, label) {
     readable = false;
   }
   if (readable) {
-    fail(
-      `${label}: canary STILL readable inside isolation at ${p} — isolation broken (missing-path-fails is NOT enough; this path was prepared outside and must be denied)`,
-    );
+    fail(`${label}: still readable inside isolation (${p})`);
   }
-  console.log(`OK deny: ${label} unreadable inside isolation (${p})`);
+  console.log(`OK deny_read: ${label}`);
 }
 
 function assertReadable(p, label) {
-  if (!p || !existsSync(p)) fail(`${label}: allowed path missing: ${p}`);
+  if (!p || !existsSync(p)) fail(`${label}: allowed path missing`);
   let data;
   try {
     data = readFileSync(p, "utf8");
   } catch (e) {
-    fail(`${label}: allowed path unreadable: ${p}: ${e.message}`);
+    fail(`${label}: allowed path unreadable: ${e.message}`);
   }
-  if (!data || data.length < 1) fail(`${label}: allowed path empty: ${p}`);
-  console.log(`OK allow: ${label} readable (${p}, ${data.length} bytes)`);
+  if (!data || data.length < 1) fail(`${label}: allowed path empty`);
+  console.log(`OK allow_read: ${label} bytes=${data.length}`);
   return data;
+}
+
+function assertWriteDenied(p, label) {
+  if (!p) fail(`${label}: path not set`);
+  let wrote = false;
+  try {
+    writeFileSync(p, "canary-write-should-fail\n");
+    wrote = true;
+  } catch {
+    wrote = false;
+  }
+  if (wrote) {
+    try {
+      unlinkSync(p);
+    } catch {
+      /* ignore */
+    }
+    fail(`${label}: write unexpectedly succeeded (${p})`);
+  }
+  console.log(`OK deny_write: ${label}`);
+}
+
+function assertWriteAllowed(dir, label) {
+  if (!dir) fail(`${label}: dir not set`);
+  const p = path.join(dir, `canary-write-${process.pid}.ok`);
+  try {
+    writeFileSync(p, "ok\n");
+  } catch (e) {
+    fail(`${label}: write failed: ${e.message}`);
+  }
+  if (!existsSync(p)) fail(`${label}: write missing after create`);
+  try {
+    unlinkSync(p);
+  } catch {
+    /* leave file if unlink fails — still counted success */
+  }
+  console.log(`OK allow_write: ${label}`);
 }
 
 function main() {
   requireIsolation();
 
-  // Positive allowlisted read (task source RO mount)
   const taskRoot = process.env.BANQUET_TASK_ROOT;
   if (!taskRoot) fail("BANQUET_TASK_ROOT unset");
-  const allowed = path.join(taskRoot, "tests/evidence/scripts/canary-probe.mjs");
-  assertReadable(allowed, "allowlisted-self");
+  const scriptsDir = process.env.BANQUET_SCRIPTS_DIR || path.join(taskRoot, "tests/evidence/scripts");
+  assertReadable(path.join(scriptsDir, "canary-probe.mjs"), "allowlisted-self");
 
-  // Also confirm evidence out is writable path exists
+  const canaryRo = process.env.BANQUET_CANARY_RO;
+  assertReadable(canaryRo, "ro-canary");
+  assertWriteDenied(canaryRo, "ro-canary");
+
+  // Do not attempt writes against production game source under task root.
+  assertWriteDenied(path.join(scriptsDir, ".canary-write-should-fail"), "scripts-ro");
+
   const evid = process.env.BANQUET_EVIDENCE_OUT;
   if (!evid) fail("BANQUET_EVIDENCE_OUT unset");
-  assertReadable(path.join(evid, "scripts/canary-probe.mjs"), "evidence-out-bind");
+  assertWriteAllowed(evid, "evidence-out");
 
-  // Outside canary must be denied inside (host path not in mount allowlist)
   const canaryOutside = process.env.BANQUET_CANARY_OUTSIDE;
   assertUnreadable(canaryOutside, "outside-canary");
 
-  // Sanity: never touch credential paths
-  for (const banned of [
-    "/home/box/.config/github_pat",
-    process.env.HOME + "/.config/github_pat",
-  ]) {
-    // Only check they are not readable; do not print contents if somehow visible
-    try {
-      accessSync(banned, constants.R_OK);
-      fail(`credential path unexpectedly readable: ${banned}`);
-    } catch {
-      console.log(`OK deny: credential-path-not-readable (${banned})`);
-    }
-  }
-
-  console.log("CANARY_OK");
+  console.log("CANARY_OK checks=5");
   process.exit(0);
 }
 
