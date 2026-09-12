@@ -1,6 +1,6 @@
 # Banquet Pilot — STATUS
 
-Last updated: 2026-09-12 (UTC) · lead: GROKBOT01 (role:GPT) · exec: GROKBOT01 (role:BOT)
+Last updated: 2026-09-12 (UTC) · lead: demo001 (role:GPT) · exec: 宴席·工程 (role:BOT)
 
 Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）。本 STATUS 为人工/主导连续迭代看板，不替代 #4 总控台评论。
 
@@ -138,7 +138,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 
 | Item | Value |
 | --- | --- |
-| Action | `gh pr edit 11` — refresh PR body in **Chinese** for human handoff |
+| Action | REST `PATCH pulls/11` — refresh PR body in **Chinese** for human handoff（#24 · 宴席·工程） |
 | Covers | 已验收产品 SHA `f28893f3…` + 打开 `dist/banquet-pilot.html`；候选 c01–c12 SUMMARY / playtest / art preview / PLAYTEST.md；**未做**：merge、正式 levels 导入、最终 art style、真机 |
 | Links | 总控台 [#4](https://github.com/zhousong-xd/demo001/issues/4)；关键 closed tasks #5–#22 |
 | Claim | **doc-only**；不 merge PR #11；不改 dist / 产品玩法 |
@@ -169,7 +169,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (candidates) | **#20 / T-015** C10–C12 JSON + enum + SUMMARY | Counts: C10=8, C11=2, C12=0/4; `SUMMARY.md` c01–c12; still not formal `levels/` |
 | Done (candidates) | **#21 / T-016** playtest page c01–c12 | `candidates/playtest/`; ESM reuse src; still not formal `levels/` |
 | Done (docs) | **#22 / T-017** PLAYTEST.md + UI label polish | Chinese guide: product file:// vs candidates server; gaps; still not formal `levels/` |
-| Done (docs) | **#23 / T-018** PR #11 Chinese body refresh | Human summary via `gh pr edit 11`; still draft / do not merge |
+| Done (docs) | **#24 / T-018** PR #11 Chinese body refresh | Human summary via REST `pulls/11`; still draft / do not merge · await demo001 ACCEPT |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
