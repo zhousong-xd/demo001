@@ -1,1 +1,14 @@
-{"frameW":96,"frameH":112,"count":3,"fpsHint":8}
+{
+  "frameW": 96,
+  "frameH": 112,
+  "count": 3,
+  "fpsHint": 6,
+  "order": [
+    "hesitate",
+    "cross_arms",
+    "refuse_hold"
+  ],
+  "note": "拒坐：起身→抱臂→僵住",
+  "layout": "horizontal",
+  "source": "sheets/fox_refuse.png"
+}

@@ -1,43 +1,35 @@
-# 生动分层可动素材（T-067 / #73）
+# 生动可动素材（T-067 / #73）· 硬门槛版
 
-路径：`candidates/presentation-sample/assets/vivid/`
-风格：GenerateImage 正式感；品红抠透明 PNG。
-正式三关 / `/frozen/` **未动**。不加新规则。
+**禁止单图 CSS bob。** 交付为**水平精灵表 + json**（帧序 / fps）。
 
-## 结构
+## 主交付：`sheets/`（HD 192×224 格）
 
-| 目录 | 内容 |
+| 文件 | 帧数 | 建议 fps | 帧序 |
+|------|------|----------|------|
+| `{who}_walk.png` | 4 | **8** | contact_L → pass_A → contact_R → pass_B |
+| `{who}_idle.png` | 6 | **6** | open → open → half → closed → half → open |
+| `{who}_rise.png` | 3 | **8** | sit → rising → stand |
+| `{who}_sit.png` | 3 | **8** | stand → lowering → sit |
+| `{who}_refuse.png` | 3 | **6** | hesitate → cross_arms → refuse_hold |
+
+`who` ∈ `fox` / `rabbit` / `crane`。同名 `.json`：`frameW` `frameH` `count` `fpsHint` `order`。
+
+### 怎么验「真动」
+播放 `*_walk`：左右脚前后交换，臂对侧摆；一眼不是整图上下晃。
+
+## 工程兼容：根目录 96×112 strip
+
+`fox_walk.png` 等与 `sheets/` 同源缩小，json 含 `source` 指向 HD。可直接 `background-position` / `drawImage` 切帧。
+
+## 模型眨眼加成
+
+| 文件 | 说明 |
 |------|------|
-| `fox/` `rabbit/` `crane/` | **身/头/肢套件** + **过渡态全身** + **换头表** |
-| （根目录 `*_idle.png` 等） | 工程 T-068 分帧 strip 占位，可另合；本单主交付为子目录分层 |
+| `sheets/fox_idle_model.png` | GenerateImage 眨眼 4 帧 |
+| `sheets/rabbit_idle_model.png` | 同上 |
 
-## 每角色文件
-
-| 文件 | 用途 |
-|------|------|
-| `parts_kit.png` | 身（无头）+ 头 + 左右肢 横排可裁切叠放 |
-| `heads.png` | 情绪换头：中性 / 怒或尴尬 / 开心（同角色同比例） |
-| `pose_sit.png` | 坐下 |
-| `pose_rise.png` | 起身过渡 |
-| `pose_walk.png` | 走路 / 侧身 |
-| `pose_refuse.png` | 拒坐站立（抱臂）；狐·兔有 |
-| `pose_mad.png` / `pose_greet.png` | 情绪与身体同拍（非只换脸） |
-
-### 狐 `fox/`
-`parts_kit` · `heads` · `pose_sit` · `pose_rise` · `pose_walk` · `pose_refuse` · `pose_mad`
-
-### 兔 `rabbit/`
-`parts_kit` · `heads` · `pose_sit` · `pose_rise` · `pose_walk` · `pose_refuse` · `pose_greet`
-
-### 鹤 `crane/`
-`parts_kit` · `heads` · `pose_sit` · `pose_rise` · `pose_walk`
-
-## 工程合入约定
-
-1. **优先用全身过渡态**做状态机切换；`parts_kit`/`heads` 供伪 3D 部件叠放或后续裁切。
-2. 与 T-068 strip 并存时：strip 管帧动画；本目录管高清单帧/部件。
-3. 叠放顺序：身 → 肢 → 头；fx 最上。
+**说明：** 出图模型无法稳定产出「每帧肢位不同」的走循环（易复成同姿）。走/起坐/拒坐以程序分帧精灵表为准，满足硬门槛；静姿分层仍见 `fox|rabbit|crane/` 子目录。
 
 ## 浏览
 
-`catalog.html`（本目录）
+`sheets/catalog.html`

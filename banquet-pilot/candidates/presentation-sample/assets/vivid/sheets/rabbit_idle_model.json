@@ -1,0 +1,13 @@
+{
+  "frameW": 256,
+  "frameH": 256,
+  "count": 4,
+  "fpsHint": 8,
+  "order": [
+    "open",
+    "half",
+    "closed",
+    "half"
+  ],
+  "note": "GenerateImage 眨眼表"
+}
