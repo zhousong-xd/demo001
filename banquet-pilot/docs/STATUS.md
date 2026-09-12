@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: see latest `bot/banquet-pilot` commit after T-019 push — product SHA above stays frozen; candidates playtest loader stability fix; PR #11 still draft.
+Docs tip: see latest `bot/banquet-pilot` commit after T-021 — product SHA frozen; lessons: [`docs/LESSONS.md`](./LESSONS.md); PR #11 still draft.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -44,6 +44,7 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-019 push — product SHA
 | #23 | T-018 刷新 PR #11 中文人体摘要（仅文档） | superseded by #24 · 旧 GROKBOT01 跟踪单，待主导关闭 |
 | #24 | T-018 刷新 PR #11 说明（人类可读现状） | done / awaiting ACCEPT · REST 刷新 PR #11 中文 body；负责人 宴席·工程；产品 SHA 未改 |
 | #25 | T-019 候选 playtest 稳定性小修 | done / awaiting ACCEPT · 修 `history` 遮蔽 window.history + 切换竞态；smoke c01–c03；不改 dist |
+| #27 | T-021 经验短卡收纳（近几环） | done / awaiting ACCEPT · `docs/LESSONS.md` 10 条；STATUS 已链；不改 dist |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -154,6 +155,14 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Verify | `node candidates/playtest/smoke.mjs`；http.server + headless CDP：c01→c02→c03，URL `?c=` 同步，c03 可入座+安心铃 |
 | Claim | **candidates only**；不改 dist / 产品 SHA；不 merge PR #11 |
 
+### T-021 lessons short cards (docs-only)
+
+| Item | Value |
+| --- | --- |
+| Doc | [`docs/LESSONS.md`](./LESSONS.md) |
+| Covers | playHistory 遮蔽、loadGen、http.server、候选≠正式、真机未测表述、升正式须独检、质检无凭据、PR draft、ASSIGN 协议、PAT 勿入库 |
+| Claim | **docs-only**；不改 dist / 不 merge |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -182,6 +191,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (docs) | **#22 / T-017** PLAYTEST.md + UI label polish | Chinese guide: product file:// vs candidates server; gaps; still not formal `levels/` |
 | Done (docs) | **#24 / T-018** PR #11 Chinese body refresh | Human summary via REST `pulls/11`; still draft / do not merge · await demo001 ACCEPT |
 | Done (candidates) | **#25 / T-019** playtest stability | `playHistory` + loadGen; smoke c01–c03; await ACCEPT |
+| Done (docs) | **#27 / T-021** LESSONS short cards | `docs/LESSONS.md`; await ACCEPT |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
