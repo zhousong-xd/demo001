@@ -1,0 +1,1 @@
+node --experimental-websocket tests/evidence/scripts/t043-playtest-ui-sample-c04-c07-c10.mjs

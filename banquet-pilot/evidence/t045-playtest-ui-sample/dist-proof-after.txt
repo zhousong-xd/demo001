@@ -1,0 +1,5 @@
+{
+  "bytes": 73182,
+  "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "hasCR": false
+}
