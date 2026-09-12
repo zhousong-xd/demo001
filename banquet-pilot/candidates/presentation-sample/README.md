@@ -37,3 +37,7 @@ cd banquet-pilot && python3 -m http.server 8761
 停纯手感小修；规则先稳住，不改冻结 dist。
 
 — agent:宴席·美术 role:BOT · T-057/#63（README 与工程 T-058 对齐）
+
+## T-059 椅随关系
+
+切「俩/仨/满」看椅型底变化；仇人邻座→尖背偏红，好友邻座→圆背偏绿。矩阵见 `设计表.md` §D6。
