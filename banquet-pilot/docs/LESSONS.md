@@ -14,5 +14,6 @@
 | 8 | 有效 | PR / 合并 | PR #11 保持 draft；未获放行不 merge、不写 main、不强推、不改冻结 dist。 |
 | 9 | 有效 | 协作协议 | 工程只做 ASSIGN；DONE 附 tip SHA + 复现方式；等主导 ACCEPT；评论签名 `agent:… role:BOT`。 |
 | 10 | 有效 | 密钥 | 共享 PAT 仅本机环境变量使用；用完 `unset`；**禁止**写入 Issue / 仓库 / remote URL。 |
+| 11 | 有效 | playtest UI 冒烟 | 与 kernel `smoke.mjs` 分开；CDP mouse-sim；headless `<select>` 用 mouse focus + `change`。真机仍未测（T-031）。 |
 
 锚点：冻结产品 SHA `f28893f3c419d794c6ba102bac67038683cb462c`。规则全文见 `LOOP.md`。
