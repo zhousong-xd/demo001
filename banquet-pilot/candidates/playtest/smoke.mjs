@@ -2,7 +2,8 @@
  * - c01–c12: load + place first guest
  * - c01, c04: place → undo → assignment restored (T-025)
  * - c03: calm_bell invalid target no consume; rabbit valid consume (T-026)
- * Not a shipped-level claim. (T-016 / T-019 / T-023 / T-024 / T-025 / T-026)
+ * - c02: two seated guests atomic swap (T-027)
+ * Not a shipped-level claim. (T-016 … T-027)
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -153,11 +154,46 @@ const calmBellResults = [{
   hit: { target: "rabbit", reason: hit.reason, consumed: hit.consumed, stock: inventory.calm_bell, calm: [...calm] },
 }];
 
-console.log("T-026 smoke OK: c01–c12 place + undo c01/c04 + c03 calm_bell");
+// --- T-027: c02 atomic swap ---
+const c02 = load("c02");
+let a2 = createInitialAssignment(c02);
+const seats2 = c02.seats.slice();
+const charA = c02.characters[0];
+const charB = c02.characters[1];
+const seatA = seats2[0];
+const seatB = seats2[1];
+const pA = applySeatAction(a2, charA, seatA, seats2);
+if (!pA || pA.kind !== "move") throw new Error(`c02 place A failed: ${JSON.stringify(pA)}`);
+a2 = pA.next;
+const pB = applySeatAction(a2, charB, seatB, seats2);
+if (!pB || pB.kind !== "move") throw new Error(`c02 place B failed: ${JSON.stringify(pB)}`);
+a2 = pB.next;
+if (a2[charA] !== seatA || a2[charB] !== seatB) {
+  throw new Error("c02 pre-swap seats wrong");
+}
+const swapped = applySeatAction(a2, charA, seatB, seats2);
+if (!swapped || swapped.kind !== "swap") {
+  throw new Error(`c02 swap expected kind=swap, got ${JSON.stringify(swapped)}`);
+}
+a2 = swapped.next;
+if (a2[charA] !== seatB || a2[charB] !== seatA) {
+  throw new Error(`c02 swap seats not swapped: ${JSON.stringify({ a: a2[charA], b: a2[charB] })}`);
+}
+const swapResults = [{
+  fileId: "c02",
+  levelId: c02.id,
+  pair: [charA, charB],
+  before: { [charA]: seatA, [charB]: seatB },
+  after: { [charA]: a2[charA], [charB]: a2[charB] },
+  kind: swapped.kind,
+}];
+
+console.log("T-027 smoke OK: place/undo/calm_bell + c02 swap");
 console.log(JSON.stringify({
   kind: "candidates-only",
   shippedClaim: false,
   results,
   undoResults,
   calmBellResults,
+  swapResults,
 }, null, 2));

@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: after T-026 — product SHA frozen; playtest smoke + undo + c03 calm_bell; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
+Docs tip: after T-027 — product SHA frozen; playtest smoke + undo + bell + c02 swap; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -49,7 +49,8 @@ Docs tip: after T-026 — product SHA frozen; playtest smoke + undo + c03 calm_b
 | #29 | T-023 playtest 扩到 c04–c06 冒烟 | done / ACCEPT · `smoke.mjs` c01–c06；CDP 切 c04–c06 可入座；不改 dist |
 | #30 | T-024 playtest 冒烟扩到 c07–c12 | done / ACCEPT · `smoke.mjs` c01–c12；CDP c07–c12；不改 dist |
 | #31 | T-025 playtest 增加撤销冒烟 | done / ACCEPT · smoke 入座→撤销→空桌（c01/c04）；保留 c01–c12；不改 dist |
-| #32 | T-026 playtest c03 安心铃冒烟 | done / awaiting ACCEPT · 误投不扣 + 对兔有效；保留既有 smoke；不改 dist |
+| #32 | T-026 playtest c03 安心铃冒烟 | done / ACCEPT · 误投不扣 + 对兔有效；保留既有 smoke；不改 dist |
+| #33 | T-027 playtest 交换座位冒烟 | done / awaiting ACCEPT · c02 两人入座原子交换；保留既有 smoke；不改 dist |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -208,6 +209,14 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Verify | fox → invalid-target 不扣库存；rabbit → applied 扣 1 且 calm |
 | Claim | **candidates only**；不改 dist / 不 merge |
 
+### T-027 playtest seat swap smoke
+
+| Item | Value |
+| --- | --- |
+| Scope | `candidates/playtest/smoke.mjs` |
+| Verify | c02：fox@A1 + rabbit@A2 → swap → fox@A2 + rabbit@A1，`kind=swap` |
+| Claim | **candidates only**；不改 dist / 不 merge |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -241,7 +250,8 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (candidates) | **#29 / T-023** playtest smoke c04–c06 | `smoke.mjs` c01–c06; ACCEPT |
 | Done (candidates) | **#30 / T-024** playtest smoke c01–c12 | `smoke.mjs` full set; ACCEPT |
 | Done (candidates) | **#31 / T-025** playtest undo smoke | c01/c04 place→undo; ACCEPT |
-| Done (candidates) | **#32 / T-026** c03 calm_bell smoke | miss fox / hit rabbit; await ACCEPT |
+| Done (candidates) | **#32 / T-026** c03 calm_bell smoke | miss fox / hit rabbit; ACCEPT |
+| Done (candidates) | **#33 / T-027** seat swap smoke | c02 atomic swap; await ACCEPT |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
