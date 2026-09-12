@@ -10,7 +10,7 @@ cd banquet-pilot && python3 -m http.server 8761
 # → http://127.0.0.1:8761/candidates/presentation-sample/concept/board.html
 ```
 
-公网目标（需工程/主导代挂）：https://zhousong-xd.github.io/demo001/presentation/concept/
+内部 archive（不对外主推）：仓库 `candidates/presentation-sample/concept/`；公网唯一可玩见根 URL。
 
 ## 覆盖清单
 

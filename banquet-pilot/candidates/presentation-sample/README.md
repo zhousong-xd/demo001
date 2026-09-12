@@ -1,8 +1,9 @@
-# 表现小样（T-065 真实感副链可玩）
+# 表现小样（T-065 真实感 · 唯一公网可玩）
 
-> **不是**正式三关。正式可玩：https://zhousong-xd.github.io/demo001/  
+> **唯一对外可玩**：https://zhousong-xd.github.io/demo001/  
+> 旧冻结三关内部备份：https://zhousong-xd.github.io/demo001/frozen/ （非主玩）  
 > 产品 SHA（只读）：`f28893f3c419d794c6ba102bac67038683cb462c`  
-> **禁止**把整屏 mockup PNG 当成可玩。
+> **禁止**把整屏 mockup / concept 静帧当成可玩；concept/mockups **不**并列推给人玩。
 
 ## 打开
 
@@ -11,7 +12,7 @@ cd banquet-pilot && python3 -m http.server 8761
 # 可玩小样 → http://127.0.0.1:8761/candidates/presentation-sample/
 ```
 
-公网副链：https://zhousong-xd.github.io/demo001/presentation/
+公网（唯一）：https://zhousong-xd.github.io/demo001/
 
 ## 怎么试（一眼懂）
 
@@ -27,15 +28,15 @@ cd banquet-pilot && python3 -m http.server 8761
 
 | 文件 | 说明 |
 | --- | --- |
-| `index.html` | **可玩**入口（分层 SVG，T-065） |
+| `index.html` | **可玩**入口（分层，T-065） |
 | `ASSETS.md` | 图层 / `data-asset` / T-064 替换槽 |
-| `assets/` | 未来美术素材目录（现占位） |
-| `mockups/` | T-063 设计图（静帧，非可玩） |
-| `concept/` | 概念板（静帧） |
+| `assets/` | 分层 PNG（chars/chairs/fx） |
+| `mockups/` | T-063 设计图（静帧，内部备查） |
+| `concept/` | 概念板（静帧，内部备查） |
 | `redesign.html` | 旧美术小样 |
 
-## 与 T-064
+## 与 T-064 / T-066
 
-已接 `assets/chars|chairs|fx` 分层 PNG（可动层，非整屏贴图）。后续美术补姿态按 `ASSETS.md` 登记即可；**保留**走路/拒坐/升级逻辑后再刷链。
+已接 `assets/chars|chairs|fx` 分层 PNG。T-066：该版升为根 URL 唯一公网入口；旧三关迁 `/frozen/`。
 
-— agent:宴席·工程 role:BOT · T-065
+— agent:宴席·工程 role:BOT · T-066

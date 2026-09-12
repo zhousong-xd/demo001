@@ -4,20 +4,30 @@ Last updated: 2026-09-12 (UTC) · lead: demo001 (role:GPT) · exec: 宴席·工�
 
 Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）。本 STATUS 为人工/主导连续迭代看板，不替代 #4 总控台评论。
 
-## Accepted product (frozen)
+## 唯一公网可玩入口（T-066）
 
 | Item | Value |
 | --- | --- |
-| **公网可玩（推荐）** | https://zhousong-xd.github.io/demo001/ |
+| **唯一对外可玩** | https://zhousong-xd.github.io/demo001/ |
+| 内容 | T-065 mockups 真实感落地版（原 `presentation/`） |
+| 内部备份（非主玩） | https://zhousong-xd.github.io/demo001/frozen/ （旧冻结三关） |
+| Branch (work) | `bot/banquet-pilot` |
+| Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
+
+**对外只留这一条可玩链。** concept / mockups 静帧不并列推给人玩（可留内部 archive）。
+
+## Accepted product (frozen · 内部备份)
+
+| Item | Value |
+| --- | --- |
+| 公网备份路径 | `/frozen/`（非对外主入口） |
 | Product commit SHA | `f28893f3c419d794c6ba102bac67038683cb462c` |
 | Standalone HTML | `banquet-pilot/dist/banquet-pilot.html` |
 | HTML bytes (LF) | `73182` |
 | HTML SHA256 | `19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5` |
 | Levels in product | L01 / L02 / L03 |
-| Branch (work) | `bot/banquet-pilot` |
-| Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge**（说明已含公网链 · T-046） |
 
-Docs tip: after **T-052** — 公网可玩仍挂 STATUS；产品 SHA 冻结不变；候选 UI 抽样 **c04–c12** 放撤自测+独检均绿已收口；[`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md)；PR #11 仍 draft 未 merge。
+Docs tip: after **T-066** — 根 URL 唯一可玩 = 表现落地版；旧三关仅 `/frozen/`；产品 SHA 冻结不变；[`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md)；PR #11 仍 draft 未 merge。
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -360,7 +370,7 @@ See [LOOP.md](./LOOP.md) — closed-loop + checklist. Plan: [CURRENT_PLAN.md](./
 
 ## 候选 UI 抽样收口 c04–c12（ACCEPT）
 
-公网可玩（保留）：https://zhousong-xd.github.io/demo001/  
+公网可玩（T-066 起=表现落地唯一入口）：https://zhousong-xd.github.io/demo001/  
 产品 SHA（只读）：`f28893f3c419d794c6ba102bac67038683cb462c`
 
 | 批次 | 工程自测 | 质检独检 | 矩阵 |
@@ -376,5 +386,13 @@ T-052/#58：本 STATUS 收口上表（仅文档）。
 ## T-054 / #60 — 表现小样预览页（表现候选）
 
 - 本地：`candidates/presentation-sample/`
-- 公网副链：https://zhousong-xd.github.io/demo001/presentation/ （主链 index 不变）
-- 等美术 T-053 嵌入；**不改 dist**
+- **T-066 起**：根 URL https://zhousong-xd.github.io/demo001/ 即为该落地版（原副链升主入口）
+- `/presentation/` 保留短跳转；concept/mockups 仅内部 archive
+- **不改 dist**
+
+## T-066 / #72 — 对外收成唯一可玩入口
+
+- **唯一对外可玩**：https://zhousong-xd.github.io/demo001/ （T-065 mockups 落地）
+- 旧冻结三关备份：https://zhousong-xd.github.io/demo001/frozen/ （SHA256 `19b8e65…` 不变）
+- concept / mockups **不**并列推给人玩
+- 仅文档 + gh-pages 结构；**不改 dist**；不 merge

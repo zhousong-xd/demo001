@@ -10,7 +10,7 @@ cd banquet-pilot && python3 -m http.server 8761
 # → http://127.0.0.1:8761/candidates/presentation-sample/mockups/
 ```
 
-公网目标：https://zhousong-xd.github.io/demo001/presentation/mockups/
+内部 archive（不对外主推）：仓库 `candidates/presentation-sample/mockups/`；公网唯一可玩见根 URL。
 
 ## 图册
 
