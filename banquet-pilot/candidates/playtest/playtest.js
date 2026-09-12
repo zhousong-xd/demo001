@@ -254,13 +254,13 @@ function render() {
   const header = document.createElement("header");
   header.className = "bar";
   const h1 = document.createElement("h1");
-  h1.textContent = `候选 · ${level.id} ${level.title}`;
+  h1.textContent = `候选试玩 · ${level.id} ${level.title}`;
   header.appendChild(h1);
 
   const pick = document.createElement("div");
   pick.className = "cand-pick";
   const sel = document.createElement("select");
-  sel.setAttribute("aria-label", "选择候选关（非正式）");
+  sel.setAttribute("aria-label", "选择候选关 c01–c12（非正式 / candidates only）");
   for (const id of CANDIDATE_FILES) {
     const opt = document.createElement("option");
     opt.value = id;
@@ -290,7 +290,7 @@ function render() {
 
   const note = document.createElement("div");
   note.className = "cand-note";
-  note.textContent = "非正式关卡草稿 · 不写产品存档 · 产品提示表（L01–L03）不适用于候选";
+  note.textContent = "候选草稿（candidates）· 非正式 levels · 不写产品存档 · L01–L03 提示表不适用 · 见 ../PLAYTEST.md";
   app.appendChild(note);
 
   if (message) {

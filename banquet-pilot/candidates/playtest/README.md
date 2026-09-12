@@ -1,5 +1,7 @@
 # Candidates-only playtest (T-016)
 
+Human-facing Chinese guide (product file:// vs this server, art preview, known gaps): **[`../PLAYTEST.md`](../PLAYTEST.md)** (T-017).
+
 **Not shipped levels.** This page loads `../levels/c01.json`–`c12.json` design drafts so a human can click through seating. It is **not** formal `banquet-pilot/levels/`, **not** product L01–L03, and must not be described as 12 finished playable levels.
 
 Product SHA stays frozen: `f28893f3c419d794c6ba102bac67038683cb462c`.  

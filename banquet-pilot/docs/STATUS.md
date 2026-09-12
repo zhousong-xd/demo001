@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: see latest `bot/banquet-pilot` commit after T-016 push — product SHA above stays frozen.
+Docs tip: see latest `bot/banquet-pilot` commit after T-017 push — product SHA above stays frozen.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -40,12 +40,15 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-016 push — product SHA
 | #19 | T-014 候选设计 brief（c10–c12） | done / closed · baseline §13 #10–#12; counts were TBD then filled by T-015 |
 | #20 | T-015 候选 JSON 草稿 + enum 解数（c10–c12）+ SUMMARY | done / closed · `c10.json`–`c12.json` + enum + `SUMMARY.md`; counts filled; multi-OK; **not** formal `levels/` |
 | #21 | T-016 仅候选试玩页（c01–c12） | done / closed · `candidates/playtest/`；选 JSON + 复用 src ESM；**不是** shipped levels |
+| #22 | T-017 候选试玩说明 PLAYTEST.md（中文） | done / closed · `candidates/PLAYTEST.md`；产品 file:// vs 候选 server；c01–c12 / art preview / known gaps；UI 轻量标注 candidates |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
 Level candidates: `banquet-pilot/candidates/levels/` — C01–C12 **brief+enum** (+ `SUMMARY.md`). **Not** formal `levels/`.
 
 Candidates playtest (T-016): `banquet-pilot/candidates/playtest/` — select c01–c12 JSON via `../levels/`; relative ESM from `../../src/…`. **Not** shipped levels. Run: `cd banquet-pilot && python3 -m http.server 8761` → http://127.0.0.1:8761/candidates/playtest/?c=c01
+
+Playtest guide (T-017): `banquet-pilot/candidates/PLAYTEST.md`（中文）— 已验收产品 `file://` HTML vs 候选试玩 server；如何打开 c01–c12；art preview；known gaps（真机未测 / style not final / PR #11 draft）。
 
 ### T-009 enum results (candidates only)
 
@@ -121,6 +124,15 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c12.
 
 How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candidates/playtest/?c=c01`. file:// ESM/fetch usually blocked.
 
+### T-017 playtest guide (candidates docs)
+
+| Item | Value |
+| --- | --- |
+| Doc | `candidates/PLAYTEST.md`（中文） |
+| Covers | 产品 `file://` HTML vs 候选 http.server；打开 c01–c12；art `candidates/art/preview.html`；known gaps |
+| UI polish | playtest 横幅/标题/备注轻量标注 **candidates only**（非正式关） |
+| Claim | **not** shipped / not formal `levels/` |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -146,6 +158,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (docs) | **#19 / T-014** C10–C12 briefs | Baseline §13 #10–#12; counts filled by T-015 |
 | Done (candidates) | **#20 / T-015** C10–C12 JSON + enum + SUMMARY | Counts: C10=8, C11=2, C12=0/4; `SUMMARY.md` c01–c12; still not formal `levels/` |
 | Done (candidates) | **#21 / T-016** playtest page c01–c12 | `candidates/playtest/`; ESM reuse src; still not formal `levels/` |
+| Done (docs) | **#22 / T-017** PLAYTEST.md + UI label polish | Chinese guide: product file:// vs candidates server; gaps; still not formal `levels/` |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
