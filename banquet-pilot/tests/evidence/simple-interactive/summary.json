@@ -3,7 +3,7 @@
   "mode": "simple-local",
   "inputLabels": {
     "mouseSim": "yes — CDP Input.dispatchMouseEvent",
-    "touchSim": "未跑",
+    "touchSim": "yes — L01 touch drag place fox→A1; mid-drag touchCancel clean; second-finger interference (cancel-safe or first-completed). CDP Emulation.setTouchEmulationEnabled + Input.dispatchTouchEvent",
     "realDevice": "真机未测"
   },
   "chrome": {
@@ -62,19 +62,282 @@
     "l01_drag_win_optional": {
       "ok": true,
       "won": true
+    },
+    "occupant_center": {
+      "ok": true,
+      "swap": {
+        "ok": true,
+        "method": "select fox then click occupant rabbit center",
+        "after": {
+          "fox": "A2",
+          "rabbit": "A1"
+        }
+      },
+      "displace": {
+        "ok": true,
+        "method": "select waiting crane then click occupied fox center",
+        "after": {
+          "fox": null,
+          "crane": "A1"
+        }
+      },
+      "emptyPaddingClickSeatPreserved": true
+    },
+    "touch_sim": {
+      "ok": true,
+      "place": {
+        "ok": true,
+        "fox": "A1",
+        "listenerStats": {
+          "register": 3,
+          "unregister": 3,
+          "activeWindow": 0,
+          "commits": 1,
+          "cancels": 0
+        }
+      },
+      "touchCancel": {
+        "ok": true,
+        "foxAfter": null,
+        "historyUnchanged": true,
+        "gestureActive": false,
+        "ghostPresent": false,
+        "listenerStats": {
+          "register": 3,
+          "unregister": 3,
+          "activeWindow": 0,
+          "commits": 0,
+          "cancels": 1
+        },
+        "registerEqualsUnregister": true
+      },
+      "multitouch": {
+        "ok": true,
+        "mode": "cancel-safe",
+        "assignment": {
+          "fox": null,
+          "rabbit": null,
+          "crane": null,
+          "otter": null
+        },
+        "historyLen": 0,
+        "listenerStats": {
+          "register": 3,
+          "unregister": 3,
+          "activeWindow": 0,
+          "commits": 0,
+          "cancels": 1
+        }
+      }
+    },
+    "viewports": {
+      "360x640": {
+        "ok": true,
+        "innerWidth": 360,
+        "innerHeight": 640,
+        "scrollWidth": 360,
+        "scrollHeight": 640,
+        "scrollWidthOk": true,
+        "scrollHeightNote": "fits",
+        "buttons": {
+          "undo": {
+            "label": "撤销",
+            "left": 10,
+            "top": 50,
+            "right": 58.015625,
+            "bottom": 87,
+            "width": 48.015625,
+            "height": 37,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          "reset": {
+            "label": "重置",
+            "left": 64.015625,
+            "top": 50,
+            "right": 112.03125,
+            "bottom": 87,
+            "width": 48.015625,
+            "height": 37,
+            "overflowsX": false,
+            "overflowsY": false
+          }
+        },
+        "seats": [
+          {
+            "seat": "A1",
+            "left": 20,
+            "top": 131,
+            "right": 176,
+            "bottom": 287,
+            "width": 156,
+            "height": 156,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          {
+            "seat": "A2",
+            "left": 184,
+            "top": 131,
+            "right": 340,
+            "bottom": 287,
+            "width": 156,
+            "height": 156,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          {
+            "seat": "B1",
+            "left": 20,
+            "top": 295,
+            "right": 176,
+            "bottom": 451,
+            "width": 156,
+            "height": 156,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          {
+            "seat": "B2",
+            "left": 184,
+            "top": 295,
+            "right": 340,
+            "bottom": 451,
+            "width": 156,
+            "height": 156,
+            "overflowsX": false,
+            "overflowsY": false
+          }
+        ],
+        "seatOverlaps": [],
+        "board": null,
+        "screenshot": "viewport_360x640.png",
+        "notes": {
+          "scrollWidthOk": true,
+          "scrollHeight": "fits",
+          "seatOverlaps": [],
+          "anySeatOverflow": false,
+          "btnOverflow": false
+        }
+      },
+      "390x844": {
+        "ok": true,
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "scrollWidth": 390,
+        "scrollHeight": 844,
+        "scrollWidthOk": true,
+        "scrollHeightNote": "fits",
+        "buttons": {
+          "undo": {
+            "label": "撤销",
+            "left": 331.984375,
+            "top": 8,
+            "right": 380,
+            "bottom": 45,
+            "width": 48.015625,
+            "height": 37,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          "reset": {
+            "label": "重置",
+            "left": 10,
+            "top": 51,
+            "right": 58.015625,
+            "bottom": 88,
+            "width": 48.015625,
+            "height": 37,
+            "overflowsX": false,
+            "overflowsY": false
+          }
+        },
+        "seats": [
+          {
+            "seat": "A1",
+            "left": 20,
+            "top": 132,
+            "right": 191,
+            "bottom": 303,
+            "width": 171,
+            "height": 171,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          {
+            "seat": "A2",
+            "left": 199,
+            "top": 132,
+            "right": 370,
+            "bottom": 303,
+            "width": 171,
+            "height": 171,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          {
+            "seat": "B1",
+            "left": 20,
+            "top": 311,
+            "right": 191,
+            "bottom": 482,
+            "width": 171,
+            "height": 171,
+            "overflowsX": false,
+            "overflowsY": false
+          },
+          {
+            "seat": "B2",
+            "left": 199,
+            "top": 311,
+            "right": 370,
+            "bottom": 482,
+            "width": 171,
+            "height": 171,
+            "overflowsX": false,
+            "overflowsY": false
+          }
+        ],
+        "seatOverlaps": [],
+        "board": null,
+        "screenshot": "viewport_390x844.png",
+        "notes": {
+          "scrollWidthOk": true,
+          "scrollHeight": "fits",
+          "seatOverlaps": [],
+          "anySeatOverflow": false,
+          "btnOverflow": false
+        }
+      }
     }
   },
   "notes": [
-    "simple-local http=34749 cdp=35833 profile=/tmp/banquet-simple-ud-XA291U",
+    "simple-local http=43107 cdp=46155 profile=/tmp/banquet-simple-ud-qztY6W",
     "L01 click-path won=true hist=4 asg={\"fox\":\"A1\",\"rabbit\":\"B2\",\"crane\":\"B1\",\"otter\":\"A2\"}",
     "L02 click-path won=true hist=6 asg={\"fox\":\"A1\",\"rabbit\":\"B1\",\"crane\":\"B3\",\"otter\":\"A2\",\"tanuki\":\"B2\",\"hedgehog\":\"A3\"}",
     "swap: fox=A2 rabbit=A1",
     "undo after swap: {\"fox\":\"A1\",\"rabbit\":\"A2\",\"crane\":null,\"otter\":null} hist=2",
     "drag-cancel blur: fox=null hist=0 gesture=false ghost=false activeWin=0 cancels=1 ok=true",
     "after cancel, fox->A1 ok commits=1",
-    "L01 drag-path (optional) won=true"
+    "L01 drag-path (optional) won=true",
+    "gap1 swap select fox selected=fox",
+    "gap1 occupant-center swap: fox=A2 rabbit=A1 selected=null",
+    "gap1 displace selected=crane",
+    "gap1 occupant-center displace: fox=null crane=A1",
+    "gap1 occupant-center ok",
+    "touch-sim enabled (maxTouchPoints=5)",
+    "touch drag place: fox=A1 activeWin=0 commits=1",
+    "touchCancel mid: gesture=true ghost=true active=3",
+    "touchCancel after: fox=null hist=0 gesture=false ghost=false activeWin=0 reg=3 unreg=3 ok=true",
+    "multitouch primary: gesture=true active=3",
+    "multitouch after 2nd finger: hist=0 fox=null gesture=false",
+    "multitouch cancelled by stack: fox=null active=0",
+    "gap2 touch-sim ok place=true cancel=true mt=cancel-safe",
+    "viewport 360x640: scrollW=360<=360? true; seats=4 overlaps=[] seatOverflow=false btnOverflow=false",
+    "viewport 390x844: scrollW=390<=390? true; seats=4 overlaps=[] seatOverflow=false btnOverflow=false",
+    "gap3 dual viewport ok"
   ],
   "consoleErrorCount": 0,
-  "consoleAllCount": 42,
+  "consoleAllCount": 66,
   "pageErrors": []
 }

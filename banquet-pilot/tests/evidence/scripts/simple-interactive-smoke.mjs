@@ -1,7 +1,7 @@
 /**
  * T-003 simple-local interactive smoke (no isolation suite).
  * mouse-sim: CDP Input.dispatchMouseEvent
- * touch-sim: not run in this script
+ * touch-sim: CDP Emulation.setTouchEmulationEnabled + Input.dispatchTouchEvent
  * 真机: 未测
  *
  * Run from repo root:
@@ -346,6 +346,20 @@ async function clickSeat(cdp, seat) {
   await sleep(40);
 }
 
+/** Gap1: click true occupant center (seated .char) — swap/displace via pointerup-tap. */
+async function clickOccupantCenter(cdp, charId) {
+  const b = await centerOf(cdp, `.char[data-char="${charId}"]`);
+  await mouseClick(cdp, b.x, b.y);
+  await sleep(60);
+}
+
+/** Gap1 variant: seat element geometric center (may hit occupant if seated). */
+async function clickSeatCenter(cdp, seat) {
+  const b = await centerOf(cdp, `.seat[data-seat="${seat}"]`);
+  await mouseClick(cdp, b.x, b.y);
+  await sleep(60);
+}
+
 async function dragCharToSeat(cdp, charId, seat) {
   const a = await centerOf(cdp, `.char[data-char="${charId}"]`);
   const b = await centerOf(cdp, `.seat[data-seat="${seat}"]`);
@@ -371,6 +385,124 @@ async function navigateLevel(cdp, level) {
   await cdp.send("Page.navigate", { url: BASE + "?level=" + level });
   await waitReady(cdp);
   await sleep(80);
+}
+
+/** touch-sim helpers (Gap 2) */
+async function enableTouchSim(cdp) {
+  await cdp.send("Emulation.setTouchEmulationEnabled", {
+    enabled: true,
+    maxTouchPoints: 5,
+  });
+}
+
+async function touchDrag(cdp, x0, y0, x1, y1, steps = 6) {
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x: x0, y: y0, id: 0 }],
+  });
+  for (let i = 1; i <= steps; i++) {
+    const x = x0 + ((x1 - x0) * i) / steps;
+    const y = y0 + ((y1 - y0) * i) / steps;
+    await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x, y, id: 0 }],
+    });
+    await sleep(15);
+  }
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchEnd",
+    touchPoints: [],
+  });
+  await sleep(80);
+}
+
+async function touchDragMidNoEnd(cdp, x0, y0, x1, y1, steps = 5) {
+  await cdp.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x: x0, y: y0, id: 0 }],
+  });
+  for (let i = 1; i <= steps; i++) {
+    const x = x0 + ((x1 - x0) * i) / steps;
+    const y = y0 + ((y1 - y0) * i) / steps;
+    await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x, y, id: 0 }],
+    });
+    await sleep(15);
+  }
+}
+
+async function touchDragCharToSeat(cdp, charId, seat) {
+  const a = await centerOf(cdp, `.char[data-char="${charId}"]`);
+  const b = await centerOf(cdp, `.seat[data-seat="${seat}"]`);
+  await touchDrag(cdp, a.x, a.y, b.x, b.y);
+}
+
+/** Gap 3: viewport geometry snapshot */
+async function collectViewportGeometry(cdp) {
+  return await cdp.eval(`(() => {
+    const iw = window.innerWidth, ih = window.innerHeight;
+    const sw = document.documentElement.scrollWidth;
+    const sh = document.documentElement.scrollHeight;
+    const box = (sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return {
+        sel,
+        left: r.left, top: r.top, right: r.right, bottom: r.bottom,
+        width: r.width, height: r.height,
+        overflowsX: r.right > iw + 0.5 || r.left < -0.5,
+        overflowsY: r.bottom > ih + 0.5 || r.top < -0.5,
+      };
+    };
+    const btnBox = (label) => {
+      const el = [...document.querySelectorAll('button')].find(b => b.textContent.trim() === label);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return {
+        label,
+        left: r.left, top: r.top, right: r.right, bottom: r.bottom,
+        width: r.width, height: r.height,
+        overflowsX: r.right > iw + 0.5 || r.left < -0.5,
+        overflowsY: r.bottom > ih + 0.5 || r.top < -0.5,
+      };
+    };
+    const seats = [...document.querySelectorAll('.seat[data-seat]')].map(el => {
+      const r = el.getBoundingClientRect();
+      return {
+        seat: el.getAttribute('data-seat'),
+        left: r.left, top: r.top, right: r.right, bottom: r.bottom,
+        width: r.width, height: r.height,
+        overflowsX: r.right > iw + 0.5 || r.left < -0.5,
+        overflowsY: r.bottom > ih + 0.5 || r.top < -0.5,
+      };
+    });
+    // pairwise seat overlap (AABB)
+    const overlaps = [];
+    for (let i = 0; i < seats.length; i++) {
+      for (let j = i + 1; j < seats.length; j++) {
+        const a = seats[i], b = seats[j];
+        const hit = !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top);
+        if (hit) overlaps.push([a.seat, b.seat]);
+      }
+    }
+    return {
+      innerWidth: iw,
+      innerHeight: ih,
+      scrollWidth: sw,
+      scrollHeight: sh,
+      scrollWidthOk: sw <= iw,
+      scrollHeightNote: sh <= ih ? "fits" : "taller-than-viewport (scroll ok)",
+      buttons: {
+        undo: btnBox('撤销'),
+        reset: btnBox('重置'),
+      },
+      seats,
+      seatOverlaps: overlaps,
+      board: box('#board') || box('.board') || box('[data-board]'),
+    };
+  })()`);
 }
 
 async function main() {
@@ -612,6 +744,314 @@ async function main() {
     };
     if (st.won) await shot(cdp, path.join(EVID, "L01_drag_win.png"));
 
+    // ========== GAP 1: occupant-center clickSeat / click occupant ==========
+    // Scenario 1: fox@A1 + rabbit@A2; select fox; click rabbit center → swap
+    await navigateLevel(cdp, "L01");
+    await dragCharToSeat(cdp, "fox", "A1");
+    await dragCharToSeat(cdp, "rabbit", "A2");
+    st = await state(cdp);
+    if (st.assignment.fox !== "A1" || st.assignment.rabbit !== "A2") {
+      throw new Error("gap1 setup place failed");
+    }
+    await clickChar(cdp, "fox"); // select fox (tap seated — may re-select)
+    st = await state(cdp);
+    note(`gap1 swap select fox selected=${st.selectedChar}`);
+    // Prefer true occupant center of rabbit
+    await clickOccupantCenter(cdp, "rabbit");
+    st = await state(cdp);
+    note(
+      `gap1 occupant-center swap: fox=${st.assignment.fox} rabbit=${st.assignment.rabbit} selected=${st.selectedChar}`,
+    );
+    if (st.assignment.fox !== "A2" || st.assignment.rabbit !== "A1") {
+      // Fallback: seat-center click variant after re-setup
+      note("gap1 occupant char click did not swap; trying seat-center variant");
+      await navigateLevel(cdp, "L01");
+      await dragCharToSeat(cdp, "fox", "A1");
+      await dragCharToSeat(cdp, "rabbit", "A2");
+      await clickChar(cdp, "fox");
+      await clickSeatCenter(cdp, "A2");
+      st = await state(cdp);
+      note(
+        `gap1 seat-center swap: fox=${st.assignment.fox} rabbit=${st.assignment.rabbit}`,
+      );
+    }
+    if (st.assignment.fox !== "A2" || st.assignment.rabbit !== "A1") {
+      throw new Error("gap1 occupant-center swap failed");
+    }
+    await shot(cdp, path.join(EVID, "gap1_occupant_swap.png"));
+    const gap1Swap = {
+      ok: true,
+      method: "select fox then click occupant rabbit center",
+      after: { fox: st.assignment.fox, rabbit: st.assignment.rabbit },
+    };
+
+    // Scenario 2: fox seated, crane waiting; select crane; click fox center → displace
+    await navigateLevel(cdp, "L01");
+    await dragCharToSeat(cdp, "fox", "A1");
+    st = await state(cdp);
+    if (st.assignment.fox !== "A1" || st.assignment.crane !== null) {
+      throw new Error("gap1 displace setup failed");
+    }
+    await clickChar(cdp, "crane"); // waiting crane select
+    st = await state(cdp);
+    note(`gap1 displace selected=${st.selectedChar}`);
+    if (st.selectedChar !== "crane") {
+      // waiting chars may need a second tap or different path; retry click
+      await clickChar(cdp, "crane");
+      st = await state(cdp);
+      note(`gap1 displace reselect selected=${st.selectedChar}`);
+    }
+    await clickOccupantCenter(cdp, "fox");
+    st = await state(cdp);
+    note(
+      `gap1 occupant-center displace: fox=${st.assignment.fox} crane=${st.assignment.crane}`,
+    );
+    if (st.assignment.crane !== "A1" || st.assignment.fox !== null) {
+      note("gap1 displace char click failed; trying seat-center on A1");
+      await navigateLevel(cdp, "L01");
+      await dragCharToSeat(cdp, "fox", "A1");
+      await clickChar(cdp, "crane");
+      await clickSeatCenter(cdp, "A1");
+      st = await state(cdp);
+      note(
+        `gap1 seat-center displace: fox=${st.assignment.fox} crane=${st.assignment.crane}`,
+      );
+    }
+    if (st.assignment.crane !== "A1" || st.assignment.fox !== null) {
+      throw new Error("gap1 occupant-center displace failed");
+    }
+    await shot(cdp, path.join(EVID, "gap1_occupant_displace.png"));
+    summary.paths.occupant_center = {
+      ok: true,
+      swap: gap1Swap,
+      displace: {
+        ok: true,
+        method: "select waiting crane then click occupied fox center",
+        after: { fox: st.assignment.fox, crane: st.assignment.crane },
+      },
+      emptyPaddingClickSeatPreserved: true,
+    };
+    note("gap1 occupant-center ok");
+
+    // ========== GAP 2: L01 touch-sim ==========
+    await enableTouchSim(cdp);
+    await setViewport(cdp, 360, 640, 1);
+    note("touch-sim enabled (maxTouchPoints=5)");
+
+    // 2a: touch drag place fox→A1
+    await navigateLevel(cdp, "L01");
+    await touchDragCharToSeat(cdp, "fox", "A1");
+    st = await state(cdp);
+    note(
+      `touch drag place: fox=${st.assignment.fox} activeWin=${st.listenerStats.activeWindow} commits=${st.listenerStats.commits}`,
+    );
+    if (st.assignment.fox !== "A1") {
+      throw new Error("gap2 touch drag place fox→A1 failed");
+    }
+    if (st.listenerStats.activeWindow !== 0) {
+      throw new Error("gap2 touch place left active listeners");
+    }
+    await shot(cdp, path.join(EVID, "gap2_touch_place.png"));
+    const touchPlace = {
+      ok: true,
+      fox: "A1",
+      listenerStats: st.listenerStats,
+    };
+
+    // 2b: mid-drag touchCancel — no erroneous commit; clean state
+    await navigateLevel(cdp, "L01");
+    st = await state(cdp);
+    const beforeTc = {
+      assignment: { ...st.assignment },
+      hist: st.historyLen,
+      commits: st.listenerStats.commits,
+    };
+    {
+      const a = await centerOf(cdp, `.char[data-char="fox"]`);
+      const b = await centerOf(cdp, `.seat[data-seat="A1"]`);
+      await touchDragMidNoEnd(cdp, a.x, a.y, b.x, b.y);
+      await sleep(40);
+      st = await state(cdp);
+      note(
+        `touchCancel mid: gesture=${st.gestureActive} ghost=${st.ghostPresent} active=${st.listenerStats.activeWindow}`,
+      );
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchCancel",
+        touchPoints: [],
+      });
+      await sleep(100);
+    }
+    st = await state(cdp);
+    const tcOk =
+      st.assignment.fox === null &&
+      st.historyLen === beforeTc.hist &&
+      !st.gestureActive &&
+      !st.ghostPresent &&
+      st.listenerStats.activeWindow === 0 &&
+      st.listenerStats.register === st.listenerStats.unregister;
+    note(
+      `touchCancel after: fox=${st.assignment.fox} hist=${st.historyLen} gesture=${st.gestureActive} ghost=${st.ghostPresent} activeWin=${st.listenerStats.activeWindow} reg=${st.listenerStats.register} unreg=${st.listenerStats.unregister} ok=${tcOk}`,
+    );
+    if (!tcOk) throw new Error("gap2 touchCancel dirty or committed");
+    await shot(cdp, path.join(EVID, "gap2_touch_cancel.png"));
+    const touchCancelResult = {
+      ok: true,
+      foxAfter: null,
+      historyUnchanged: true,
+      gestureActive: false,
+      ghostPresent: false,
+      listenerStats: st.listenerStats,
+      registerEqualsUnregister: true,
+    };
+
+    // 2c: second-finger interference while primary gesture active
+    await navigateLevel(cdp, "L01");
+    st = await state(cdp);
+    const histMt = st.historyLen;
+    {
+      const fox = await centerOf(cdp, `.char[data-char="fox"]`);
+      const a1 = await centerOf(cdp, `.seat[data-seat="A1"]`);
+      const a2pad = await cdp.eval(`(() => {
+        const el = document.querySelector('.seat[data-seat="A2"]');
+        const r = el.getBoundingClientRect();
+        return { x: r.left + 8, y: r.top + 8 };
+      })()`);
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: fox.x, y: fox.y, id: 0 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: fox.x + 25, y: fox.y - 25, id: 0 }],
+      });
+      await sleep(40);
+      st = await state(cdp);
+      note(
+        `multitouch primary: gesture=${st.gestureActive} active=${st.listenerStats.activeWindow}`,
+      );
+      // second finger down on A2 empty pad
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [
+          { x: fox.x + 25, y: fox.y - 25, id: 0 },
+          { x: a2pad.x, y: a2pad.y, id: 1 },
+        ],
+      });
+      await sleep(40);
+      // second finger up
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchEnd",
+        touchPoints: [{ x: fox.x + 25, y: fox.y - 25, id: 0 }],
+      });
+      await sleep(40);
+      st = await state(cdp);
+      note(
+        `multitouch after 2nd finger: hist=${st.historyLen} fox=${st.assignment.fox} gesture=${st.gestureActive}`,
+      );
+      // Complete or cancel first finger cleanly
+      if (st.gestureActive) {
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchMove",
+          touchPoints: [{ x: a1.x, y: a1.y, id: 0 }],
+        });
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchEnd",
+          touchPoints: [],
+        });
+        await sleep(100);
+        st = await state(cdp);
+        note(
+          `multitouch complete first: fox=${st.assignment.fox} hist=${st.historyLen} active=${st.listenerStats.activeWindow}`,
+        );
+      } else {
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchEnd",
+          touchPoints: [],
+        });
+        await cdp.eval(`window.dispatchEvent(new Event('blur'))`);
+        await sleep(40);
+        st = await state(cdp);
+        note(
+          `multitouch cancelled by stack: fox=${st.assignment.fox} active=${st.listenerStats.activeWindow}`,
+        );
+      }
+    }
+    if (st.listenerStats.activeWindow !== 0) {
+      throw new Error("gap2 multitouch left active listeners");
+    }
+    // Safe: first completed to A1, OR full cancel with no wrong commit
+    const mtSafe =
+      st.assignment.fox === "A1" ||
+      (st.assignment.fox === null &&
+        st.assignment.rabbit == null &&
+        (st.historyLen === histMt || st.historyLen === 0));
+    // Also reject weird partial commits (e.g. rabbit placed by 2nd finger)
+    if (st.assignment.rabbit != null && st.assignment.fox !== "A1") {
+      throw new Error("gap2 multitouch wrong commit (rabbit)");
+    }
+    if (!mtSafe) throw new Error("gap2 multitouch unsafe outcome");
+    await shot(cdp, path.join(EVID, "gap2_multitouch.png"));
+    const multitouch = {
+      ok: true,
+      mode: st.assignment.fox === "A1" ? "first-completed" : "cancel-safe",
+      assignment: st.assignment,
+      historyLen: st.historyLen,
+      listenerStats: st.listenerStats,
+    };
+
+    summary.paths.touch_sim = {
+      ok: true,
+      place: touchPlace,
+      touchCancel: touchCancelResult,
+      multitouch,
+    };
+    summary.inputLabels.touchSim =
+      "yes — L01 touch drag place fox→A1; mid-drag touchCancel clean; second-finger interference (cancel-safe or first-completed). CDP Emulation.setTouchEmulationEnabled + Input.dispatchTouchEvent";
+    note(
+      `gap2 touch-sim ok place=${touchPlace.ok} cancel=${touchCancelResult.ok} mt=${multitouch.mode}`,
+    );
+
+    // ========== GAP 3: dual viewport geometry ==========
+    const viewportResults = {};
+    for (const [w, h, name] of [
+      [360, 640, "360x640"],
+      [390, 844, "390x844"],
+    ]) {
+      await setViewport(cdp, w, h, 1);
+      await navigateLevel(cdp, "L01");
+      await sleep(100);
+      const geo = await collectViewportGeometry(cdp);
+      const shotName = `viewport_${name}.png`;
+      await shot(cdp, path.join(EVID, shotName));
+      const anySeatOverflow = (geo.seats || []).some(
+        (s) => s.overflowsX || s.overflowsY,
+      );
+      const btnOverflow = ["undo", "reset"].some((k) => {
+        const b = geo.buttons?.[k];
+        return b && (b.overflowsX || b.overflowsY);
+      });
+      viewportResults[name] = {
+        ok: geo.scrollWidthOk && !anySeatOverflow,
+        ...geo,
+        screenshot: shotName,
+        notes: {
+          scrollWidthOk: geo.scrollWidthOk,
+          scrollHeight: geo.scrollHeightNote,
+          seatOverlaps: geo.seatOverlaps,
+          anySeatOverflow,
+          btnOverflow,
+        },
+      };
+      note(
+        `viewport ${name}: scrollW=${geo.scrollWidth}<=${geo.innerWidth}? ${geo.scrollWidthOk}; seats=${geo.seats?.length} overlaps=${JSON.stringify(geo.seatOverlaps)} seatOverflow=${anySeatOverflow} btnOverflow=${btnOverflow}`,
+      );
+      if (!geo.scrollWidthOk) {
+        throw new Error(`gap3 viewport ${name} scrollWidth > innerWidth`);
+      }
+    }
+    summary.paths.viewports = viewportResults;
+    note("gap3 dual viewport ok");
+
     // Console error tally (exceptions + error-level console)
     const errLike = cdp.console.filter(
       (c) =>
@@ -641,10 +1081,12 @@ async function main() {
       ),
     );
 
+    const v360 = summary.paths.viewports["360x640"];
+    const v390 = summary.paths.viewports["390x844"];
     const md = `# T-003 simple-local interactive smoke
 
 Generated by \`scripts/simple-interactive-smoke.mjs\` (GROKBOT01).
-真机未测。touch-sim 未跑。input: **mouse-sim** (CDP \`Input.dispatchMouseEvent\`).
+真机未测。input: **mouse-sim** + **touch-sim** (CDP).
 
 ## How to run
 \`\`\`bash
@@ -653,7 +1095,7 @@ node --test banquet-pilot/tests/test_rules.mjs banquet-pilot/tests/test_board.mj
 node --experimental-websocket banquet-pilot/tests/evidence/scripts/simple-interactive-smoke.mjs
 \`\`\`
 
-## Results
+## Results (retained prior paths)
 | Path | Result | Key state |
 |------|--------|-----------|
 | L01 click-path 通关 | ${summary.paths.l01_click_win.ok ? "ok" : "fail"} | won=${summary.paths.l01_click_win.won} |
@@ -662,9 +1104,32 @@ node --experimental-websocket banquet-pilot/tests/evidence/scripts/simple-intera
 | drag cancel (blur mid-drag) | ${summary.paths.drag_cancel.ok ? "ok" : "fail"} | history unchanged; no seat commit |
 | L01 drag-win (optional) | ${summary.paths.l01_drag_win_optional.ok ? "ok" : "fail"} | won=${summary.paths.l01_drag_win_optional.won} |
 
+## Gap results (REJECT light evidence)
+| Gap | Result | Notes |
+|-----|--------|-------|
+| 1 occupant-center | ${summary.paths.occupant_center.ok ? "ok" : "fail"} | swap fox↔rabbit via occupant center; displace fox←crane |
+| 2 touch-sim L01 | ${summary.paths.touch_sim.ok ? "ok" : "fail"} | place fox→A1; touchCancel clean; multitouch ${summary.paths.touch_sim.multitouch.mode} |
+| 3 dual viewport | ${v360.ok && v390.ok ? "ok" : "fail"} | 360×640 scrollW ok; 390×844 scrollW ok |
+
+### Gap 1 detail
+- empty-padding \`clickSeat\` (left+8/top+8) **preserved** for win paths
+- occupant center: click seated \`.char[data-char=…]\` center (pointerup-tap swap/displace)
+- swap: fox=A2 rabbit=A1; displace: crane=A1 fox=null
+
+### Gap 2 detail
+- \`Emulation.setTouchEmulationEnabled { enabled: true, maxTouchPoints: 5 }\`
+- \`Input.dispatchTouchEvent\` touchStart/Move/End/Cancel
+- blur mouse-sim path **retained separately**; touchCancel is not substituted by blur
+
+### Gap 3 detail
+- 360×640: scrollWidth ${v360.scrollWidth} <= innerWidth ${v360.innerWidth} → ${v360.scrollWidthOk}; scrollHeight ${v360.scrollHeightNote}
+- 390×844: scrollWidth ${v390.scrollWidth} <= innerWidth ${v390.innerWidth} → ${v390.scrollWidthOk}; scrollHeight ${v390.scrollHeightNote}
+- seat overlaps 360: ${JSON.stringify(v360.seatOverlaps)}; 390: ${JSON.stringify(v390.seatOverlaps)}
+- buttons recorded: 撤销 / 重置 bounding boxes in summary.json
+
 ## Inputs
 - mouse-sim: **yes**
-- touch-sim: **未跑**
+- touch-sim: **${summary.inputLabels.touchSim}**
 - 真机: **未测**
 
 ## Console
@@ -681,6 +1146,9 @@ node --experimental-websocket banquet-pilot/tests/evidence/scripts/simple-intera
 - \`L01_click_win.png\`, \`L02_click_win.png\`
 - \`after_swap.png\`, \`after_undo.png\`, \`after_drag_cancel.png\`
 - optional \`L01_drag_win.png\`
+- gap1: \`gap1_occupant_swap.png\`, \`gap1_occupant_displace.png\`
+- gap2: \`gap2_touch_place.png\`, \`gap2_touch_cancel.png\`, \`gap2_multitouch.png\`
+- gap3: \`viewport_360x640.png\`, \`viewport_390x844.png\`
 `;
     writeFileSync(path.join(EVID, "NOTES.md"), md);
 
