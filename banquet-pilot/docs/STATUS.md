@@ -41,7 +41,8 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-018 push — product SHA
 | #20 | T-015 候选 JSON 草稿 + enum 解数（c10–c12）+ SUMMARY | done / closed · `c10.json`–`c12.json` + enum + `SUMMARY.md`; counts filled; multi-OK; **not** formal `levels/` |
 | #21 | T-016 仅候选试玩页（c01–c12） | done / closed · `candidates/playtest/`；选 JSON + 复用 src ESM；**不是** shipped levels |
 | #22 | T-017 候选试玩说明 PLAYTEST.md（中文） | done / closed · `candidates/PLAYTEST.md`；产品 file:// vs 候选 server；c01–c12 / art preview / known gaps；UI 轻量标注 candidates |
-| #23 | T-018 刷新 PR #11 中文人体摘要（仅文档） | done / closed · `gh pr edit 11` 中文 body：已验收 SHA + dist 打开方式；候选 SUMMARY/playtest/art/PLAYTEST；未做项；链 #4 与关键 closed tasks |
+| #23 | T-018 刷新 PR #11 中文人体摘要（仅文档） | superseded by #24 · 旧 GROKBOT01 跟踪单，待主导关闭 |
+| #24 | T-018 刷新 PR #11 说明（人类可读现状） | done / awaiting ACCEPT · REST 刷新 PR #11 中文 body；负责人 宴席·工程；产品 SHA 未改 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -140,7 +141,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | --- | --- |
 | Action | REST `PATCH pulls/11` — refresh PR body in **Chinese** for human handoff（#24 · 宴席·工程） |
 | Covers | 已验收产品 SHA `f28893f3…` + 打开 `dist/banquet-pilot.html`；候选 c01–c12 SUMMARY / playtest / art preview / PLAYTEST.md；**未做**：merge、正式 levels 导入、最终 art style、真机 |
-| Links | 总控台 [#4](https://github.com/zhousong-xd/demo001/issues/4)；关键 closed tasks #5–#22 |
+| Links | 总控台 [#4](https://github.com/zhousong-xd/demo001/issues/4)；跟踪 [#24](https://github.com/zhousong-xd/demo001/issues/24)；相关 closed #5–#22；旧 #23 superseded |
 | Claim | **doc-only**；不 merge PR #11；不改 dist / 产品玩法 |
 
 ## Open risks
