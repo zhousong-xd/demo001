@@ -4,7 +4,7 @@
 
 ## 当前主目标
 
-稳住冻结三关可玩（产品 SHA `f28893f3…` / `dist/banquet-pilot.html`）；候选与文档持续收口，不把草稿冒充正式交付。
+稳住冻结三关可玩（产品 SHA `f28893f3…` / `dist/banquet-pilot.html`）；**公网可玩** https://zhousong-xd.github.io/demo001/ （见 [`STATUS.md`](./STATUS.md)）；候选与文档持续收口，不把草稿冒充正式交付。
 
 ## 后续几步
 

@@ -8,15 +8,16 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 
 | Item | Value |
 | --- | --- |
+| **公网可玩（推荐）** | https://zhousong-xd.github.io/demo001/ |
 | Product commit SHA | `f28893f3c419d794c6ba102bac67038683cb462c` |
 | Standalone HTML | `banquet-pilot/dist/banquet-pilot.html` |
 | HTML bytes (LF) | `73182` |
 | HTML SHA256 | `19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5` |
 | Levels in product | L01 / L02 / L03 |
 | Branch (work) | `bot/banquet-pilot` |
-| Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
+| Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge**（说明已含公网链 · T-046） |
 
-Docs tip: after T-041 — product SHA frozen; playtest critical harness re-green `evidence/t041-playtest-ui-critical-regression/`; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
+Docs tip: after **T-047** — 公网可玩已挂 STATUS；产品 SHA 冻结不变；T-043～046 已 ACCEPT 收口；[`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md)；PR #11 仍 draft 未 merge。
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -57,7 +58,12 @@ Docs tip: after T-041 — product SHA frozen; playtest critical harness re-green
 | #41 | T-035 playtest UI mouse-sim 安心铃（c03） | done / ACCEPT · 误投不扣 / 对兔有效；evidence/t035；真机未测；不改 dist |
 | #43 | T-037 playtest UI 关键路径一键回归 | done / ACCEPT · 放/撤/切/换/顶/铃；evidence/t037；真机未测；不改 dist |
 | #45 | T-039 冻结产品 L01–L03 浏览器 UI 短冒烟 | done / ACCEPT · 放/撤/切关/铃；evidence/t039；dist 只读；真机未测 |
-| #47 | T-041 候选 playtest 关键路径一键回归（T-040 tip 后再跑） | done / awaiting ACCEPT · t037 矩阵复跑 PASS；evidence/t041；dist 未改 |
+| #47 | T-041 候选 playtest 关键路径一键回归（T-040 tip 后再跑） | done / ACCEPT · t037 矩阵复跑 PASS；evidence/t041；dist 未改 |
+| #49 | T-043 候选 playtest UI 抽样短冒烟（c04/c07/c10） | done / ACCEPT · 放+撤 PASS；evidence/t043；真机未测；不改 dist |
+| #50 | T-044 冻结三关公网可玩部署 | done / ACCEPT · https://zhousong-xd.github.io/demo001/ ；产品 SHA 未变；gh-pages |
+| #51 | T-045 独检 playtest UI 抽样（c04/c07/c10） | done / ACCEPT · 质检独检（工程未兼） |
+| #52 | T-046 刷新 PR #11 说明（含公网链） | done / ACCEPT · REST 刷新中文 body；仍 draft 未 merge；不改 dist |
+| #53 | T-047 STATUS 写入公网链 + T-043～046 收口 | done / awaiting ACCEPT · 仅文档；本文件 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -343,15 +349,14 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 
 See [LOOP.md](./LOOP.md) — closed-loop + checklist. Plan: [CURRENT_PLAN.md](./CURRENT_PLAN.md). Lessons: [LESSONS.md](./LESSONS.md).
 
-## T-044 / #50 — 冻结三关公网可玩部署
+## T-043～T-046 收口（ACCEPT）
 
-- URL: https://zhousong-xd.github.io/demo001/
-- Product SHA `f28893f3…`；live HTML SHA 与 dist 一致；源 dist 未改
-- 等主导 ACCEPT
+| Task | Issue | 要点 |
+| --- | --- | --- |
+| T-043 | #49 | 候选 UI 抽样 c04/c07/c10 放+撤 PASS；`evidence/t043-…`；真机未测 |
+| T-044 | #50 | **公网** https://zhousong-xd.github.io/demo001/ ；产品 SHA `f28893f3…`；dist 源未改 |
+| T-045 | #51 | 质检独检同矩阵（工程不兼） |
+| T-046 | #52 | PR #11 中文说明含公网链 + 冻结版；**仍 draft 未 merge** |
 
-## T-043 / #49 — 候选 UI 抽样短冒烟 c04/c07/c10（放+撤）
-
-- tip: 见本提交；证据 `evidence/t043-playtest-ui-sample-c04-c07-c10/`
-- 单命令 PASS；dist 未改；真机未测
-- 等主导 ACCEPT
+T-047/#53：本 STATUS 写入公网链并收口上表（仅文档）。
 
