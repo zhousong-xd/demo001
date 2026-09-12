@@ -1,0 +1,6 @@
+# T-036 independent rerun of the same T-035 script
+# Reviewed first, then executed unchanged from tip 8eb80bc89c8950543a47fbacc5da9ffaa2ac98f9
+cd banquet-pilot
+node --experimental-websocket tests/evidence/scripts/t035-playtest-ui-calm-bell.mjs
+# exit_code=0  started=2026-09-12T07:40:25Z  ended=2026-09-12T07:40:48Z
+# Independent evidence copied here; author T-035 evidence restored from backup (not overwritten in git).

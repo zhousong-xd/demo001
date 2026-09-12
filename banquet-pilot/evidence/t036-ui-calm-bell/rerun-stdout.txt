@@ -1,0 +1,11 @@
+[PASS] mouse calm_bell miss on fox: stock unchanged
+[PASS] mouse calm_bell hit rabbit: stock-1 and calm
+[未测] 真机 / 多指（CDP mouse-sim ≠ 真机）
+{
+  "ok": true,
+  "evid": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t035-playtest-ui-calm-bell",
+  "steps": [
+    "calm_miss_fox",
+    "calm_hit_rabbit"
+  ]
+}
