@@ -63,7 +63,8 @@ Docs tip: after **T-047** — 公网可玩已挂 STATUS；产品 SHA 冻结不�
 | #50 | T-044 冻结三关公网可玩部署 | done / ACCEPT · https://zhousong-xd.github.io/demo001/ ；产品 SHA 未变；gh-pages |
 | #51 | T-045 独检 playtest UI 抽样（c04/c07/c10） | done / ACCEPT · 质检独检（工程未兼） |
 | #52 | T-046 刷新 PR #11 说明（含公网链） | done / ACCEPT · REST 刷新中文 body；仍 draft 未 merge；不改 dist |
-| #53 | T-047 STATUS 写入公网链 + T-043～046 收口 | done / awaiting ACCEPT · 仅文档；本文件 |
+| #53 | T-047 STATUS 写入公网链 + T-043～046 收口 | done / ACCEPT · 公网链 + T-043～046 收口；仅文档 |
+| #54 | T-048 候选 playtest UI 抽样短冒烟（c05/c08/c11） | done / awaiting ACCEPT · 放+撤 PASS；evidence/t048；真机未测；不改 dist |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -360,3 +361,7 @@ See [LOOP.md](./LOOP.md) — closed-loop + checklist. Plan: [CURRENT_PLAN.md](./
 
 T-047/#53：本 STATUS 写入公网链并收口上表（仅文档）。
 
+## T-048 / #54 — 候选 UI 抽样短冒烟 c05/c08/c11（放+撤）
+
+- 证据 `evidence/t048-playtest-ui-sample-c05-c08-c11/`；单命令 PASS；dist 未改；真机未测
+- 等主导 ACCEPT
