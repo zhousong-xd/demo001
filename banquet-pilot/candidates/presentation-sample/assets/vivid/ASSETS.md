@@ -1,6 +1,4 @@
-\# 生动精灵表（T-069 / #75 · 接 T-067 缺口）
-
-# 生动可动素材（T-067 / #73）· 硬门槛 · T-069 同名替换
+# 生动精灵表（T-069 / #75 · 接 T-067 缺口）
 
 **禁止单图 CSS bob。** 交付为**水平精灵表 + json**（帧序 / fps）。
 
@@ -10,11 +8,12 @@
 |------|------|----------|------|
 | `{who}_walk.png` | 4 | **8** | contact_L → pass_A → contact_R → pass_B |
 | `{who}_idle.png` | 6 | **6** | open → open → half → closed → half → open |
+| `{who}_stand.png` | 3 | **8** | weight_L → center → weight_R |
 | `{who}_rise.png` | 3 | **8** | sit → rising → stand |
 | `{who}_sit.png` | 3 | **8** | stand → lowering → sit |
 | `{who}_refuse.png` | 3 | **6** | hesitate → cross_arms → refuse_hold |
 
-`who` ∈ `fox` / `rabbit` / `crane`。同名 `.json`：`frameW` `frameH` `count` `fpsHint` `order`。
+首批 **狐+兔** 已同名替换；鹤沿用既有 strip，可后补。`who` 主用 `fox` / `rabbit`（crane 可选）。同名 `.json`：`frameW` `frameH` `count` `fpsHint` `order`。
 
 ### 怎么验「真动」
 播放 `*_walk`：左右脚前后交换，臂对侧摆；一眼不是整图上下晃。
