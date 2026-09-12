@@ -27,6 +27,7 @@
 ```
 banquet-pilot/candidates/art/
   ASSETS.md
+  preview.html
   phone_layout_390x844.png
   rabbit_neutral.png / rabbit_neutral.svg
   rabbit_satisfied.png / rabbit_satisfied.svg
@@ -34,6 +35,14 @@ banquet-pilot/candidates/art/
   seat.png / seat.svg
   calm_bell.png / calm_bell.svg
 ```
+
+## 预览
+
+本地静态预览页：[`preview.html`](./preview.html)（无依赖）。同目录打开即可对照：
+- 390 宽框内展示 `phone_layout_390x844.png`
+- 团团三态、座位、安心铃可读尺寸并排
+
+不替代资产表；不导入正式产物。
 
 ## 备选风格（宴席·美术）
 

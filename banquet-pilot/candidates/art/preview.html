@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Banquet Pilot — art candidates preview (T-006)</title>
+  <style>
+    :root {
+      --frame: 390px;
+      --paper: #f6efe4;
+      --ink: #3a2f24;
+      --muted: #7a6a58;
+      --line: #d9cbb8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #e8dfd2;
+      color: var(--ink);
+      line-height: 1.45;
+      padding: 24px 16px 48px;
+    }
+    h1 {
+      font-size: 1.15rem;
+      font-weight: 650;
+      margin: 0 0 4px;
+      text-align: center;
+    }
+    .meta {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin: 0 0 20px;
+    }
+    .wrap {
+      width: var(--frame);
+      max-width: 100%;
+      margin: 0 auto 28px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 1px 0 rgba(58, 47, 36, 0.06);
+    }
+    .card h2 {
+      font-size: 0.95rem;
+      margin: 0 0 10px;
+      font-weight: 600;
+    }
+    .phone {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 72px;
+    }
+    .item img {
+      display: block;
+      image-rendering: auto;
+      background:
+        linear-gradient(45deg, #eee 25%, transparent 25%),
+        linear-gradient(-45deg, #eee 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #eee 75%),
+        linear-gradient(-45deg, transparent 75%, #eee 75%);
+      background-size: 12px 12px;
+      background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+      border-radius: 6px;
+      padding: 4px;
+    }
+    .item .rabbit { width: 96px; height: auto; }
+    .item .seat { width: 72px; height: auto; }
+    .item .bell { width: 56px; height: auto; }
+    .item figcaption {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    .note {
+      width: var(--frame);
+      max-width: 100%;
+      margin: 0 auto;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <h1>Banquet Pilot — art candidates</h1>
+  <p class="meta">T-006 preview · 390-wide frame · static local files only</p>
+
+  <section class="wrap">
+    <div class="card">
+      <h2>Phone layout (390×844)</h2>
+      <img class="phone" src="phone_layout_390x844.png" width="390" height="844" alt="Phone layout 390 by 844" />
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="card">
+      <h2>Rabbit states · seat · calm bell</h2>
+      <div class="strip">
+        <figure class="item">
+          <img class="rabbit" src="rabbit_neutral.png" width="128" height="160" alt="Rabbit neutral" />
+          <figcaption>neutral</figcaption>
+        </figure>
+        <figure class="item">
+          <img class="rabbit" src="rabbit_satisfied.png" width="128" height="160" alt="Rabbit satisfied" />
+          <figcaption>satisfied</figcaption>
+        </figure>
+        <figure class="item">
+          <img class="rabbit" src="rabbit_conflict.png" width="128" height="160" alt="Rabbit conflict" />
+          <figcaption>conflict</figcaption>
+        </figure>
+        <figure class="item">
+          <img class="seat" src="seat.png" width="96" height="80" alt="Seat" />
+          <figcaption>seat</figcaption>
+        </figure>
+        <figure class="item">
+          <img class="bell" src="calm_bell.png" width="64" height="64" alt="Calm bell" />
+          <figcaption>calm_bell</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <p class="note">
+    Candidates only — not imported into formal assets / dist / src.
+    Open this file locally (file://) beside the PNGs in the same folder.
+  </p>
+</body>
+</html>
