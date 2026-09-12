@@ -1,0 +1,7 @@
+cwd=/workspace/demo001-t002/repo/banquet-pilot
+cmd=node candidates/playtest/smoke.mjs
+node=v20.19.2
+started_utc=2026-09-12T06:18:50Z
+ended_utc=2026-09-12T06:18:50Z
+exit_code=0
+engineering_tip=b00f8f84f942e6ad1b90662e9324924a25cedb2c

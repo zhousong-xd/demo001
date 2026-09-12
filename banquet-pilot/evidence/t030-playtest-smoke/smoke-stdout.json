@@ -1,0 +1,210 @@
+{
+  "kind": "candidates-only",
+  "shippedClaim": false,
+  "results": [
+    {
+      "fileId": "c01",
+      "levelId": "C01",
+      "title": "先让大家坐下",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 4,
+      "seats": 4,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c02",
+      "levelId": "C02",
+      "title": "隔桌也算陪伴",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c03",
+      "levelId": "C03",
+      "title": "不是所有矛盾都要换座",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 1
+    },
+    {
+      "fileId": "c04",
+      "levelId": "C04",
+      "title": "自由入席",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c05",
+      "levelId": "C05",
+      "title": "两位都想靠边",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c06",
+      "levelId": "C06",
+      "title": "隔桌传话",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c07",
+      "levelId": "C07",
+      "title": "一枚铃够不够",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 1
+    },
+    {
+      "fileId": "c08",
+      "levelId": "C08",
+      "title": "撤回来也没关系",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c09",
+      "levelId": "C09",
+      "title": "同一桌的两种解",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c10",
+      "levelId": "C10",
+      "title": "一个小误会",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c11",
+      "levelId": "C11",
+      "title": "合作开席",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 0
+    },
+    {
+      "fileId": "c12",
+      "levelId": "C12",
+      "title": "掌席考核",
+      "placed": "fox→A1",
+      "seated": 1,
+      "chars": 6,
+      "seats": 6,
+      "evalOk": true,
+      "bell": 1
+    }
+  ],
+  "undoResults": [
+    {
+      "fileId": "c01",
+      "levelId": "C01",
+      "place": "fox→A1",
+      "undo": "restored-empty",
+      "historyLen": 0
+    },
+    {
+      "fileId": "c04",
+      "levelId": "C04",
+      "place": "fox→A1",
+      "undo": "restored-empty",
+      "historyLen": 0
+    }
+  ],
+  "calmBellResults": [
+    {
+      "fileId": "c03",
+      "levelId": "C03",
+      "miss": {
+        "target": "fox",
+        "reason": "invalid-target",
+        "consumed": false,
+        "stock": 1
+      },
+      "hit": {
+        "target": "rabbit",
+        "reason": "applied",
+        "consumed": true,
+        "stock": 0,
+        "calm": [
+          "rabbit"
+        ]
+      }
+    }
+  ],
+  "swapResults": [
+    {
+      "fileId": "c02",
+      "levelId": "C02",
+      "pair": [
+        "fox",
+        "rabbit"
+      ],
+      "before": {
+        "fox": "A1",
+        "rabbit": "A2"
+      },
+      "after": {
+        "fox": "A2",
+        "rabbit": "A1"
+      },
+      "kind": "swap"
+    }
+  ],
+  "displaceResults": [
+    {
+      "fileId": "c01",
+      "levelId": "C01",
+      "seat": "A1",
+      "before": {
+        "fox": "A1",
+        "rabbit": null
+      },
+      "after": {
+        "rabbit": "A1",
+        "fox": null
+      },
+      "kind": "displace"
+    }
+  ]
+}
