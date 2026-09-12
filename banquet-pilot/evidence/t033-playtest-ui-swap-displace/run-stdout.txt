@@ -1,0 +1,11 @@
+[PASS] mouse swap on c02: fox↔rabbit A1↔A2
+[PASS] mouse displace on c01: rabbit takes A1, fox waiting
+[未测] 真机 / 多指（CDP mouse-sim ≠ 真机）
+{
+  "ok": true,
+  "evid": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t033-playtest-ui-swap-displace",
+  "steps": [
+    "swap_c02",
+    "displace_c01"
+  ]
+}
