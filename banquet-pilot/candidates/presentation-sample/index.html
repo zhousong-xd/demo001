@@ -161,7 +161,35 @@ html, body {
   width: 26px; height: 26px; border-radius: 50%;
   border: 2px dashed #7a8699;
 }
-.seat.hl { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(126,200,255,.3), 0 6px 14px rgba(0,0,0,.35); transform: scale(1.04); }
+.seat { touch-action: manipulation; }
+.seat:active { transform: scale(.94); }
+.seat.hl {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(126,200,255,.38), 0 10px 20px rgba(0,0,0,.4);
+  transform: translateY(-7px) scale(1.07);
+  z-index: 5;
+}
+.seat.target {
+  border-color: var(--accent);
+  border-style: solid;
+  animation: pulseTarget 1s ease-in-out infinite;
+}
+@keyframes pulseTarget {
+  0%,100% { box-shadow: 0 0 0 3px rgba(126,200,255,.2), 0 6px 14px rgba(0,0,0,.35); }
+  50% { box-shadow: 0 0 0 7px rgba(126,200,255,.34), 0 6px 14px rgba(0,0,0,.35); }
+}
+.picking .seat:not(.hl):not(.target) { opacity: .52; filter: brightness(.88); }
+.seat.land { animation: land .42s cubic-bezier(.2,1.4,.4,1); }
+@keyframes land {
+  0% { transform: scale(.7); }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.char.pop { animation: pop .35s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pop {
+  0% { transform: scale(.65); }
+  100% { transform: scale(1); }
+}
 .seat.friend-glow { box-shadow: 0 0 0 3px rgba(69,224,160,.45), 0 0 18px rgba(69,224,160,.2); }
 .seat.rival-glow { box-shadow: 0 0 0 3px rgba(255,123,132,.5), 0 0 18px rgba(255,123,132,.22); }
 .seat.s0 { left: 50%; top: 16%; }
@@ -286,10 +314,9 @@ html, body {
         <button class="btn" type="button" id="btnReplay">再看一遍</button>
         <button class="btn primary" type="button" id="btnShuffle">换个座试试</button>
       </div>
-      <div class="legend">点角色再点空位 · 好友会招手 · 仇人会别扭</div>
     </div>
   </div>
-  <p class="outside">T-055 打磨 · candidates/presentation-sample · 宴席·美术</p>
+  <p class="outside">T-055 画面 · T-056 手感 · candidates/presentation-sample</p>
 </div>
 
 <script>
@@ -302,9 +329,12 @@ const COLOR = { fox: '#e8874a', rabbit: '#e0a8d4', crane: '#8ec4e8' };
 
 let seats = ['fox', 'rabbit', null, 'crane'];
 let selected = null;
+let landSeat = null;
 let perfTimer = null;
 let beatTimer = null;
 let loopTimer = null;
+let reactTimer = null;
+let loopGen = 0;
 
 function face(mood) {
   // mood: idle | happy | awkward | mad | wave
@@ -413,12 +443,17 @@ function render(forceMood) {
   const rivalsAdjacent = foxI >= 0 && rabI >= 0 && (Math.abs(foxI - rabI) === 1 || Math.abs(foxI - rabI) === 3);
   const friendsAdjacent = rabI >= 0 && crI >= 0 && (Math.abs(rabI - crI) === 1 || Math.abs(rabI - crI) === 3);
 
+  const phone = document.getElementById('phone');
+  phone.classList.toggle('picking', selected !== null);
+
   seats.forEach((who, i) => {
     const el = document.createElement('button');
     el.type = 'button';
     el.className = 'seat s' + i + (who ? '' : ' empty');
     el.dataset.seat = String(i);
     if (selected === i) el.classList.add('hl');
+    if (selected !== null && selected !== i) el.classList.add('target');
+    if (landSeat === i) el.classList.add('land');
     if (who) {
       const mood = forceMood && forceMood[who] ? forceMood[who] : moodFor(who, rivalsAdjacent, friendsAdjacent);
       const wrap = document.createElement('div');
@@ -426,6 +461,7 @@ function render(forceMood) {
       wrap.dataset.char = who;
       wrap.dataset.mood = mood;
       wrap.innerHTML = `<span class="bubble" data-bubble></span>` + svgFor(who, mood);
+      if (landSeat === i) wrap.classList.add('pop');
       el.appendChild(wrap);
       const ns = neighbors(i);
       if (REL[who].friend && ns.includes(REL[who].friend)) el.classList.add('friend-glow');
@@ -434,6 +470,16 @@ function render(forceMood) {
     el.addEventListener('click', () => onSeat(i));
     table.appendChild(el);
   });
+  if (landSeat !== null) {
+    const s = landSeat;
+    landSeat = null;
+    setTimeout(() => {
+      const seat = table.querySelector(`[data-seat="${s}"]`);
+      if (seat) seat.classList.remove('land');
+      const ch = seat && seat.querySelector('.char');
+      if (ch) ch.classList.remove('pop');
+    }, 450);
+  }
 }
 
 function setBeat(t, kind) {
@@ -472,11 +518,42 @@ function swapFace(id, mood) {
 }
 
 function clearTimers() {
-  clearTimeout(perfTimer); clearTimeout(beatTimer); clearTimeout(loopTimer);
+  clearTimeout(perfTimer); clearTimeout(beatTimer); clearTimeout(loopTimer); clearTimeout(reactTimer);
+}
+
+function reactNow() {
+  clearPerfClasses();
+  const foxI = seats.indexOf('fox');
+  const rabI = seats.indexOf('rabbit');
+  const crI = seats.indexOf('crane');
+  const rivalsAdjacent = foxI >= 0 && rabI >= 0 && (Math.abs(foxI - rabI) === 1 || Math.abs(foxI - rabI) === 3);
+  const friendsAdjacent = rabI >= 0 && crI >= 0 && (Math.abs(rabI - crI) === 1 || Math.abs(rabI - crI) === 3);
+  setHint('');
+  if (rivalsAdjacent) {
+    setBeat('别扭', 'bad');
+    swapFace('fox', 'awkward');
+    swapFace('rabbit', 'mad');
+    const a = charEl('fox'), b = charEl('rabbit');
+    if (a) { a.classList.remove('idle'); a.classList.add('look-away-left','shy'); bubble('fox', '😒'); }
+    if (b) { b.classList.remove('idle'); b.classList.add('look-away-right','bristle'); bubble('rabbit', '💢'); }
+  } else if (friendsAdjacent) {
+    setBeat('成了', 'ok');
+    swapFace('rabbit', 'happy');
+    swapFace('crane', 'happy');
+    const a = charEl('rabbit'), b = charEl('crane');
+    if (a) { a.classList.remove('idle'); a.classList.add('wave','happy'); bubble('rabbit', '👋'); }
+    if (b) { b.classList.remove('idle'); b.classList.add('nod','happy'); bubble('crane', '✨'); }
+  } else {
+    setBeat('…');
+    swapFace('fox', 'happy');
+    const a = charEl('fox');
+    if (a) { a.classList.remove('idle'); a.classList.add('happy'); }
+  }
 }
 
 function playLoop() {
   clearTimers();
+  const gen = ++loopGen;
   clearPerfClasses();
   const foxI = seats.indexOf('fox');
   const rabI = seats.indexOf('rabbit');
@@ -488,6 +565,7 @@ function playLoop() {
   setHint('');
 
   beatTimer = setTimeout(() => {
+    if (gen !== loopGen || selected !== null) return;
     clearPerfClasses();
     if (friendsAdjacent) {
       setBeat('好友', 'ok');
@@ -498,16 +576,16 @@ function playLoop() {
       if (b) { b.classList.remove('idle'); b.classList.add('nod'); bubble('crane', '🙂'); }
     } else {
       setBeat('…');
-      setHint('好友离远了');
       swapFace('rabbit', 'shy');
       swapFace('crane', 'awkward');
       const a = charEl('rabbit'), b = charEl('crane');
       if (a) { a.classList.remove('idle'); a.classList.add('shy'); }
       if (b) { b.classList.remove('idle'); b.classList.add('look-away-left'); }
     }
-  }, 450);
+  }, 350);
 
   perfTimer = setTimeout(() => {
+    if (gen !== loopGen || selected !== null) return;
     clearPerfClasses();
     if (rivalsAdjacent) {
       setBeat('仇人', 'bad');
@@ -517,22 +595,20 @@ function playLoop() {
       if (a) { a.classList.remove('idle'); a.classList.add('look-away-left','shy'); bubble('fox', '😒'); }
       if (b) { b.classList.remove('idle'); b.classList.add('look-away-right','bristle'); bubble('rabbit', '💢'); }
     } else {
-      setBeat('清净', 'ok');
+      setBeat(friendsAdjacent ? '成了' : '…', friendsAdjacent ? 'ok' : undefined);
       swapFace('fox', 'happy');
       if (friendsAdjacent) swapFace('rabbit', 'happy');
       const a = charEl('fox'), b = charEl('rabbit');
       if (a) { a.classList.remove('idle'); a.classList.add('happy'); }
       if (b && friendsAdjacent) { b.classList.remove('idle'); b.classList.add('happy'); bubble('rabbit', '✨'); }
     }
-  }, 2300);
+  }, 1600);
 
-  setTimeout(() => {
-    if (rivalsAdjacent) {
-      setBeat('换个座？', 'bad');
-      setHint('点角色，再点空位');
-    } else if (friendsAdjacent) {
+  beatTimer = setTimeout(() => {
+    if (gen !== loopGen || selected !== null) return;
+    if (rivalsAdjacent) setBeat('…', 'bad');
+    else if (friendsAdjacent) {
       setBeat('成了', 'ok');
-      setHint('');
       clearPerfClasses();
       swapFace('rabbit', 'happy');
       swapFace('crane', 'happy');
@@ -541,25 +617,25 @@ function playLoop() {
         if (el) { el.classList.remove('idle'); el.classList.add('happy'); }
       });
       bubble('crane', '✨');
-    } else {
-      setBeat('再试试');
-      setHint('把好友挨近，把仇人分开');
-    }
-  }, 4200);
+    } else setBeat('…');
+  }, 3000);
 
   loopTimer = setTimeout(() => {
-    if (!selected) playLoop();
-  }, 7200);
+    if (gen !== loopGen || selected !== null) return;
+    playLoop();
+  }, 5600);
 }
 
 function onSeat(i) {
   const who = seats[i];
   if (selected === null) {
-    if (!who) { setHint('先点一只动物'); return; }
+    if (!who) return; // silent — no rule toast
     selected = i;
-    setHint('再点空位（或另一只交换）');
-    setBeat('挪座');
+    setHint('');
+    setBeat('挪');
     clearTimers();
+    loopGen++;
+    clearPerfClasses();
     render();
     return;
   }
@@ -575,16 +651,24 @@ function onSeat(i) {
   seats[selected] = b;
   seats[i] = a;
   selected = null;
+  landSeat = i;
   setHint('');
+  clearTimers();
+  loopGen++;
   render();
-  playLoop();
+  reactTimer = setTimeout(() => reactNow(), 120);
+  loopTimer = setTimeout(() => { if (selected === null) playLoop(); }, 1700);
 }
 
 function shuffleNice() {
   seats = ['fox', null, 'rabbit', 'crane'];
   selected = null;
+  landSeat = 2;
+  clearTimers();
+  loopGen++;
   render();
-  playLoop();
+  reactTimer = setTimeout(() => reactNow(), 120);
+  loopTimer = setTimeout(() => { if (selected === null) playLoop(); }, 1700);
 }
 
 document.getElementById('btnReplay').addEventListener('click', () => {
