@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: see latest `bot/banquet-pilot` commit after T-017 push — product SHA above stays frozen.
+Docs tip: see latest `bot/banquet-pilot` commit after T-018 push — product SHA above stays frozen; PR #11 body refreshed (Chinese human summary).
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -41,6 +41,7 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-017 push — product SHA
 | #20 | T-015 候选 JSON 草稿 + enum 解数（c10–c12）+ SUMMARY | done / closed · `c10.json`–`c12.json` + enum + `SUMMARY.md`; counts filled; multi-OK; **not** formal `levels/` |
 | #21 | T-016 仅候选试玩页（c01–c12） | done / closed · `candidates/playtest/`；选 JSON + 复用 src ESM；**不是** shipped levels |
 | #22 | T-017 候选试玩说明 PLAYTEST.md（中文） | done / closed · `candidates/PLAYTEST.md`；产品 file:// vs 候选 server；c01–c12 / art preview / known gaps；UI 轻量标注 candidates |
+| #23 | T-018 刷新 PR #11 中文人体摘要（仅文档） | done / closed · `gh pr edit 11` 中文 body：已验收 SHA + dist 打开方式；候选 SUMMARY/playtest/art/PLAYTEST；未做项；链 #4 与关键 closed tasks |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -133,6 +134,15 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | UI polish | playtest 横幅/标题/备注轻量标注 **candidates only**（非正式关） |
 | Claim | **not** shipped / not formal `levels/` |
 
+### T-018 PR #11 Chinese human summary (docs-only)
+
+| Item | Value |
+| --- | --- |
+| Action | `gh pr edit 11` — refresh PR body in **Chinese** for human handoff |
+| Covers | 已验收产品 SHA `f28893f3…` + 打开 `dist/banquet-pilot.html`；候选 c01–c12 SUMMARY / playtest / art preview / PLAYTEST.md；**未做**：merge、正式 levels 导入、最终 art style、真机 |
+| Links | 总控台 [#4](https://github.com/zhousong-xd/demo001/issues/4)；关键 closed tasks #5–#22 |
+| Claim | **doc-only**；不 merge PR #11；不改 dist / 产品玩法 |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -159,6 +169,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (candidates) | **#20 / T-015** C10–C12 JSON + enum + SUMMARY | Counts: C10=8, C11=2, C12=0/4; `SUMMARY.md` c01–c12; still not formal `levels/` |
 | Done (candidates) | **#21 / T-016** playtest page c01–c12 | `candidates/playtest/`; ESM reuse src; still not formal `levels/` |
 | Done (docs) | **#22 / T-017** PLAYTEST.md + UI label polish | Chinese guide: product file:// vs candidates server; gaps; still not formal `levels/` |
+| Done (docs) | **#23 / T-018** PR #11 Chinese body refresh | Human summary via `gh pr edit 11`; still draft / do not merge |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
