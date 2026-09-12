@@ -1,0 +1,116 @@
+{
+  "task": "T-028",
+  "issue": 34,
+  "kind": "CANDIDATES PLAYTEST SMOKE",
+  "verdict": "PASS",
+  "agent": "宴席·质检",
+  "role": "BOT",
+  "work": "qa",
+  "timestampUtc": "2026-09-12T06:16:04Z",
+  "engineeringTip": "20600b969c8d48b4dbd6426e44ef01d52deed1ee",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "blob": "c17208faa0548c34cb8cc150a5dc4bce96a61b9c",
+    "lfOnly": true,
+    "rebuilt": false,
+    "modified": false,
+    "verifiedBeforeAfter": true,
+    "anchorMatch": true,
+    "note": "本环测 candidates/playtest，非正式包"
+  },
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "command": "cd banquet-pilot && node candidates/playtest/smoke.mjs",
+    "exitCode": 0,
+    "browser": false,
+    "realDevice": "真机未测",
+    "multitouch": "未测",
+    "branch": "bot/banquet-pilot"
+  },
+  "matrix": [
+    {
+      "id": "PT-LOAD",
+      "name": "c01–c12 加载+入座",
+      "status": "PASS",
+      "detail": "12/12 evalOk"
+    },
+    {
+      "id": "PT-UNDO",
+      "name": "c01/c04 撤销",
+      "status": "PASS",
+      "detail": "restored-empty"
+    },
+    {
+      "id": "PT-BELL-MISS",
+      "name": "c03 安心铃误投",
+      "status": "PASS",
+      "detail": "invalid-target no consume"
+    },
+    {
+      "id": "PT-BELL-HIT",
+      "name": "c03 安心铃命中",
+      "status": "PASS",
+      "detail": "rabbit applied stock0"
+    },
+    {
+      "id": "PT-SWAP",
+      "name": "c02 原子交换",
+      "status": "PASS",
+      "detail": "fox↔rabbit kind=swap"
+    },
+    {
+      "id": "DEV",
+      "name": "真机/多指/UI",
+      "status": "未测",
+      "detail": "无实体机；node≠真机"
+    }
+  ],
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "tested": [
+    "冻结 dist 锚点冒烟前后一致",
+    "c01–c12 load+place+evalOk",
+    "c01/c04 undo",
+    "c03 calm_bell miss/hit",
+    "c02 atomic swap"
+  ],
+  "untested": [
+    "真机",
+    "多指",
+    "playtest.html 浏览器 UI",
+    "正式关宣称 / 合 PR"
+  ],
+  "smoke": {
+    "exitCode": 0,
+    "banner": "T-027 smoke OK: place/undo/calm_bell + c02 swap",
+    "kind": "candidates-only",
+    "shippedClaim": false
+  },
+  "paths": {
+    "matrix": "banquet-pilot/reports/qa/T-028-playtest-smoke-20260912.md",
+    "summary": "banquet-pilot/reports/qa/T-028-playtest-smoke-summary.json",
+    "evidence": "banquet-pilot/evidence/t028-playtest-smoke/"
+  },
+  "push": {
+    "pushed": true,
+    "reason": null,
+    "tip": "33bfa53e497ef96253f45e5e31181e146e98f8ca",
+    "branch": "bot/banquet-pilot",
+    "note": "reports/evidence only; dist/src untouched"
+  },
+  "experience": "候选 playtest 冒烟可在 node 内核层独立复验；正式包仍冻结，UI/真机另开环。",
+  "gate": {
+    "verdict": "PASS",
+    "acceptReservedForLead": true,
+    "authorSelfTestNotAcceptance": true
+  }
+}
