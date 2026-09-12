@@ -2,7 +2,7 @@
 """Enumerate solutions for candidate JSON under candidates/levels/ only.
 
 Copies the product solver API usage pattern without modifying product
-levels/, dist/, or src/. Loads sibling c01.json–c03.json and prints counts.
+levels/, dist/, or src/. Loads sibling c01.json–c06.json and prints counts.
 """
 
 from __future__ import annotations
@@ -23,29 +23,31 @@ def load_candidate(stem: str) -> dict:
     path = CAND_DIR / f"{stem}.json"
     with path.open(encoding="utf-8") as f:
         data = json.load(f)
-    # Strip candidate_meta before validate (product schema has no meta field;
-    # validate_level ignores unknown top-level keys but we keep rules clean).
     errors = validate_level(data)
     if errors:
         raise ValueError(f"invalid candidate {data.get('id', stem)}: {'; '.join(errors)}")
     return data
 
 
+def report(stem: str, label: str | None = None, calm: set | None = None) -> tuple[int, int]:
+    data = load_candidate(stem)
+    tag = label or data.get("id", stem.upper())
+    kwargs = {}
+    if calm is not None:
+        kwargs["calm"] = calm
+    n, t = count_solutions(data, **kwargs)
+    print(f"{tag}: {t} perms → {n} solution(s)")
+    for s in enumerate_solutions(data, **kwargs):
+        print(f"  {s}")
+    return n, t
+
+
 def main() -> int:
     print("=== Banquet Pilot candidate enumeration (candidates/levels only) ===")
     print(f"dir: {CAND_DIR}")
 
-    c01 = load_candidate("c01")
-    n, t = count_solutions(c01)
-    print(f"C01: {t} perms → {n} solution(s)")
-    for s in enumerate_solutions(c01):
-        print(f"  {s}")
-
-    c02 = load_candidate("c02")
-    n, t = count_solutions(c02)
-    print(f"C02: {t} perms → {n} solution(s)")
-    for s in enumerate_solutions(c02):
-        print(f"  {s}")
+    report("c01")
+    report("c02")
 
     c03 = load_candidate("c03")
     n0, t0 = count_solutions(c03, calm=set())
@@ -57,6 +59,10 @@ def main() -> int:
     for cid in ("fox", "crane", "otter", "tanuki", "hedgehog"):
         n, _ = count_solutions(c03, calm={cid})
         print(f"C03 calm {cid}: {n} solution(s)")
+
+    report("c04")
+    report("c05")
+    report("c06")
     return 0
 
 

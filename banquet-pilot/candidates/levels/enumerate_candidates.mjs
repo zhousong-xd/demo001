@@ -18,25 +18,24 @@ function loadCandidate(stem) {
   return data;
 }
 
+function report(stem, label, calm) {
+  const data = loadCandidate(stem);
+  const tag = label || data.id || stem.toUpperCase();
+  const opts = calm !== undefined ? { calm } : {};
+  const [n, t] = countSolutions(data, opts);
+  console.log(`${tag}: ${t} perms → ${n} solution(s)`);
+  for (const s of enumerateSolutions(data, opts)) console.log(`  ${JSON.stringify(s)}`);
+  return [n, t];
+}
+
 console.log("=== Banquet Pilot candidate enumeration (JS, candidates/levels only) ===");
 console.log(`dir: ${__dirname}`);
 
-const c01 = loadCandidate("c01");
-{
-  const [n, t] = countSolutions(c01);
-  console.log(`C01: ${t} perms → ${n} solution(s)`);
-  for (const s of enumerateSolutions(c01)) console.log(`  ${JSON.stringify(s)}`);
-}
+report("c01");
+report("c02");
 
-const c02 = loadCandidate("c02");
 {
-  const [n, t] = countSolutions(c02);
-  console.log(`C02: ${t} perms → ${n} solution(s)`);
-  for (const s of enumerateSolutions(c02)) console.log(`  ${JSON.stringify(s)}`);
-}
-
-const c03 = loadCandidate("c03");
-{
+  const c03 = loadCandidate("c03");
   const [n0, t0] = countSolutions(c03, { calm: new Set() });
   console.log(`C03 no calm: ${t0} perms → ${n0} solution(s)`);
   const [n1, t1] = countSolutions(c03, { calm: new Set(["rabbit"]) });
@@ -49,3 +48,7 @@ const c03 = loadCandidate("c03");
     console.log(`C03 calm ${cid}: ${n} solution(s)`);
   }
 }
+
+report("c04");
+report("c05");
+report("c06");

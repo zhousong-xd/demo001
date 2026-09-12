@@ -1,0 +1,21 @@
+{
+  "id": "C05",
+  "title": "两位都想靠边",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [],
+  "rules": [
+    {"id": "C05-r1", "kind": "at", "subject": "fox", "seat": "A1"},
+    {"id": "C05-r2", "kind": "end", "subject": "hedgehog"},
+    {"id": "C05-r3", "kind": "end", "subject": "crane"},
+    {"id": "C05-r4", "kind": "faces", "subject": "rabbit", "other": "fox"},
+    {"id": "C05-r5", "kind": "same_row", "subject": "otter", "other": "hedgehog"}
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": null,
+    "note": "Design candidate draft under candidates/levels only; not formal levels/."
+  }
+}

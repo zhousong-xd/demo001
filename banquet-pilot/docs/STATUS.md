@@ -16,11 +16,11 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: see latest `bot/banquet-pilot` commit after T-010 push — product SHA above stays frozen.
+Docs tip: see latest `bot/banquet-pilot` commit after T-011 push — product SHA above stays frozen.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
-## Closed tasks (#5–#15)
+## Closed tasks (#5–#16)
 
 | Issue | Task | Result |
 | --- | --- | --- |
@@ -33,11 +33,12 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-010 push — product SHA
 | #12 | T-007 十二关候选设计目录骨架 | done / closed · skeleton under `candidates/levels/` |
 | #13 | T-008 前三关候选设计 brief（c01–c03） | done / closed · briefs; ruleVersion 0.1 |
 | #14 | T-009 候选 JSON 草稿 + enum 解数（c01–c03） | done / closed · `c01.json`–`c03.json` + enum; counts filled; **not** formal `levels/` |
-| #15 | T-010 候选设计 brief（c04–c06） | done / closed · baseline §13 #04–#06; 解数 **TBD**; **not** formal `levels/` |
+| #15 | T-010 候选设计 brief（c04–c06） | done / closed · baseline §13 #04–#06; counts were TBD |
+| #16 | T-011 候选 JSON 草稿 + enum 解数（c04–c06） | done / closed · `c04.json`–`c06.json` + enum; counts filled; multi-OK; **not** formal `levels/` |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
-Level candidates: `banquet-pilot/candidates/levels/` — C01–C03 **brief+enum**; C04–C06 **brief** (baseline §13; counts TBD); C07–C12 stubs. **Not** formal `levels/`.
+Level candidates: `banquet-pilot/candidates/levels/` — C01–C06 **brief+enum**; C07–C12 stubs. **Not** formal `levels/`.
 
 ### T-009 enum results (candidates only)
 
@@ -49,6 +50,14 @@ Level candidates: `banquet-pilot/candidates/levels/` — C01–C03 **brief+enum*
 | C03 calm rabbit | 720 | **1** |
 | C03 calm other targets | 720 each | **0** |
 
+### T-011 enum results (candidates only)
+
+| Candidate | Perms | Solutions |
+| --- | --- | --- |
+| C04 | 720 | **8** (multi-solution OK) |
+| C05 | 720 | **2** |
+| C06 | 720 | **4** |
+
 Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`). Product SHA / HTML hash unchanged.
 
 ## Open risks
@@ -56,7 +65,7 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`). Product SHA / HT
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
 2. **Style not final** — T-006 候选已 ACCEPT 为样板，**人类风格点头未做**；不得批量扩 art，不得擅自导入正式 assets。
 3. **PR #11 still draft / unmerged** — 工程与证据均在 `bot/banquet-pilot`；不自动 merge、不写 main、不强推、不公开部署。
-4. **C04–C12 solution counts TBD** — C04–C06 briefs filled but counts still TBD; C07–C12 stubs; no invent counts; no formal `levels/` promotion without eng+QA.
+4. **C07–C12 solution counts TBD** — stubs only; no invent counts; no formal `levels/` promotion without eng+QA.
 
 ## Next optional work
 
@@ -67,8 +76,9 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`). Product SHA / HT
 | Done (docs) | **#12 / T-007** candidates skeleton | Design intent under `candidates/levels/` |
 | Done (docs) | **#13 / T-008** C01–C03 briefs | Learning goal / seats-rules sketch / tips / ruleVersion 0.1 |
 | Done (candidates) | **#14 / T-009** C01–C03 JSON + enum | Counts filled; still not formal `levels/` |
-| Done (docs) | **#15 / T-010** C04–C06 briefs | Baseline §13 #04–#06; counts TBD; still not formal `levels/` |
-| Optional next | C04–C06 JSON + enum / C07–C12 briefs | Separate tasks; still no formal `levels/` write without eng+QA |
+| Done (docs) | **#15 / T-010** C04–C06 briefs | Baseline §13 #04–#06; still not formal `levels/` |
+| Done (candidates) | **#16 / T-011** C04–C06 JSON + enum | Counts: C04=8, C05=2, C06=4; still not formal `levels/` |
+| Optional next | C07–C12 briefs / JSON + enum | Separate tasks; still no formal `levels/` write without eng+QA |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines

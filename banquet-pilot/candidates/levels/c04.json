@@ -1,0 +1,20 @@
+{
+  "id": "C04",
+  "title": "自由入席",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [],
+  "rules": [
+    {"id": "C04-r1", "kind": "at", "subject": "fox", "seat": "A2"},
+    {"id": "C04-r2", "kind": "same_row", "subject": "tanuki", "other": "crane"},
+    {"id": "C04-r3", "kind": "not_beside", "subject": "rabbit", "other": "fox"},
+    {"id": "C04-r4", "kind": "faces", "subject": "otter", "other": "tanuki"}
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": null,
+    "note": "Design candidate draft under candidates/levels only; not formal levels/. Multi-solution OK."
+  }
+}
