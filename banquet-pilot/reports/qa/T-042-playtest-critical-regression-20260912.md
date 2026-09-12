@@ -129,5 +129,5 @@
 
 ## Push
 
-- tip: _(filled after push)_ on `bot/banquet-pilot` (reports/evidence only)
-- issue comment: _(filled after comment)_
+- tip: `57896e748d38c24c9d900026d5b66e6e8df36864` on `bot/banquet-pilot` (reports/evidence only)
+- issue comment: https://github.com/zhousong-xd/demo001/issues/48#issuecomment-5644825639

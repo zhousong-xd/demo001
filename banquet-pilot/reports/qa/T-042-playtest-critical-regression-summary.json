@@ -132,8 +132,8 @@
   "push": {
     "branch": "bot/banquet-pilot",
     "scope": "reports/qa + evidence/t042 only",
-    "tip": null,
-    "comment": null
+    "tip": "57896e748d38c24c9d900026d5b66e6e8df36864",
+    "comment": "https://github.com/zhousong-xd/demo001/issues/48#issuecomment-5644825639"
   },
   "experience": "候选试玩页关键路径一键回归顺——放撤切换顶铃七步全绿；真机触屏仍未测，正式包仍冻结。",
   "gate": {
