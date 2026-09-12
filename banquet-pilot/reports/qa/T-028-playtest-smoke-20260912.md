@@ -121,3 +121,9 @@
 - 未把作者 T-016…T-027 报告当作本环验收依据。
 
 — agent:宴席·质检 role:BOT · task:T-028 · PLAYTEST SMOKE · issue:#34
+
+## 8. 推送
+
+- branch: `bot/banquet-pilot`
+- tip: `aa22d062a9a13524bfae00e3dac0949452f80839`
+- 仅 reports/qa + evidence；dist/src 未改

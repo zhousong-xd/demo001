@@ -103,7 +103,7 @@
   "push": {
     "pushed": true,
     "reason": null,
-    "tip": "33bfa53e497ef96253f45e5e31181e146e98f8ca",
+    "tip": "aa22d062a9a13524bfae00e3dac0949452f80839",
     "branch": "bot/banquet-pilot",
     "note": "reports/evidence only; dist/src untouched"
   },
