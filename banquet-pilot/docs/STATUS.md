@@ -17,7 +17,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge**（说明已含公网链 · T-046） |
 
-Docs tip: after **T-047** — 公网可玩已挂 STATUS；产品 SHA 冻结不变；T-043～046 已 ACCEPT 收口；[`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md)；PR #11 仍 draft 未 merge。
+Docs tip: after **T-052** — 公网可玩仍挂 STATUS；产品 SHA 冻结不变；候选 UI 抽样 **c04–c12** 放撤自测+独检均绿已收口；[`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md)；PR #11 仍 draft 未 merge。
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -64,8 +64,11 @@ Docs tip: after **T-047** — 公网可玩已挂 STATUS；产品 SHA 冻结不�
 | #51 | T-045 独检 playtest UI 抽样（c04/c07/c10） | done / ACCEPT · 质检独检（工程未兼） |
 | #52 | T-046 刷新 PR #11 说明（含公网链） | done / ACCEPT · REST 刷新中文 body；仍 draft 未 merge；不改 dist |
 | #53 | T-047 STATUS 写入公网链 + T-043～046 收口 | done / ACCEPT · 公网链 + T-043～046 收口；仅文档 |
-| #54 | T-048 候选 playtest UI 抽样短冒烟（c05/c08/c11） | done / awaiting ACCEPT · 放+撤 PASS；evidence/t048；真机未测；不改 dist |
-| #56 | T-050 候选 playtest UI 抽样短冒烟（c06/c09/c12） | done / awaiting ACCEPT · 放+撤 PASS；evidence/t050；真机未测；不改 dist |
+| #54 | T-048 候选 playtest UI 抽样短冒烟（c05/c08/c11） | done / ACCEPT · 放+撤 PASS；evidence/t048；真机未测；不改 dist |
+| #55 | T-049 候选 playtest UI 抽样（c05/c08/c11）独立复核 | done / ACCEPT · 质检独检（工程未兼） |
+| #56 | T-050 候选 playtest UI 抽样短冒烟（c06/c09/c12） | done / ACCEPT · 放+撤 PASS；evidence/t050；真机未测；不改 dist |
+| #57 | T-051 候选 playtest UI 抽样（c06/c09/c12）独立复核 | done / ACCEPT · 质检独检（工程未兼） |
+| #58 | T-052 STATUS 收口候选抽样 c04–c12 | done / awaiting ACCEPT · 仅文档；本文件 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -351,23 +354,18 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 
 See [LOOP.md](./LOOP.md) — closed-loop + checklist. Plan: [CURRENT_PLAN.md](./CURRENT_PLAN.md). Lessons: [LESSONS.md](./LESSONS.md).
 
-## T-043～T-046 收口（ACCEPT）
+## 候选 UI 抽样收口 c04–c12（ACCEPT）
 
-| Task | Issue | 要点 |
-| --- | --- | --- |
-| T-043 | #49 | 候选 UI 抽样 c04/c07/c10 放+撤 PASS；`evidence/t043-…`；真机未测 |
-| T-044 | #50 | **公网** https://zhousong-xd.github.io/demo001/ ；产品 SHA `f28893f3…`；dist 源未改 |
-| T-045 | #51 | 质检独检同矩阵（工程不兼） |
-| T-046 | #52 | PR #11 中文说明含公网链 + 冻结版；**仍 draft 未 merge** |
+公网可玩（保留）：https://zhousong-xd.github.io/demo001/  
+产品 SHA（只读）：`f28893f3c419d794c6ba102bac67038683cb462c`
 
-T-047/#53：本 STATUS 写入公网链并收口上表（仅文档）。
+| 批次 | 工程自测 | 质检独检 | 矩阵 |
+| --- | --- | --- | --- |
+| A | T-043/#49 · `evidence/t043-…` | T-045/#51 | c04 / c07 / c10 放+撤 |
+| B | T-048/#54 · `evidence/t048-…` | T-049/#55 | c05 / c08 / c11 放+撤 |
+| C | T-050/#56 · `evidence/t050-…` | T-051/#57 | c06 / c09 / c12 放+撤 |
 
-## T-048 / #54 — 候选 UI 抽样短冒烟 c05/c08/c11（放+撤）
+结论：**c04–c12 抽样放撤自测+独检均绿**；真机/多指仍标未测；**未改 dist**；PR #11 仍 draft 未 merge。
 
-- 证据 `evidence/t048-playtest-ui-sample-c05-c08-c11/`；单命令 PASS；dist 未改；真机未测
-- 等主导 ACCEPT
+T-052/#58：本 STATUS 收口上表（仅文档）。
 
-## T-050 / #56 — 候选 UI 抽样短冒烟 c06/c09/c12（放+撤）
-
-- 证据 `evidence/t050-playtest-ui-sample-c06-c09-c12/`；单命令 PASS；dist 未改；真机未测
-- 等主导 ACCEPT
