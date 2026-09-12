@@ -1,5 +1,6 @@
-/** Pure board state for Banquet Pilot graybox (T-003).
+/** Pure board / game state for Banquet Pilot graybox (T-003/T-004).
  * No DOM. Assignment: charId -> seatId | null (null = waiting).
+ * T-004: calm Set + prop inventory + full snapshots for undo.
  */
 
 /**
@@ -14,11 +15,66 @@ export function createInitialAssignment(level) {
 }
 
 /**
+ * Initial prop stocks from level definition (cannot farm via restart).
+ * @param {object} level
+ * @returns {Record<string, number>}
+ */
+export function createInitialInventory(level) {
+  /** @type {Record<string, number>} */
+  const inv = {};
+  for (const p of level.props || []) {
+    if (p && typeof p.id === "string") {
+      inv[p.id] = typeof p.stock === "number" ? p.stock : 0;
+    }
+  }
+  return inv;
+}
+
+/**
  * @param {Record<string, string|null>} assignment
  * @returns {Record<string, string|null>}
  */
 export function cloneAssignment(assignment) {
   return { ...assignment };
+}
+
+/**
+ * @param {Iterable<string>} calm
+ * @returns {Set<string>}
+ */
+export function cloneCalm(calm) {
+  return new Set(calm);
+}
+
+/**
+ * @param {Record<string, number>} inventory
+ * @returns {Record<string, number>}
+ */
+export function cloneInventory(inventory) {
+  return { ...inventory };
+}
+
+/**
+ * Full undoable snapshot (assignment + calm + inventory).
+ * @param {{ assignment: Record<string, string|null>, calm: Iterable<string>, inventory: Record<string, number> }} state
+ */
+export function snapshotPlay(state) {
+  return {
+    assignment: cloneAssignment(state.assignment),
+    calm: [...state.calm],
+    inventory: cloneInventory(state.inventory),
+  };
+}
+
+/**
+ * @param {{ assignment: Record<string, string|null>, calm: string[], inventory: Record<string, number> }} snap
+ */
+export function restorePlay(snap) {
+  return {
+    assignment: cloneAssignment(snap.assignment),
+    calm: new Set(snap.calm || []),
+    inventory: cloneInventory(snap.inventory || {}),
+  };
 }
 
 /**
@@ -35,7 +91,7 @@ export function occupantOf(assignment, seat) {
 
 /**
  * Apply place/move/swap/displace. Returns null if no-op (same seat / invalid).
- * Never mutates input.
+ * Never mutates input. Calm is character-scoped and follows moves automatically.
  *
  * @param {Record<string, string|null>} assignment
  * @param {string} charId
@@ -74,14 +130,64 @@ export function applySeatAction(assignment, charId, seat, availableSeats) {
 }
 
 /**
- * Undo stack stores full assignments. push only when applySeatAction succeeds.
+ * Apply a prop that grants calm (e.g. calm_bell).
+ * - Invalid target → no consume
+ * - Already calm on valid target → no extra consume (idempotent)
+ * - Fresh valid target with stock → consume 1, add to calm
+ * Never mutates input when returning a next state; caller pushes history.
+ *
+ * @param {{ assignment: Record<string, string|null>, calm: Set<string>, inventory: Record<string, number> }} state
+ * @param {string} propId
+ * @param {string} targetChar
+ * @param {object} level
+ * @returns {{
+ *   ok: boolean,
+ *   consumed: boolean,
+ *   reason: string,
+ *   next: { assignment: Record<string, string|null>, calm: Set<string>, inventory: Record<string, number> } | null
+ * }}
  */
-export function createHistory() {
-  return /** @type {Record<string, string|null>[]} */ ([]);
+export function applyCalmProp(state, propId, targetChar, level) {
+  const props = Array.isArray(level.props) ? level.props : [];
+  const prop = props.find((p) => p && p.id === propId);
+  if (!prop) {
+    return { ok: false, consumed: false, reason: "no-prop", next: null };
+  }
+  if (!Object.prototype.hasOwnProperty.call(state.assignment, targetChar)) {
+    return { ok: false, consumed: false, reason: "unknown-char", next: null };
+  }
+  const targets = prop.valid_targets || [];
+  if (!targets.includes(targetChar)) {
+    return { ok: false, consumed: false, reason: "invalid-target", next: null };
+  }
+  if (state.calm.has(targetChar)) {
+    // Repeat on already-calm: success semantics, no extra consume, no state change
+    return { ok: true, consumed: false, reason: "already-calm", next: null };
+  }
+  const stock = state.inventory[propId] ?? 0;
+  if (stock < 1) {
+    return { ok: false, consumed: false, reason: "no-stock", next: null };
+  }
+  const next = {
+    assignment: cloneAssignment(state.assignment),
+    calm: cloneCalm(state.calm),
+    inventory: cloneInventory(state.inventory),
+  };
+  next.calm.add(targetChar);
+  next.inventory[propId] = stock - 1;
+  return { ok: true, consumed: true, reason: "applied", next };
 }
 
 /**
- * @param {Record<string, string|null>[]} history
+ * Undo stack stores full play snapshots (T-004) OR legacy assignment-only
+ * (kept for older pushHistory callers). Prefer pushPlayHistory / popPlayHistory.
+ */
+export function createHistory() {
+  return /** @type {any[]} */ ([]);
+}
+
+/**
+ * @param {any[]} history
  * @param {Record<string, string|null>} assignmentBefore
  */
 export function pushHistory(history, assignmentBefore) {
@@ -89,12 +195,43 @@ export function pushHistory(history, assignmentBefore) {
 }
 
 /**
- * @param {Record<string, string|null>[]} history
+ * @param {any[]} history
  * @returns {Record<string, string|null> | null}
  */
 export function popHistory(history) {
   if (history.length === 0) return null;
   return history.pop() ?? null;
+}
+
+/**
+ * @param {any[]} history
+ * @param {{ assignment: Record<string, string|null>, calm: Iterable<string>, inventory: Record<string, number> }} stateBefore
+ */
+export function pushPlayHistory(history, stateBefore) {
+  history.push(snapshotPlay(stateBefore));
+}
+
+/**
+ * @param {any[]} history
+ * @returns {{ assignment: Record<string, string|null>, calm: Set<string>, inventory: Record<string, number> } | null}
+ */
+export function popPlayHistory(history) {
+  if (history.length === 0) return null;
+  const snap = history.pop();
+  if (!snap) return null;
+  // Legacy: plain assignment object (no calm/inventory keys as arrays)
+  if (
+    snap.assignment === undefined &&
+    snap.calm === undefined &&
+    snap.inventory === undefined
+  ) {
+    return {
+      assignment: cloneAssignment(snap),
+      calm: new Set(),
+      inventory: {},
+    };
+  }
+  return restorePlay(snap);
 }
 
 /**
