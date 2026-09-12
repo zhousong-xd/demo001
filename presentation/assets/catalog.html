@@ -1,0 +1,45 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>分层素材 catalog · T-064</title>
+<style>
+  body{font-family:system-ui,sans-serif;margin:24px;background:#1a1520;color:#f5e9d8}
+  h1{font-size:1.2rem} h2{font-size:1rem;margin-top:28px;color:#e8c98a}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+  .card{background:#2a2233;border-radius:12px;padding:10px;text-align:center}
+  .card img{max-width:100%;max-height:180px;object-fit:contain;background:
+    linear-gradient(45deg,#333 25%,transparent 25%),linear-gradient(-45deg,#333 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#333 75%),linear-gradient(-45deg,transparent 75%,#333 75%);
+    background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0;border-radius:8px}
+  .card code{display:block;font-size:11px;margin-top:8px;color:#cbb}
+  a{color:#9cf}
+</style>
+<h1>T-064 分层素材 <small style="opacity:.6">candidates/presentation-sample/assets/</small></h1>
+<p>透明 PNG · 非整屏 · <a href="ASSETS.md">ASSETS.md</a></p>
+<section>
+<h2>chars/</h2>
+<div class="grid" id="chars"></div>
+</section>
+<section>
+<h2>chairs/</h2>
+<div class="grid" id="chairs"></div>
+</section>
+<section>
+<h2>fx/</h2>
+<div class="grid" id="fx"></div>
+</section>
+<script>
+const groups={
+  chars:['fox_idle','fox_awkward','fox_mad','rabbit_idle','rabbit_mad','rabbit_refuse_stand','rabbit_greet','rabbit_walk','crane_idle','crane_happy'],
+  chairs:['chair_stool','chair_round','chair_spike','chair_host'],
+  fx:['fx_clash']
+};
+for(const [g,files] of Object.entries(groups)){
+  const el=document.getElementById(g);
+  for(const name of files){
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`<img src="${g}/${name}.png" alt="${name}"><code>${g}/${name}.png</code>`;
+    el.appendChild(card);
+  }
+}
+</script>
