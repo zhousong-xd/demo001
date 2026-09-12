@@ -342,3 +342,10 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 ## Process
 
 See [LOOP.md](./LOOP.md) — closed-loop + checklist. Plan: [CURRENT_PLAN.md](./CURRENT_PLAN.md). Lessons: [LESSONS.md](./LESSONS.md).
+
+## T-043 / #49 — 候选 UI 抽样短冒烟 c04/c07/c10（放+撤）
+
+- tip: 见本提交；证据 `evidence/t043-playtest-ui-sample-c04-c07-c10/`
+- 单命令 PASS；dist 未改；真机未测
+- 等主导 ACCEPT
+
