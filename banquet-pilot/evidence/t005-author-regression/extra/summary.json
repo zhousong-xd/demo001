@@ -1,0 +1,91 @@
+{
+  "task": "T-005",
+  "kind": "AUTHOR REGRESSION / NOT independent QA",
+  "productSha": "f28893f3c419d794c6ba102bac67038683cb462c",
+  "mouseSim": true,
+  "touchSim": false,
+  "realDevice": "真机未测",
+  "dist": {
+    "path": "banquet-pilot/dist/banquet-pilot.html",
+    "bytes": 73182,
+    "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5"
+  },
+  "steps": [
+    {
+      "id": "empty_seat_place",
+      "ok": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      },
+      "input": "mouse-sim",
+      "viewport": "390x844"
+    },
+    {
+      "id": "restart_reset",
+      "ok": true,
+      "historyLen": 0,
+      "assignment": {
+        "fox": null,
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      },
+      "input": "mouse-sim"
+    },
+    {
+      "id": "background_visibility_cancel",
+      "ok": true,
+      "fox": null,
+      "gestureActive": false,
+      "input": "mouse-sim",
+      "note": "visibilitychange mid-drag cancels gesture; not physical backgrounding"
+    },
+    {
+      "id": "post_background_restore_place",
+      "ok": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      },
+      "input": "mouse-sim"
+    },
+    {
+      "id": "viewport_desktop_1280x800",
+      "ok": true,
+      "geo": {
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "scrollWidth": 1280,
+        "scrollHeight": 800,
+        "scrollWidthOk": true,
+        "seatCount": 4,
+        "overlaps": []
+      },
+      "input": "mouse-sim",
+      "viewport": "1280x800"
+    },
+    {
+      "id": "console_errors_http_session",
+      "ok": true,
+      "exceptionCount": 0,
+      "consoleEventCount": 7
+    },
+    {
+      "id": "offline_file_load",
+      "ok": true,
+      "seatCount": 4,
+      "levelId": "L01",
+      "embedded": true,
+      "url": "file://…/banquet-pilot/dist/banquet-pilot.html",
+      "input": "n/a (boot)",
+      "note": "no network; Chrome --disable-background-networking + file://"
+    }
+  ],
+  "consoleErrors": [],
+  "ok": true
+}
