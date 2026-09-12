@@ -1,13 +1,15 @@
 /** Kernel smoke for candidates playtest (no browser).
  * - c01–c12: load + place first guest
  * - c01, c04: place → undo → assignment restored (T-025)
- * Not a shipped-level claim. (T-016 / T-019 / T-023 / T-024 / T-025)
+ * - c03: calm_bell invalid target no consume; rabbit valid consume (T-026)
+ * Not a shipped-level claim. (T-016 / T-019 / T-023 / T-024 / T-025 / T-026)
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { evaluateLevel } from "../../src/core/index.js";
 import {
+  applyCalmProp,
   applySeatAction,
   createHistory,
   createInitialAssignment,
@@ -106,10 +108,56 @@ for (const id of UNDO_IDS) {
   });
 }
 
-console.log("T-025 smoke OK: c01–c12 place + undo on c01/c04");
+// --- T-026: c03 calm_bell ---
+const c03 = load("c03");
+let assignment = createInitialAssignment(c03);
+let calm = new Set();
+let inventory = createInitialInventory(c03);
+const stock0 = inventory.calm_bell ?? 0;
+if (stock0 < 1) throw new Error("c03: expected calm_bell stock >= 1");
+
+const miss = applyCalmProp(
+  { assignment, calm, inventory },
+  "calm_bell",
+  "fox",
+  c03,
+);
+if (miss.ok || miss.consumed || miss.reason !== "invalid-target") {
+  throw new Error(`c03 miss: expected invalid-target no consume, got ${JSON.stringify(miss)}`);
+}
+if ((inventory.calm_bell ?? 0) !== stock0) {
+  throw new Error("c03 miss: inventory mutated on invalid target");
+}
+
+const hit = applyCalmProp(
+  { assignment, calm, inventory },
+  "calm_bell",
+  "rabbit",
+  c03,
+);
+if (!hit.ok || !hit.consumed || hit.reason !== "applied" || !hit.next) {
+  throw new Error(`c03 hit: expected applied, got ${JSON.stringify(hit)}`);
+}
+assignment = hit.next.assignment;
+calm = hit.next.calm;
+inventory = hit.next.inventory;
+if (!calm.has("rabbit")) throw new Error("c03 hit: rabbit not calm");
+if ((inventory.calm_bell ?? 0) !== stock0 - 1) {
+  throw new Error(`c03 hit: stock should be ${stock0 - 1}, got ${inventory.calm_bell}`);
+}
+
+const calmBellResults = [{
+  fileId: "c03",
+  levelId: c03.id,
+  miss: { target: "fox", reason: miss.reason, consumed: miss.consumed, stock: inventory.calm_bell + 1 },
+  hit: { target: "rabbit", reason: hit.reason, consumed: hit.consumed, stock: inventory.calm_bell, calm: [...calm] },
+}];
+
+console.log("T-026 smoke OK: c01–c12 place + undo c01/c04 + c03 calm_bell");
 console.log(JSON.stringify({
   kind: "candidates-only",
   shippedClaim: false,
   results,
   undoResults,
+  calmBellResults,
 }, null, 2));

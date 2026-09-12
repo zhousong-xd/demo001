@@ -38,7 +38,7 @@ Serving only `candidates/playtest/` will break `../../src` imports (path walks a
 2. Place one guest (e.g. 狐 → A1), or in DevTools: `__CANDIDATE_PLAYTEST__.place('fox','A1')`.
 3. Status should show `已入座 1/4`. Snapshot: `window.__CANDIDATE_PLAYTEST__` (`shippedClaim: false`).
 
-Kernel-only check (no browser): `node candidates/playtest/smoke.mjs` from `banquet-pilot/` (T-024/T-025: c01–c12 load+place; c01/c04 place→undo→empty).
+Kernel-only check (no browser): `node candidates/playtest/smoke.mjs` from `banquet-pilot/` (T-024/T-025: c01–c12 load+place; c01/c04 undo; c03 calm_bell miss/hit).
 
 ## Limitation
 
