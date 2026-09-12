@@ -114,7 +114,7 @@
   "push": {
     "branch": "bot/banquet-pilot",
     "scope": "reports/qa + evidence/t040 only",
-    "tip": "e116a66cd14dba84598a8c2b6d2ca7f73fffd83b",
+    "tip": "4b8e20d359bc3e1585419858667d34b3d37b8bf0",
     "comment": null
   },
   "experience": "正式三关样片界面短冒烟顺——放撤切关与 L03 安心铃全绿；真机触屏仍未测，正式包仍冻结。",
