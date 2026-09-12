@@ -115,7 +115,7 @@
     "branch": "bot/banquet-pilot",
     "scope": "reports/qa + evidence/t040 only",
     "tip": "4b8e20d359bc3e1585419858667d34b3d37b8bf0",
-    "comment": null
+    "comment": "https://github.com/zhousong-xd/demo001/issues/46#issuecomment-5644806189"
   },
   "experience": "正式三关样片界面短冒烟顺——放撤切关与 L03 安心铃全绿；真机触屏仍未测，正式包仍冻结。",
   "gate": {
