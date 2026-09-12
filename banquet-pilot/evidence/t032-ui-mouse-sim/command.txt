@@ -1,0 +1,6 @@
+# T-032 independent rerun of the same T-031 script
+# Reviewed first, then executed unchanged from tip 1d7d2860fecfdeb1b866653149a0ef6be85cb9a3
+cd banquet-pilot
+node --experimental-websocket tests/evidence/scripts/t031-playtest-ui-smoke.mjs
+# exit_code=0  started=2026-09-12T06:44:39Z  ended=2026-09-12T06:45:01Z
+# Independent evidence copied here; author T-031 evidence restored from backup (not overwritten in git).

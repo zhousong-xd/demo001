@@ -1,0 +1,4 @@
+[PASS] mouse place fox→A1 on c01
+[PASS] mouse undo restores empty board
+[PASS] switch c01→c02 not blank; url ?c=c02
+[未测] 真机 / 多指（CDP mouse-sim ≠ 真机）
