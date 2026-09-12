@@ -3,7 +3,8 @@
  * - c01, c04: place → undo → assignment restored (T-025)
  * - c03: calm_bell invalid target no consume; rabbit valid consume (T-026)
  * - c02: two seated guests atomic swap (T-027)
- * Not a shipped-level claim. (T-016 … T-027)
+ * - c01: waiting guest displaces seated occupant (T-029)
+ * Not a shipped-level claim. (T-016 … T-029)
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -188,7 +189,39 @@ const swapResults = [{
   kind: swapped.kind,
 }];
 
-console.log("T-027 smoke OK: place/undo/calm_bell + c02 swap");
+// --- T-029: waiting guest displaces occupant ---
+const c01d = load("c01");
+let ad = createInitialAssignment(c01d);
+const seatsD = c01d.seats.slice();
+const seatedChar = c01d.characters[0];
+const waiter = c01d.characters[1];
+const seatD = seatsD[0];
+const placeSeated = applySeatAction(ad, seatedChar, seatD, seatsD);
+if (!placeSeated || placeSeated.kind !== "move") {
+  throw new Error(`c01 displace setup place failed: ${JSON.stringify(placeSeated)}`);
+}
+ad = placeSeated.next;
+if (ad[seatedChar] !== seatD || ad[waiter] !== null) {
+  throw new Error("c01 displace setup state wrong");
+}
+const displaced = applySeatAction(ad, waiter, seatD, seatsD);
+if (!displaced || displaced.kind !== "displace") {
+  throw new Error(`c01 displace expected kind=displace, got ${JSON.stringify(displaced)}`);
+}
+ad = displaced.next;
+if (ad[waiter] !== seatD || ad[seatedChar] !== null) {
+  throw new Error(`c01 displace result wrong: ${JSON.stringify({ waiter: ad[waiter], seated: ad[seatedChar] })}`);
+}
+const displaceResults = [{
+  fileId: "c01",
+  levelId: c01d.id,
+  seat: seatD,
+  before: { [seatedChar]: seatD, [waiter]: null },
+  after: { [waiter]: seatD, [seatedChar]: null },
+  kind: displaced.kind,
+}];
+
+console.log("T-029 smoke OK: prior suite + c01 waiting-guest displace");
 console.log(JSON.stringify({
   kind: "candidates-only",
   shippedClaim: false,
@@ -196,4 +229,5 @@ console.log(JSON.stringify({
   undoResults,
   calmBellResults,
   swapResults,
+  displaceResults,
 }, null, 2));
