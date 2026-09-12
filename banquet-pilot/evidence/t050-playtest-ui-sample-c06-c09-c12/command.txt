@@ -1,0 +1,1 @@
+cd banquet-pilot && node --experimental-websocket tests/evidence/scripts/t050-playtest-ui-sample-c06-c09-c12.mjs

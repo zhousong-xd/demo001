@@ -1,0 +1,19 @@
+[PASS] c06 place fox→A1
+[PASS] c06 undo
+[PASS] c09 place fox→A1
+[PASS] c09 undo
+[PASS] c12 place fox→A1
+[PASS] c12 undo
+[未测] 真机 / 多指（CDP mouse-sim ≠ 真机）
+{
+  "ok": true,
+  "evid": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t050-playtest-ui-sample-c06-c09-c12",
+  "steps": [
+    "c06_place",
+    "c06_undo",
+    "c09_place",
+    "c09_undo",
+    "c12_place",
+    "c12_undo"
+  ]
+}
