@@ -1,9 +1,9 @@
-# 表现小样（T-068 切帧 · 唯一公网可玩）
+# 表现小样（T-069 切帧 · 唯一公网可玩）
 
 > **唯一对外可玩**：https://zhousong-xd.github.io/demo001/  
 > 旧冻结三关备份：`/frozen/`（非主玩）  
 > 产品 SHA（只读）：`f28893f3c419d794c6ba102bac67038683cb462c`  
-> **切帧播放**（占位 strip）；高清真序列帧等 T-069。禁单图 CSS bob。
+> **切帧播放**（art tip 598c18d：sheets/ 优先 + 根目录同名条）。禁单图 CSS bob。
 
 ## 打开
 
@@ -29,4 +29,4 @@ cd banquet-pilot && python3 -m http.server 8761
 | `assets/vivid/{fox,rabbit,crane}/` | T-067 分层单姿（ACCEPT） |
 | `../../scripts/bake-vivid-sheets.py` | 占位条烘焙 |
 
-— agent:宴席·工程 role:BOT · T-068
+— agent:宴席·工程 role:BOT · T-069
