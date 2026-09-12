@@ -1,1 +1,9 @@
-{"productSha":"f28893f3c419d794c6ba102bac67038683cb462c","source":"banquet-pilot/dist/banquet-pilot.html","note":"frozen L01-L03 public play mirror"}
+{
+  "task": "T-044",
+  "productSha": "f28893f3c419d794c6ba102bac67038683cb462c",
+  "source": "banquet-pilot/dist/banquet-pilot.html",
+  "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "bytes": 73182,
+  "levels": ["L01", "L02", "L03"],
+  "note": "frozen L01-L03 public play mirror; .nojekyll disables Jekyll"
+}
