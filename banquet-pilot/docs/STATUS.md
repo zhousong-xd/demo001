@@ -16,6 +16,8 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
+Docs tip (T-007 skeleton, this board): see latest `bot/banquet-pilot` commit after push — product SHA above stays frozen.
+
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
 ## Closed tasks (#5–#10)
@@ -43,7 +45,8 @@ Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate
 | --- | --- | --- |
 | Optional | Style lock | Needs human style nod; blocked for formal asset import |
 | Optional | Asset import (post style) | Only after style lock; can draft import plan without touching product |
-| **In flight** | **#12 / T-007 12-level candidates skeleton** | Design intent only under `candidates/levels/` — **not** formal `levels/` |
+| Done (docs) | **#12 / T-007 12-level candidates skeleton** | Design intent only under `candidates/levels/` — **not** formal `levels/` |
+| Optional next | Promote selected C04–C12 stubs | Separate engineering+QA tasks; still no style-locked asset import |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
