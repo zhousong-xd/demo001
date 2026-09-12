@@ -5,7 +5,8 @@
 **T-008:** filled **C01–C03** briefs (learning goal, seats/guests/rules sketch, tips, `ruleVersion` 0.1).  
 **T-009:** machine-checkable candidate JSON drafts (`c01.json`–`c03.json`) + enum under `candidates/` only; briefs TBD→actual counts.  
 **T-010:** filled **C04–C06** design briefs from #4 game-design baseline §13 (fewer fixed seats / multiple ends / two face pairs — **intent only**).  
-**T-011 (this slice):** machine-checkable candidate JSON drafts (`c04.json`–`c06.json`) + enum; briefs TBD→actual counts (multi-solution OK). C07–C12 remain stubs.
+**T-011:** machine-checkable candidate JSON drafts (`c04.json`–`c06.json`) + enum; briefs TBD→actual counts (multi-solution OK).  
+**T-012 (this slice):** filled **C07–C09** design briefs from baseline §13 (item target choice / encourage undo / multiple legal solutions — **intent only**). Solution counts remain **TBD**. C10–C12 remain stubs.
 
 **Not in scope:**
 
@@ -14,6 +15,7 @@
 - Touching `dist/` or gameplay `src/`
 - Claiming “12 finished levels” or playable backlog completion
 - Inventing new rule kinds / props / geometry
+- Inventing solution counts for C07–C09
 - Art batch expansion / formal asset import (needs style lock)
 
 ## What “12 candidates” means
@@ -21,7 +23,8 @@
 Twelve **design slots** (C01–C12).  
 C01–C03 are **brief+enum shipped references** to L01–L03 (frozen product); JSON drafts live here only.  
 C04–C06 are **brief+enum** (baseline §13 #04–#06); JSON drafts + exact counts live here only — not formal levels.  
-C07–C12 are **stubs** for future design.
+C07–C09 are **briefs** (baseline §13 #07–#09); solution counts **TBD** — not formal levels.  
+C10–C12 are **stubs** for future design.
 
 ## Layout
 

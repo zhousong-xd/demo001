@@ -11,9 +11,9 @@ This catalog does **not** assert 12 finished or implemented levels.
 | C04 | 自由入席 | brief+enum | — | fewer `at` / multi-solution OK | 0.1 | **8** |
 | C05 | 两位都想靠边 | brief+enum | — | multiple `end` + faces exclusion | 0.1 | **2** |
 | C06 | 隔桌传话 | brief+enum | — | two disjoint `faces` pairs | 0.1 | **4** |
-| C07 | 铃只有一次机会 | stub | — | calm timing / single stock | 0.1 | TBD |
-| C08 | 谁先入座 | stub | — | constrained `at` chain | 0.1 | TBD |
-| C09 | 隔位不算旁边 | stub | — | `not_beside` geometry clarity | 0.1 | TBD |
+| C07 | 一枚铃够不够 | brief | — | calm_bell **target choice** (≥2 calmable) | 0.1 | TBD |
+| C08 | 撤回来也没关系 | brief | — | encourage try + **undo** (no forced path) | 0.1 | TBD |
+| C09 | 同一桌的两种解 | brief | — | **multiple / symmetric** legal solutions | 0.1 | TBD |
 | C10 | 两排各自成局 | stub | — | dual-row composition | 0.1 | TBD |
 | C11 | 安心之后还要换 | stub | — | calm + post-move checks | 0.1 | TBD |
 | C12 | 小满桌收官 | stub | — | mixed rules capstone (design only) | 0.1 | TBD |
@@ -22,20 +22,25 @@ This catalog does **not** assert 12 finished or implemented levels.
 
 - **brief+enum (shipped-ref)** — C01–C03 briefs (T-008) + candidate JSON drafts + enum counts (T-009) under `candidates/levels/`; still not formal `levels/`.
 - **brief+enum** — C04–C06 briefs (T-010) + candidate JSON drafts + enum counts (T-011); multi-solution OK where design allows; still not formal `levels/`.
+- **brief** — C07–C09 design briefs (T-012) from baseline §13 #07–#09; solution counts **TBD**; still not formal `levels/`.
 - **stub** — teaching goal + suggested rule mix + open questions only; no `known_solution`, no claim of unique solvability.
-- **TBD** solution count — unknown until a dedicated enumerate task; C07–C12 remain TBD.
+- **TBD** solution count — unknown until a dedicated enumerate task; C07–C12 remain TBD (C07–C09 briefs filled, still TBD).
 - Machine-checkable drafts: `c01.json`–`c06.json`; runner: `enumerate_candidates.py` (+ `.mjs`).
 
-## Baseline §13 mapping (C04–C06)
+## Baseline §13 mapping (C04–C09)
 
-| ID | Baseline title | Design intent (intent only) | Enum (T-011) |
+| ID | Baseline title | Design intent (intent only) | Enum |
 | --- | --- | --- | --- |
-| C04 | 自由入席 | 减少固定席，接受多个合法解 | **8** / 720 |
-| C05 | 两位都想靠边 | 多个端位需求；靠排除与对面组合 | **2** / 720 |
-| C06 | 隔桌传话 | 两组对面关系；视觉关系线不混乱 | **4** / 720 |
+| C04 | 自由入席 | 减少固定席，接受多个合法解 | **8** / 720 (T-011) |
+| C05 | 两位都想靠边 | 多个端位需求；靠排除与对面组合 | **2** / 720 (T-011) |
+| C06 | 隔桌传话 | 两组对面关系；视觉关系线不混乱 | **4** / 720 (T-011) |
+| C07 | 一枚铃够不够 | 道具的使用对象选择；≥2 可解除条件 | TBD |
+| C08 | 撤回来也没关系 | 鼓励尝试与撤销；不强制指定步骤 | TBD |
+| C09 | 同一桌的两种解 | 接受对称或多种合法安排；结算等价 | TBD |
 
 ## Next gates (out of this slice)
 
-1. Human / lead picks which stubs get JSON drafts, enum, or engineering promotion.
+1. Human / lead picks which briefs get JSON drafts, enum, or engineering promotion.
 2. Each promoted level needs enumerate/tests evidence before touching `levels/`.
 3. Style lock remains separate from level design.
+4. C10–C12 stubs and baseline title alignment remain future tasks.
