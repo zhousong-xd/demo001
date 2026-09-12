@@ -107,9 +107,9 @@
     "evidence": "banquet-pilot/evidence/t036-ui-calm-bell/"
   },
   "push": {
-    "pushed": false,
-    "reason": "pending",
-    "tip": null,
+    "pushed": true,
+    "reason": null,
+    "tip": "9b21d2704e4d2b0372c15a7aba40bbcee65e7337",
     "branch": "bot/banquet-pilot",
     "note": "reports/evidence only; dist/src untouched"
   },
