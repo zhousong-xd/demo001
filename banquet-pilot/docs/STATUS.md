@@ -68,7 +68,8 @@ Docs tip: after **T-052** — 公网可玩仍挂 STATUS；产品 SHA 冻结不�
 | #55 | T-049 候选 playtest UI 抽样（c05/c08/c11）独立复核 | done / ACCEPT · 质检独检（工程未兼） |
 | #56 | T-050 候选 playtest UI 抽样短冒烟（c06/c09/c12） | done / ACCEPT · 放+撤 PASS；evidence/t050；真机未测；不改 dist |
 | #57 | T-051 候选 playtest UI 抽样（c06/c09/c12）独立复核 | done / ACCEPT · 质检独检（工程未兼） |
-| #58 | T-052 STATUS 收口候选抽样 c04–c12 | done / awaiting ACCEPT · 仅文档；本文件 |
+| #58 | T-052 STATUS 收口候选抽样 c04–c12 | done / ACCEPT · c04–c12 自测+独检收口；仅文档 |
+| #60 | T-054 表现小样预览页（副链·表现候选） | done / awaiting ACCEPT · `candidates/presentation-sample/` + 公网 `/presentation/`；主链不动 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -369,3 +370,8 @@ See [LOOP.md](./LOOP.md) — closed-loop + checklist. Plan: [CURRENT_PLAN.md](./
 
 T-052/#58：本 STATUS 收口上表（仅文档）。
 
+## T-054 / #60 — 表现小样预览页（表现候选）
+
+- 本地：`candidates/presentation-sample/`
+- 公网副链：https://zhousong-xd.github.io/demo001/presentation/ （主链 index 不变）
+- 等美术 T-053 嵌入；**不改 dist**

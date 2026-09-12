@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>表现候选 · 小样预览（非正式）</title>
+  <style>
+    :root {
+      --frame: 390px;
+      --paper: #f6efe4;
+      --ink: #3a2f24;
+      --muted: #7a6a58;
+      --line: #d9cbb8;
+      --warn: #8b3a2a;
+      --warn-bg: #f3e0d6;
+      --slot: #ebe2d4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #e8dfd2;
+      color: var(--ink);
+      line-height: 1.45;
+      padding: 16px 12px 48px;
+    }
+    .banner {
+      max-width: var(--frame);
+      margin: 0 auto 14px;
+      padding: 10px 12px;
+      background: var(--warn-bg);
+      border: 2px solid var(--warn);
+      border-radius: 10px;
+      color: var(--warn);
+      font-size: 0.88rem;
+      font-weight: 650;
+      text-align: center;
+    }
+    .banner small {
+      display: block;
+      margin-top: 4px;
+      font-weight: 500;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    h1 {
+      font-size: 1.05rem;
+      font-weight: 650;
+      margin: 0 0 4px;
+      text-align: center;
+    }
+    .meta {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin: 0 0 16px;
+    }
+    .phone {
+      width: var(--frame);
+      max-width: 100%;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      min-height: 640px;
+      padding: 14px 12px 20px;
+      box-shadow: 0 2px 0 rgba(58, 47, 36, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .stage {
+      flex: 1;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      background: var(--slot);
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 16px 8px;
+    }
+    .table {
+      width: 72%;
+      height: 88px;
+      border-radius: 50%;
+      background: #c4a882;
+      border: 3px solid #9a7a55;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5a4632;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .animals {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .slot {
+      width: 88px;
+      height: 110px;
+      border-radius: 10px;
+      background: #fff8ee;
+      border: 1px dashed #b9a790;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 6px;
+    }
+    .slot strong { color: var(--ink); font-size: 0.78rem; }
+    .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+      margin: 0;
+    }
+    .links {
+      max-width: var(--frame);
+      margin: 18px auto 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .links a { color: #5a3d2b; }
+  </style>
+</head>
+<body>
+  <div class="banner" role="status">
+    表现候选 / 非正式 — 不是正式三关玩法
+    <small>正式主链：<a href="https://zhousong-xd.github.io/demo001/">https://zhousong-xd.github.io/demo001/</a></small>
+  </div>
+
+  <h1>表现小样预览（骨架）</h1>
+  <p class="meta">T-054 · 390 宽 · 等 T-053 美术嵌入一桌 + 两三动物</p>
+
+  <div class="phone" aria-label="390 preview frame">
+    <p class="hint">少字验证区：默认几乎无说明书；看表演懂关系（待美术）</p>
+    <div class="stage">
+      <div class="table">一桌（占位）</div>
+      <div class="animals">
+        <div class="slot" data-slot="a1"><strong>动物 A</strong>待嵌入</div>
+        <div class="slot" data-slot="a2"><strong>动物 B</strong>待嵌入</div>
+        <div class="slot" data-slot="a3"><strong>动物 C</strong>可选</div>
+      </div>
+    </div>
+    <p class="hint">资源目录：<code>assets/</code>（美术 DONE 后放入）</p>
+  </div>
+
+  <p class="links">
+    旧 art 样板：<a href="../art/preview.html">candidates/art/preview.html</a><br />
+    本页路径：<code>candidates/presentation-sample/</code>
+  </p>
+</body>
+</html>
