@@ -2,7 +2,7 @@
 """Enumerate solutions for candidate JSON under candidates/levels/ only.
 
 Copies the product solver API usage pattern without modifying product
-levels/, dist/, or src/. Loads sibling c01.json–c06.json and prints counts.
+levels/, dist/, or src/. Loads sibling c01.json–c09.json and prints counts.
 """
 
 from __future__ import annotations
@@ -63,6 +63,19 @@ def main() -> int:
     report("c04")
     report("c05")
     report("c06")
+
+    c07 = load_candidate("c07")
+    n0, t0 = count_solutions(c07, calm=set())
+    print(f"C07 no calm: {t0} perms → {n0} solution(s)")
+    for cid in ("rabbit", "tanuki", "fox", "crane", "otter", "hedgehog"):
+        n, t = count_solutions(c07, calm={cid})
+        print(f"C07 calm {cid}: {t} perms → {n} solution(s)")
+        if n and cid in ("rabbit", "tanuki"):
+            for s in enumerate_solutions(c07, calm={cid}):
+                print(f"  {s}")
+
+    report("c08")
+    report("c09")
     return 0
 
 

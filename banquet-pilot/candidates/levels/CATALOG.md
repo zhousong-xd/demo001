@@ -11,9 +11,9 @@ This catalog does **not** assert 12 finished or implemented levels.
 | C04 | 自由入席 | brief+enum | — | fewer `at` / multi-solution OK | 0.1 | **8** |
 | C05 | 两位都想靠边 | brief+enum | — | multiple `end` + faces exclusion | 0.1 | **2** |
 | C06 | 隔桌传话 | brief+enum | — | two disjoint `faces` pairs | 0.1 | **4** |
-| C07 | 一枚铃够不够 | brief | — | calm_bell **target choice** (≥2 calmable) | 0.1 | TBD |
-| C08 | 撤回来也没关系 | brief | — | encourage try + **undo** (no forced path) | 0.1 | TBD |
-| C09 | 同一桌的两种解 | brief | — | **multiple / symmetric** legal solutions | 0.1 | TBD |
+| C07 | 一枚铃够不够 | brief+enum | — | calm_bell **target choice** (≥2 calmable) | 0.1 | **0** no-calm / **4** calm-rabbit / **4** calm-tanuki |
+| C08 | 撤回来也没关系 | brief+enum | — | encourage try + **undo** (no forced path) | 0.1 | **4** |
+| C09 | 同一桌的两种解 | brief+enum | — | **multiple / symmetric** legal solutions | 0.1 | **8** |
 | C10 | 两排各自成局 | stub | — | dual-row composition | 0.1 | TBD |
 | C11 | 安心之后还要换 | stub | — | calm + post-move checks | 0.1 | TBD |
 | C12 | 小满桌收官 | stub | — | mixed rules capstone (design only) | 0.1 | TBD |
@@ -22,10 +22,10 @@ This catalog does **not** assert 12 finished or implemented levels.
 
 - **brief+enum (shipped-ref)** — C01–C03 briefs (T-008) + candidate JSON drafts + enum counts (T-009) under `candidates/levels/`; still not formal `levels/`.
 - **brief+enum** — C04–C06 briefs (T-010) + candidate JSON drafts + enum counts (T-011); multi-solution OK where design allows; still not formal `levels/`.
-- **brief** — C07–C09 design briefs (T-012) from baseline §13 #07–#09; solution counts **TBD**; still not formal `levels/`.
+- **brief+enum** — also C07–C09 (T-012 briefs + T-013 JSON/enum); multi-solution OK; still not formal `levels/`.
 - **stub** — teaching goal + suggested rule mix + open questions only; no `known_solution`, no claim of unique solvability.
-- **TBD** solution count — unknown until a dedicated enumerate task; C07–C12 remain TBD (C07–C09 briefs filled, still TBD).
-- Machine-checkable drafts: `c01.json`–`c06.json`; runner: `enumerate_candidates.py` (+ `.mjs`).
+- **TBD** solution count — unknown until a dedicated enumerate task; C10–C12 remain TBD.
+- Machine-checkable drafts: `c01.json`–`c09.json`; runner: `enumerate_candidates.py` (+ `.mjs`).
 
 ## Baseline §13 mapping (C04–C09)
 
@@ -34,9 +34,9 @@ This catalog does **not** assert 12 finished or implemented levels.
 | C04 | 自由入席 | 减少固定席，接受多个合法解 | **8** / 720 (T-011) |
 | C05 | 两位都想靠边 | 多个端位需求；靠排除与对面组合 | **2** / 720 (T-011) |
 | C06 | 隔桌传话 | 两组对面关系；视觉关系线不混乱 | **4** / 720 (T-011) |
-| C07 | 一枚铃够不够 | 道具的使用对象选择；≥2 可解除条件 | TBD |
-| C08 | 撤回来也没关系 | 鼓励尝试与撤销；不强制指定步骤 | TBD |
-| C09 | 同一桌的两种解 | 接受对称或多种合法安排；结算等价 | TBD |
+| C07 | 一枚铃够不够 | 道具的使用对象选择；≥2 可解除条件 | **0**/4/4 (T-013; wrong-target 0) |
+| C08 | 撤回来也没关系 | 鼓励尝试与撤销；不强制指定步骤 | **4** / 720 (T-013) |
+| C09 | 同一桌的两种解 | 接受对称或多种合法安排；结算等价 | **8** / 720 (T-013) |
 
 ## Next gates (out of this slice)
 

@@ -52,3 +52,21 @@ report("c02");
 report("c04");
 report("c05");
 report("c06");
+
+{
+  const c07 = loadCandidate("c07");
+  const [n0, t0] = countSolutions(c07, { calm: new Set() });
+  console.log(`C07 no calm: ${t0} perms → ${n0} solution(s)`);
+  for (const cid of ["rabbit", "tanuki", "fox", "crane", "otter", "hedgehog"]) {
+    const [n, t] = countSolutions(c07, { calm: new Set([cid]) });
+    console.log(`C07 calm ${cid}: ${t} perms → ${n} solution(s)`);
+    if (n > 0 && (cid === "rabbit" || cid === "tanuki")) {
+      for (const s of enumerateSolutions(c07, { calm: new Set([cid]) })) {
+        console.log(`  ${JSON.stringify(s)}`);
+      }
+    }
+  }
+}
+
+report("c08");
+report("c09");

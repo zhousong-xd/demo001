@@ -1,0 +1,22 @@
+{
+  "id": "C08",
+  "title": "撤回来也没关系",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [],
+  "rules": [
+    {"id": "C08-r1", "kind": "at", "subject": "fox", "seat": "A2"},
+    {"id": "C08-r2", "kind": "faces", "subject": "rabbit", "other": "fox"},
+    {"id": "C08-r3", "kind": "same_row", "subject": "otter", "other": "crane"},
+    {"id": "C08-r4", "kind": "not_beside", "subject": "tanuki", "other": "hedgehog"},
+    {"id": "C08-r5", "kind": "end", "subject": "hedgehog"},
+    {"id": "C08-r6", "kind": "faces", "subject": "tanuki", "other": "otter"}
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": null,
+    "note": "Design candidate draft under candidates/levels only; not formal levels/. Multi-path / multi-solution welcome; no calm. Anchor locked to A2 for solvability (brief sketch A1)."
+  }
+}
