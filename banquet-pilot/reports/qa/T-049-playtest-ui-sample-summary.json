@@ -126,7 +126,7 @@
     "branch": "bot/banquet-pilot",
     "scope": "reports/qa + evidence/t049 only",
     "tip": "2683b8202a9a2f1c24c2b54b5b5836427e0813ce",
-    "comment": ""
+    "comment": "https://github.com/zhousong-xd/demo001/issues/55#issuecomment-5644939536"
   },
   "experience": "候选后段抽样关界面放撤顺——c05/c08/c11 六步全绿；真机触屏仍未测，正式包仍冻结。",
   "gate": {

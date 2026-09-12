@@ -129,4 +129,4 @@ c05/c08/c11 放+撤均 **PASS**；真机/多指记 **未测**（不记 PASS）�
 ## Push
 
 - tip: `2683b8202a9a2f1c24c2b54b5b5836427e0813ce` on `bot/banquet-pilot` (reports/evidence only)
-- issue comment: _(filled after comment)_
+- issue comment: https://github.com/zhousong-xd/demo001/issues/55#issuecomment-5644939536
