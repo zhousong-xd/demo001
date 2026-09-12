@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>这桌不能坐 · 正式设计稿 Mockups T-063</title>
+<style>
+:root { --bg:#0c0f14; --card:#161c28; --text:#eef2f7; --muted:#8b95a8; --line:#2a3344; --warn:#8b3a2a; }
+* { box-sizing: border-box; }
+body { margin:0; font-family: system-ui, "PingFang SC", "Noto Sans SC", sans-serif; background:var(--bg); color:var(--text); padding:20px 14px 48px; }
+.banner { max-width:720px; margin:0 auto 14px; padding:10px 12px; background:#f3e0d6; border:2px solid var(--warn); border-radius:10px; color:var(--warn); font-weight:650; text-align:center; font-size:.88rem; }
+.banner small { display:block; margin-top:4px; font-weight:500; color:#7a6a58; font-size:.76rem; }
+h1 { text-align:center; font-size:1.15rem; margin:0 0 4px; }
+.meta { text-align:center; color:var(--muted); font-size:.82rem; margin:0 0 20px; }
+.grid { max-width:720px; margin:0 auto; display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px; }
+.card img { width:100%; height:auto; display:block; border-radius:10px; background:#000; }
+.card figcaption { margin-top:8px; font-size:.8rem; color:var(--muted); line-height:1.4; }
+.note { max-width:720px; margin:22px auto 0; color:var(--muted); font-size:.8rem; }
+</style>
+</head>
+<body>
+  <div class="banner">画图模型正式稿 · 主交付<small>旧 concept/ 线框仅内部参考 · 正式主链 https://zhousong-xd.github.io/demo001/</small></div>
+  <h1>固定一桌 · 体验与交互设计稿</h1>
+  <p class="meta">T-063 · 小搞 · 拒坐 · 吵架升级 · 换座走路遇人 · GenerateImage</p>
+  <div class="grid">
+    <figure class="card"><img src="01_table_overview.png" alt="总览" /><figcaption>01 一桌总览（正式感）</figcaption></figure>
+    <figure class="card"><img src="02_refuse_sit.png" alt="拒坐" /><figcaption>02 见仇人：站着「不坐」</figcaption></figure>
+    <figure class="card"><img src="03_escalate.png" alt="升级" /><figcaption>03 吵架升级（多格）</figcaption></figure>
+    <figure class="card"><img src="06_pick_hover.png" alt="拿起悬停" /><figcaption>06 拿起 + 悬停预演（交互稿）</figcaption></figure>
+    <figure class="card"><img src="04_walk_greet.png" alt="打招呼" /><figcaption>04 换座走路 · 遇友打招呼</figcaption></figure>
+    <figure class="card"><img src="05_walk_clash.png" alt="撞一下" /><figcaption>05 换座走路 · 遇仇人撞一下</figcaption></figure>
+  </div>
+  <p class="note">路径：<code>banquet-pilot/candidates/presentation-sample/mockups/</code> · 公网目标 <code>presentation/mockups/</code></p>
+</body>
+</html>
