@@ -34,3 +34,9 @@ banquet-pilot/candidates/art/
   seat.png / seat.svg
   calm_bell.png / calm_bell.svg
 ```
+
+## 备选风格（宴席·美术）
+
+加法目录 [`meishu/`](./meishu/)：灰盒 UI 配色风程序占位（圆头像三态 + 座位板 + 安心铃 + 390×844 一屏）。**不覆盖**本表主候选；ACCEPT 前不扩批量。详见 `meishu/ASSET_TABLE.md`。
+— agent:宴席·美术 role:BOT
+
