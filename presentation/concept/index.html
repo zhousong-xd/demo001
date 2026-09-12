@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>表现重设计 · 概念板 T-060</title>
+<style>
+:root { --bg:#0e1116; --card:#1a2030; --text:#eef2f7; --muted:#8b95a8; --line:#2a3344; --warn:#8b3a2a; }
+* { box-sizing: border-box; }
+body { margin:0; font-family: system-ui, "PingFang SC", "Noto Sans SC", sans-serif; background:var(--bg); color:var(--text); padding:20px 16px 48px; line-height:1.45; }
+.banner { max-width:980px; margin:0 auto 16px; padding:10px 12px; background:#f3e0d6; border:2px solid var(--warn); border-radius:10px; color:var(--warn); font-weight:650; text-align:center; font-size:.9rem; }
+.banner small { display:block; margin-top:4px; font-weight:500; color:#7a6a58; font-size:.78rem; }
+h1 { text-align:center; font-size:1.2rem; margin:0 0 6px; }
+.meta { text-align:center; color:var(--muted); font-size:.85rem; margin:0 0 22px; }
+section { max-width:980px; margin:0 auto 28px; }
+section h2 { font-size:1rem; margin:0 0 10px; font-weight:650; }
+.grid { display:grid; gap:14px; }
+.grid.phones { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.grid.wide { grid-template-columns: 1fr; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px; }
+.card figcaption { margin-top:8px; font-size:.8rem; color:var(--muted); }
+.card img { width:100%; height:auto; display:block; border-radius:8px; background:#000; }
+.note { max-width:980px; margin:0 auto; color:var(--muted); font-size:.82rem; }
+.note a { color:#c9b8a0; }
+</style>
+</head>
+<body>
+  <div class="banner">概念 / 效果图 · 非正式小样 · 停交互实现<small>正式主链：https://zhousong-xd.github.io/demo001/</small></div>
+  <h1>这桌不能坐 · 表现重设计概念板</h1>
+  <p class="meta">T-060 · 固定一桌 · 少字可读 · 凡动必有戏 · 人数 · 椅随关系 · 仇友意外</p>
+
+  <section>
+    <h2>1. 总览（少字）</h2>
+    <div class="grid phones">
+      <figure class="card"><img src="01_hero_overview.png" alt="总览" width="390" height="844" /><figcaption>01 椅+脸说话，几乎无说明书</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 凡动必有戏（拿起 → 悬停 → 落下 → 挤开）</h2>
+    <div class="grid phones">
+      <figure class="card"><img src="02_pick.png" alt="拿起" /><figcaption>02 拿起：人悬空 · 椅留影</figcaption></figure>
+      <figure class="card"><img src="03_hover.png" alt="悬停" /><figcaption>03 悬停：红/绿预演</figcaption></figure>
+      <figure class="card"><img src="04_land.png" alt="落下" /><figcaption>04 落下：关系立刻结算</figcaption></figure>
+      <figure class="card"><img src="05_bump.png" alt="挤开" /><figcaption>05 挤开：人走椅晃</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 人数戏对比</h2>
+    <div class="grid wide">
+      <figure class="card"><img src="06_counts_compare.png" alt="人数对比" /><figcaption>06 俩对峙高背 · 仨三角 · 满矮凳热闹</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 椅随关系（≥3 种）</h2>
+    <div class="grid wide">
+      <figure class="card"><img src="07_chair_types.png" alt="椅型" /><figcaption>07 方凳 / 圆背 / 尖背 / 主座高背</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>5. 仇友意外效果</h2>
+    <div class="grid phones">
+      <figure class="card"><img src="08_rival_gag.png" alt="仇人" /><figcaption>08 仇人硬挨：修罗场 · 菜先遭殃</figcaption></figure>
+      <figure class="card"><img src="09_friend_split.png" alt="好友" /><figcaption>09 好友被拆：够不着</figcaption></figure>
+    </div>
+  </section>
+
+  <p class="note">本地路径：<code>banquet-pilot/candidates/presentation-sample/concept/</code> · 说明见 <a href="./README.md">README.md</a> · 设计表见上级 <a href="../设计表.md">设计表.md</a></p>
+</body>
+</html>
