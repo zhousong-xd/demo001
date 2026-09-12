@@ -1,0 +1,80 @@
+{
+  "task": "T-003",
+  "mode": "simple-local",
+  "inputLabels": {
+    "mouseSim": "yes — CDP Input.dispatchMouseEvent",
+    "touchSim": "未跑",
+    "realDevice": "真机未测"
+  },
+  "chrome": {
+    "sandbox": "enabled",
+    "headless": "new",
+    "isolationLauncher": false,
+    "BANQUET_EVIDENCE_ISOLATED": false
+  },
+  "consoleErrors": [],
+  "paths": {
+    "l01_click_win": {
+      "ok": true,
+      "won": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": "B2",
+        "crane": "B1",
+        "otter": "A2"
+      },
+      "historyLen": 4
+    },
+    "l02_click_win": {
+      "ok": true,
+      "won": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": "B1",
+        "crane": "B3",
+        "otter": "A2",
+        "tanuki": "B2",
+        "hedgehog": "A3"
+      },
+      "historyLen": 6
+    },
+    "swap_undo": {
+      "ok": true,
+      "afterSwap": {
+        "fox": "A2",
+        "rabbit": "A1"
+      },
+      "afterUndo": {
+        "fox": "A1",
+        "rabbit": "A2",
+        "crane": null,
+        "otter": null
+      },
+      "historyLen": 2
+    },
+    "drag_cancel": {
+      "ok": true,
+      "method": "mouse-sim mid-drag + window blur (cancelGesture)",
+      "foxAfterCancel": null,
+      "historyUnchanged": true,
+      "postCancelPlaceOk": true
+    },
+    "l01_drag_win_optional": {
+      "ok": true,
+      "won": true
+    }
+  },
+  "notes": [
+    "simple-local http=34749 cdp=35833 profile=/tmp/banquet-simple-ud-XA291U",
+    "L01 click-path won=true hist=4 asg={\"fox\":\"A1\",\"rabbit\":\"B2\",\"crane\":\"B1\",\"otter\":\"A2\"}",
+    "L02 click-path won=true hist=6 asg={\"fox\":\"A1\",\"rabbit\":\"B1\",\"crane\":\"B3\",\"otter\":\"A2\",\"tanuki\":\"B2\",\"hedgehog\":\"A3\"}",
+    "swap: fox=A2 rabbit=A1",
+    "undo after swap: {\"fox\":\"A1\",\"rabbit\":\"A2\",\"crane\":null,\"otter\":null} hist=2",
+    "drag-cancel blur: fox=null hist=0 gesture=false ghost=false activeWin=0 cancels=1 ok=true",
+    "after cancel, fox->A1 ok commits=1",
+    "L01 drag-path (optional) won=true"
+  ],
+  "consoleErrorCount": 0,
+  "consoleAllCount": 42,
+  "pageErrors": []
+}
