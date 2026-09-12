@@ -45,7 +45,7 @@ export function probeStorage() {
  * @param {string[]} seats
  * @returns {boolean}
  */
-function validateAssignment(assignment, chars, seats) {
+function validateSaveAssignment(assignment, chars, seats) {
   if (!assignment || typeof assignment !== "object" || Array.isArray(assignment)) {
     return false;
   }
@@ -154,7 +154,7 @@ function validatePlaySnapshot(snap, level) {
   const s = /** @type {Record<string, unknown>} */ (snap);
   // Reject legacy-ambiguous / undo-throwing shapes: calm MUST be an array
   if (!Array.isArray(s.calm)) return false;
-  if (!validateAssignment(s.assignment, level.characters || [], level.seats || [])) {
+  if (!validateSaveAssignment(s.assignment, level.characters || [], level.seats || [])) {
     return false;
   }
   if (!validateInventoryAndCalm(s.inventory, s.calm, level)) {

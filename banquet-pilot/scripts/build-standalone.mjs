@@ -7,6 +7,7 @@
  *   node banquet-pilot/scripts/build-standalone.mjs
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -120,6 +121,25 @@ ${jsBody}
 </body>
 </html>
 `;
+
+
+  // Regression gate: bundled module must parse (catches name collisions across ESM files).
+  const modMatch = html.match(/<script\s+type="module">([\s\S]*?)<\/script>/i);
+  if (!modMatch) {
+    console.error("build-standalone: missing <script type=\"module\"> in output HTML");
+    process.exit(1);
+  }
+  const check = spawnSync(
+    process.execPath,
+    ["--check", "--input-type=module"],
+    { input: modMatch[1], encoding: "utf8" },
+  );
+  if (check.status !== 0) {
+    console.error("build-standalone: bundled module failed node --check --input-type=module");
+    if (check.stderr) process.stderr.write(check.stderr);
+    if (check.stdout) process.stdout.write(check.stdout);
+    process.exit(check.status || 1);
+  }
 
   mkdirSync(OUT_DIR, { recursive: true });
   writeFileSync(OUT_HTML, html, "utf8");
