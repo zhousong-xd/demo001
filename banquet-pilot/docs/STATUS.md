@@ -343,6 +343,12 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 
 See [LOOP.md](./LOOP.md) — closed-loop + checklist. Plan: [CURRENT_PLAN.md](./CURRENT_PLAN.md). Lessons: [LESSONS.md](./LESSONS.md).
 
+## T-044 / #50 — 冻结三关公网可玩部署
+
+- URL: https://zhousong-xd.github.io/demo001/
+- Product SHA `f28893f3…`；live HTML SHA 与 dist 一致；源 dist 未改
+- 等主导 ACCEPT
+
 ## T-043 / #49 — 候选 UI 抽样短冒烟 c04/c07/c10（放+撤）
 
 - tip: 见本提交；证据 `evidence/t043-playtest-ui-sample-c04-c07-c10/`

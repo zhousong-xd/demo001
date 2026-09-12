@@ -1,0 +1,10 @@
+{
+  "url": "https://zhousong-xd.github.io/demo001/",
+  "status": 200,
+  "content_type": "text/html; charset=utf-8",
+  "bytes": 73182,
+  "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "matches_frozen_dist": true,
+  "productSha": "f28893f3c419d794c6ba102bac67038683cb462c",
+  "gh_pages_tip": "829b3a899b0eadbda0861859595995d839f79765"
+}
