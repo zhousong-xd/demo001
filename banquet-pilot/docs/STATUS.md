@@ -16,11 +16,11 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip (T-007 skeleton, this board): see latest `bot/banquet-pilot` commit after push — product SHA above stays frozen.
+Docs tip: see latest `bot/banquet-pilot` commit after T-008 push — product SHA above stays frozen.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
-## Closed tasks (#5–#10)
+## Closed tasks (#5–#13)
 
 | Issue | Task | Result |
 | --- | --- | --- |
@@ -30,14 +30,19 @@ Docs tip (T-007 skeleton, this board): see latest `bot/banquet-pilot` commit aft
 | #8 | T-004 安心铃、三关流程与离线可玩交付 | done / closed · product SHA frozen above |
 | #9 | T-005 独立QA与三关回归报告 | done / closed · lead independent recheck ACCEPT |
 | #10 | T-006 一角色一屏风格样板（按需释放） | done / closed · candidates only under `candidates/art/` |
+| #12 | T-007 十二关候选设计目录骨架 | done / closed · skeleton under `candidates/levels/` |
+| #13 | T-008 前三关候选设计 brief（c01–c03） | done / closed · briefs only; solution counts **TBD**; ruleVersion 0.1 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
+
+Level candidates: `banquet-pilot/candidates/levels/` — C01–C03 **brief-filled** (shipped-ref); C04–C12 stubs. **Not** formal `levels/`.
 
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
 2. **Style not final** — T-006 候选已 ACCEPT 为样板，**人类风格点头未做**；不得批量扩 art，不得擅自导入正式 assets。
 3. **PR #11 still draft / unmerged** — 工程与证据均在 `bot/banquet-pilot`；不自动 merge、不写 main、不强推、不公开部署。
+4. **Candidate solution counts TBD** — C01–C03 briefs mark TBD until dedicated enum tasks; do not invent counts in design docs.
 
 ## Next optional work
 
@@ -45,8 +50,9 @@ Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate
 | --- | --- | --- |
 | Optional | Style lock | Needs human style nod; blocked for formal asset import |
 | Optional | Asset import (post style) | Only after style lock; can draft import plan without touching product |
-| Done (docs) | **#12 / T-007 12-level candidates skeleton** | Design intent only under `candidates/levels/` — **not** formal `levels/` |
-| Optional next | Promote selected C04–C12 stubs | Separate engineering+QA tasks; still no style-locked asset import |
+| Done (docs) | **#12 / T-007** candidates skeleton | Design intent under `candidates/levels/` |
+| Done (docs) | **#13 / T-008** C01–C03 briefs | Learning goal / seats-rules sketch / TBD solutions / tips / ruleVersion 0.1 |
+| Optional next | Fill or promote C04–C12 | Separate tasks; still no formal `levels/` write without eng+QA |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
@@ -54,3 +60,4 @@ Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate
 - No merge of PR #11 without explicit human/lead decide.
 - No art batch expansion beyond current T-006 candidates.
 - No token / PAT in remotes, comments, or committed files.
+- No formal `levels/` edits from candidate briefs alone.
