@@ -1,0 +1,127 @@
+{
+  "task": "T-040",
+  "issue": 46,
+  "kind": "FROZEN PRODUCT L01-L03 UI SHORT SMOKE INDEPENDENT RECHECK",
+  "verdict": "PASS",
+  "agent": "宴席·质检",
+  "role": "BOT",
+  "work": "qa",
+  "timestampUtc": "2026-09-12T08:41:07Z",
+  "engineeringTip": "ba9f428e328eae9298cfe057004b88ac1aeb6976",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "blob": "c17208faa0548c34cb8cc150a5dc4bce96a61b9c",
+    "lfOnly": true,
+    "rebuilt": false,
+    "modified": false,
+    "verifiedBeforeAfter": true,
+    "anchorMatch": true,
+    "note": "本环测冻结正式包 dist 演示路径 UI 短冒烟，未改 dist"
+  },
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "chrome": "151.0.7922.169 headless=new CDP",
+    "command": "cd banquet-pilot && node --experimental-websocket tests/evidence/scripts/t039-frozen-product-ui-smoke.mjs",
+    "startedUtc": "2026-09-12T08:40:45Z",
+    "endedUtc": "2026-09-12T08:41:07Z",
+    "exitCode": 0,
+    "browser": "headless Chrome CDP mouse-sim",
+    "realDevice": "真机未测",
+    "multitouch": "未测",
+    "branch": "bot/banquet-pilot",
+    "scriptBlob": "868e350f6c9b37272b5883a5cd325de422b427e8"
+  },
+  "matrix": [
+    {
+      "id": "UI-PLACE",
+      "name": "放 L01 fox→A1",
+      "status": "PASS",
+      "detail": "assignment.fox=A1; shot 02"
+    },
+    {
+      "id": "UI-UNDO",
+      "name": "撤 撤销空桌",
+      "status": "PASS",
+      "detail": "assignment cleared; shot 03"
+    },
+    {
+      "id": "UI-SWITCH",
+      "name": "切 L01→L02 + 放置",
+      "status": "PASS",
+      "detail": "levelId=L02 fox=A1; shot 04"
+    },
+    {
+      "id": "UI-BELL-MISS",
+      "name": "L03 安心铃误投 fox 不扣库存",
+      "status": "PASS",
+      "detail": "stock unchanged; shot 05"
+    },
+    {
+      "id": "UI-BELL-HIT",
+      "name": "L03 安心铃命中 rabbit",
+      "status": "PASS",
+      "detail": "stock-1 calm=[rabbit]; shot 06"
+    },
+    {
+      "id": "DEV",
+      "name": "真机/多指",
+      "status": "未测",
+      "detail": "无实体机；CDP mouse-sim ≠ 真机"
+    }
+  ],
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "tested": [
+    "冻结 dist 锚点复跑前后一致",
+    "先审后复跑同一 T-039 脚本 exit 0",
+    "放/撤/切关/L03安心铃（误投+命中）五步",
+    "抽检 shots 01–06 + script summary"
+  ],
+  "untested": [
+    "真机",
+    "多指",
+    "合 PR / 改 dist"
+  ],
+  "smoke": {
+    "exitCode": 0,
+    "banner": "[PASS] L01 place; undo; switch L02; L03 calm miss; L03 calm hit",
+    "kind": "frozen-product-ui-short-smoke",
+    "steps": [
+      "L01_place",
+      "L01_undo",
+      "switch_L02_place",
+      "L03_calm_miss",
+      "L03_calm_hit"
+    ],
+    "pageErrors": []
+  },
+  "paths": {
+    "reportMd": "banquet-pilot/reports/qa/T-040-frozen-product-ui-smoke-20260912.md",
+    "reportJson": "banquet-pilot/reports/qa/T-040-frozen-product-ui-smoke-summary.json",
+    "evidence": "banquet-pilot/evidence/t040-frozen-product-ui-smoke/",
+    "script": "banquet-pilot/tests/evidence/scripts/t039-frozen-product-ui-smoke.mjs",
+    "authorEvidence": "banquet-pilot/evidence/t039-frozen-product-ui-smoke/"
+  },
+  "push": {
+    "branch": "bot/banquet-pilot",
+    "scope": "reports/qa + evidence/t040 only",
+    "tip": "e116a66cd14dba84598a8c2b6d2ca7f73fffd83b",
+    "comment": null
+  },
+  "experience": "正式三关样片界面短冒烟顺——放撤切关与 L03 安心铃全绿；真机触屏仍未测，正式包仍冻结。",
+  "gate": {
+    "authorSelfTestEqualsIndependent": false,
+    "distReadOnly": true,
+    "acceptByLead": true,
+    "shippedClaim": false
+  }
+}
