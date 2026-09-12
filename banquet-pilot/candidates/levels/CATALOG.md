@@ -8,9 +8,9 @@ This catalog does **not** assert 12 finished or implemented levels.
 | C01 | 先让大家坐下 | brief+enum (shipped-ref) | L01 | `at` + `not_beside` intro | 0.1 | **1** |
 | C02 | 隔桌也算陪伴 | brief+enum (shipped-ref) | L02 | `faces` + `end` + `same_row` | 0.1 | **1** |
 | C03 | 不是所有矛盾都要换座 | brief+enum (shipped-ref) | L03 | calm_bell + `not_faces_unless` | 0.1 | **0** no-calm / **1** calm-rabbit |
-| C04 | 同排也要留空隙 | stub | — | reinforce `same_row` / spacing | 0.1 | TBD |
-| C05 | 末端不是角落而已 | stub | — | `end` with misdirection | 0.1 | TBD |
-| C06 | 面对面的误会 | stub | — | multi-`faces` tension | 0.1 | TBD |
+| C04 | 自由入席 | brief | — | fewer `at` / multi-solution OK | 0.1 | TBD |
+| C05 | 两位都想靠边 | brief | — | multiple `end` + faces exclusion | 0.1 | TBD |
+| C06 | 隔桌传话 | brief | — | two disjoint `faces` pairs | 0.1 | TBD |
 | C07 | 铃只有一次机会 | stub | — | calm timing / single stock | 0.1 | TBD |
 | C08 | 谁先入座 | stub | — | constrained `at` chain | 0.1 | TBD |
 | C09 | 隔位不算旁边 | stub | — | `not_beside` geometry clarity | 0.1 | TBD |
@@ -21,12 +21,21 @@ This catalog does **not** assert 12 finished or implemented levels.
 ## Legend
 
 - **brief+enum (shipped-ref)** — C01–C03 briefs (T-008) + candidate JSON drafts + enum counts (T-009) under `candidates/levels/`; still not formal `levels/`.
+- **brief** — C04–C06 filled design briefs (T-010) aligned to #4 game-design baseline §13 (#04–#06); solution counts remain **TBD**; no candidate JSON yet.
 - **stub** — teaching goal + suggested rule mix + open questions only; no `known_solution`, no claim of unique solvability.
-- **TBD** solution count — unknown until a dedicated enumerate task; C04–C12 remain TBD.
+- **TBD** solution count — unknown until a dedicated enumerate task; C04–C12 remain TBD (C04–C06 briefs do not invent counts).
 - Machine-checkable drafts: `c01.json` / `c02.json` / `c03.json`; runner: `enumerate_candidates.py` (+ `.mjs`).
+
+## Baseline §13 mapping (C04–C06)
+
+| ID | Baseline title | Design intent (intent only) |
+| --- | --- | --- |
+| C04 | 自由入席 | 减少固定席，接受多个合法解 |
+| C05 | 两位都想靠边 | 多个端位需求；靠排除与对面组合 |
+| C06 | 隔桌传话 | 两组对面关系；视觉关系线不混乱 |
 
 ## Next gates (out of this slice)
 
-1. Human / lead picks which stubs (C04–C12) get full briefs or engineering tasks.
+1. Human / lead picks which briefs/stubs get JSON drafts, enum, or engineering promotion.
 2. Each promoted level needs enumerate/tests evidence before touching `levels/`.
 3. Style lock remains separate from level design.
