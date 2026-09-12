@@ -101,7 +101,11 @@
     "exitCode": 0,
     "banner": "[PASS] c04/c07/c10 place+undo; 真机/多指 未测",
     "kind": "candidates-playtest-ui-sample-c04-c07-c10",
-    "samples": ["c04", "c07", "c10"],
+    "samples": [
+      "c04",
+      "c07",
+      "c10"
+    ],
     "steps": [
       "c04_place",
       "c04_undo",
@@ -121,8 +125,8 @@
   "push": {
     "branch": "bot/banquet-pilot",
     "scope": "reports/qa + evidence/t045 only",
-    "tip": null,
-    "comment": null
+    "tip": "7c76617714138e7ba6b680f986c6f0eea9524130",
+    "comment": "https://github.com/zhousong-xd/demo001/issues/51#issuecomment-5644882989"
   },
   "experience": "候选中段抽样关界面放撤顺——c04/c07/c10 六步全绿；真机触屏仍未测，正式包仍冻结。",
   "gate": {
