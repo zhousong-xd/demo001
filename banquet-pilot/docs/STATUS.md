@@ -16,11 +16,11 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: see latest `bot/banquet-pilot` commit after T-015 push — product SHA above stays frozen.
+Docs tip: see latest `bot/banquet-pilot` commit after T-016 push — product SHA above stays frozen.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
-## Closed tasks (#5–#20)
+## Closed tasks (#5–#21)
 
 | Issue | Task | Result |
 | --- | --- | --- |
@@ -39,10 +39,13 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-015 push — product SHA
 | #18 | T-013 候选 JSON 草稿 + enum 解数（c07–c09） | done / closed · `c07.json`–`c09.json` + enum; counts filled; multi-OK; **not** formal `levels/` |
 | #19 | T-014 候选设计 brief（c10–c12） | done / closed · baseline §13 #10–#12; counts were TBD then filled by T-015 |
 | #20 | T-015 候选 JSON 草稿 + enum 解数（c10–c12）+ SUMMARY | done / closed · `c10.json`–`c12.json` + enum + `SUMMARY.md`; counts filled; multi-OK; **not** formal `levels/` |
+| #21 | T-016 仅候选试玩页（c01–c12） | done / closed · `candidates/playtest/`；选 JSON + 复用 src ESM；**不是** shipped levels |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
 Level candidates: `banquet-pilot/candidates/levels/` — C01–C12 **brief+enum** (+ `SUMMARY.md`). **Not** formal `levels/`.
+
+Candidates playtest (T-016): `banquet-pilot/candidates/playtest/` — select c01–c12 JSON via `../levels/`; relative ESM from `../../src/…`. **Not** shipped levels. Run: `cd banquet-pilot && python3 -m http.server 8761` → http://127.0.0.1:8761/candidates/playtest/?c=c01
 
 ### T-009 enum results (candidates only)
 
@@ -105,6 +108,19 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c09.
 
 Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c12. Short table: `candidates/levels/SUMMARY.md`. Product SHA / HTML hash unchanged.
 
+### T-016 candidates-only playtest
+
+| Item | Value |
+| --- | --- |
+| Page | `candidates/playtest/index.html` + `playtest.js` |
+| Levels loaded | `../levels/c01.json`–`c12.json` only |
+| Reuse | read-only ESM `../../src/core/index.js`, `../../src/ui/board.js`, `labels.js`, `app.css` |
+| Not imported | product `src/ui/app.js` (L01–L03 boot / save) |
+| Smoke | opened C01 and placed fox→A1 (`?smoke=1` / `smoke.mjs`) |
+| Claim | **not** shipped / not formal `levels/` |
+
+How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candidates/playtest/?c=c01`. file:// ESM/fetch usually blocked.
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -112,6 +128,7 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c12.
 3. **PR #11 still draft / unmerged** — 工程与证据均在 `bot/banquet-pilot`；不自动 merge、不写 main、不强推、不公开部署。
 4. **C07–C09 enum filled** — JSON drafts + counts (T-013); still no formal `levels/` promotion without eng+QA.
 5. **C10–C12 enum filled** — JSON drafts + counts (T-015) + `SUMMARY.md`; still no formal `levels/` promotion without eng+QA.
+6. **Candidates playtest exists** — T-016 page can seat guests on draft JSON; still **not** 12 shipped levels.
 
 ## Next optional work
 
@@ -128,6 +145,7 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c12.
 | Done (candidates) | **#18 / T-013** C07–C09 JSON + enum | Counts: C07=0/4/4, C08=4, C09=8; still not formal `levels/` |
 | Done (docs) | **#19 / T-014** C10–C12 briefs | Baseline §13 #10–#12; counts filled by T-015 |
 | Done (candidates) | **#20 / T-015** C10–C12 JSON + enum + SUMMARY | Counts: C10=8, C11=2, C12=0/4; `SUMMARY.md` c01–c12; still not formal `levels/` |
+| Done (candidates) | **#21 / T-016** playtest page c01–c12 | `candidates/playtest/`; ESM reuse src; still not formal `levels/` |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
@@ -137,3 +155,4 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c12.
 - No token / PAT in remotes, comments, or committed files.
 - No formal `levels/` edits from candidate briefs/JSON alone.
 - No inventing counts beyond enum; C01–C12 candidates filled — still not formal levels.
+- Candidates playtest ≠ shipped levels; do not promote via the playtest page alone.

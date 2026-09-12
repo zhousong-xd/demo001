@@ -41,6 +41,9 @@ banquet-pilot/candidates/levels/
   SUMMARY.md                 ← short c01–c12 brief+enum status table
 ```
 
+Optional click-through (not formal levels): `../playtest/` — see `candidates/playtest/README.md`. Serve from `banquet-pilot/`: `python3 -m http.server 8761`.
+
+
 ## Rule vocabulary (existing kernel only)
 
 Candidates must stick to shipped kinds unless a future engineering task explicitly extends the kernel:
