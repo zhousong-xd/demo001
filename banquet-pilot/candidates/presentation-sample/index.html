@@ -3,29 +3,29 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>这桌不能坐 · 重设计小样 T-058</title>
+<title>这桌不能坐 · 表现候选 T-065</title>
 <style>
 :root {
-  --bg: #12151c;
-  --panel: #1c2230;
-  --seat: #3a4456;
-  --text: #eef1f6;
-  --muted: #8b95a8;
-  --accent: #7ec8ff;
-  --ok: #45e0a0;
-  --bad: #ff7b84;
+  --bg0: #1a100c;
+  --bg1: #2a1810;
+  --wood1: #8b5a2b;
+  --wood2: #5c3a1e;
+  --wood3: #3d2414;
+  --gold: #d4a84b;
+  --cream: #f3e6d4;
+  --muted: #b8a28a;
+  --ok: #5ecf8a;
+  --bad: #ff6b6b;
   --fox: #e8874a;
-  --rabbit: #e0a8d4;
-  --crane: #8ec4e8;
-  --hedgehog: #c4a574;
-  --wood1: #5c4030;
-  --wood2: #3d2a1e;
+  --rabbit: #f0d0c8;
+  --crane: #7eb8d8;
+  --ink: #2a1a14;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body {
   margin: 0; min-height: 100%;
-  background: #080a0e; color: var(--text);
-  font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+  background: #0e0907; color: var(--cream);
+  font-family: "PingFang SC", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
   user-select: none;
 }
 .stage-outer {
@@ -39,647 +39,1065 @@ html, body {
   background: #f3e0d6; border: 2px solid #8b3a2a; border-radius: 10px;
   color: #8b3a2a; font-size: 12px; font-weight: 650; text-align: center;
 }
+.banner a { color: #6b2a1a; }
 .banner small { display: block; margin-top: 3px; font-weight: 500; color: #7a6a58; font-size: 11px; }
 .phone {
   width: 390px; max-width: 100%;
   height: 844px; max-height: calc(100vh - 70px);
-  background: radial-gradient(120% 80% at 50% 0%, #1c2433 0%, var(--bg) 55%);
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 18%, rgba(212,168,75,.18), transparent 55%),
+    radial-gradient(ellipse 70% 40% at 20% 90%, rgba(180,80,30,.15), transparent 50%),
+    linear-gradient(180deg, #3a2218 0%, var(--bg1) 40%, var(--bg0) 100%);
   border-radius: 28px;
-  border: 2px solid #2a3140;
-  box-shadow: 0 16px 48px rgba(0,0,0,.55);
+  border: 2px solid #4a3020;
+  box-shadow: 0 16px 48px rgba(0,0,0,.6), inset 0 0 0 1px rgba(212,168,75,.15);
   overflow: hidden;
   display: flex; flex-direction: column;
   position: relative;
 }
-.phone.dim .table-wrap { filter: brightness(.82); }
-.top {
-  padding: 14px 14px 4px;
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  z-index: 2;
+.phone::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: .22;
+  background:
+    radial-gradient(circle at 18% 82%, #c4782a 0%, transparent 28%),
+    radial-gradient(circle at 82% 85%, #c4782a 0%, transparent 26%);
 }
-.mark { font-size: 12px; color: var(--muted); letter-spacing: .06em; }
+.top {
+  position: relative; z-index: 4;
+  padding: 14px 14px 6px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.mark {
+  font-size: 13px; color: var(--gold); letter-spacing: .04em; font-weight: 650;
+  display: flex; align-items: center; gap: 6px;
+}
+.mark .crest {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0d080, var(--gold) 55%, #8a6020);
+  box-shadow: 0 0 0 2px #6a4818;
+}
 .beat {
-  font-size: 11px; color: var(--accent);
-  background: rgba(126,200,255,.12);
-  border: 1px solid rgba(126,200,255,.25);
+  font-size: 11px; color: var(--cream);
+  background: rgba(60,36,24,.75);
+  border: 1px solid rgba(212,168,75,.4);
   border-radius: 999px; padding: 4px 12px;
-  min-width: 64px; text-align: center;
+  min-width: 72px; text-align: center;
   transition: .2s;
 }
-.beat.ok { color: var(--ok); border-color: rgba(69,224,160,.35); background: rgba(69,224,160,.1); }
-.beat.bad { color: var(--bad); border-color: rgba(255,123,132,.35); background: rgba(255,123,132,.1); }
-.modes {
-  display: flex; gap: 6px; justify-content: center; padding: 4px 12px 0; z-index: 2;
+.beat.ok { color: var(--ok); border-color: rgba(94,207,138,.5); }
+.beat.bad { color: var(--bad); border-color: rgba(255,107,107,.55); }
+.beat.warn { color: #ffb060; border-color: rgba(255,176,96,.5); }
+
+.stage {
+  flex: 1; position: relative; z-index: 2;
+  margin: 4px 10px 0;
+  border-radius: 18px;
+  overflow: hidden;
 }
-.mode {
-  border: 1px solid #3a4558; background: var(--panel); color: var(--muted);
-  border-radius: 999px; padding: 4px 10px; font-size: 11px; cursor: pointer;
+/* layer: floor / rug */
+.layer-floor {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 55%, #3a2418 0%, #241610 70%, #160e0a 100%);
 }
-.mode.on { color: var(--accent); border-color: var(--accent); }
-.table-wrap {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  padding: 4px 10px 0; z-index: 1; transition: filter .2s;
-}
-.table {
-  width: 310px; height: 310px; border-radius: 50%; position: relative;
-  background: radial-gradient(circle at 50% 42%, #6b4a34 0%, var(--wood1) 42%, var(--wood2) 78%, #241810 100%);
-  box-shadow: 0 0 0 10px #4a3426, 0 0 0 14px #2a1c14, 0 18px 36px rgba(0,0,0,.45);
-}
-.table::after {
+.layer-floor::after {
   content: "";
-  position: absolute; left: 50%; top: 50%;
-  width: 78px; height: 78px; margin: -39px 0 0 -39px;
+  position: absolute; left: 8%; right: 8%; top: 12%; bottom: 8%;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #f0e6d4 0%, #d2c0a4 55%, #a89070 100%);
-  box-shadow: 0 0 0 3px #8a7050;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,
+      transparent 0 14px,
+      rgba(90,60,40,.18) 14px 16px);
+  opacity: .55;
+  border: 2px solid rgba(90,60,40,.35);
+}
+
+/* layer: table */
+.layer-table {
+  position: absolute; left: 50%; top: 48%;
+  width: 210px; height: 210px;
+  margin: -105px 0 0 -105px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 45% 38%, #a07040 0%, var(--wood1) 35%, var(--wood2) 68%, var(--wood3) 100%);
+  box-shadow:
+    0 0 0 8px #4a3018,
+    0 0 0 12px #2a180c,
+    0 18px 28px rgba(0,0,0,.45),
+    inset 0 0 24px rgba(0,0,0,.25);
   z-index: 1;
 }
-.seat {
-  position: absolute; width: 92px; height: 92px; margin: -46px 0 0 -46px;
-  border-radius: 20px;
-  background: linear-gradient(160deg, #4a5468 0%, var(--seat) 55%, #2e3544 100%);
-  border: 2px solid rgba(255,255,255,.06);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 3;
-  transition: border-color .18s, box-shadow .2s, transform .18s, opacity .18s;
-  touch-action: manipulation;
-  box-shadow: 0 6px 14px rgba(0,0,0,.35);
-}
-.seat:focus { outline: none; }
-.seat:active { transform: scale(.95); }
-.seat.empty {
-  background: repeating-linear-gradient(-45deg, #2a3140, #2a3140 6px, #323a4a 6px, #323a4a 12px);
-  border-style: dashed; border-color: #5a657a;
-}
-.seat.empty::after {
-  content: ""; width: 24px; height: 24px; border-radius: 50%;
-  border: 2px dashed #7a8699;
-}
-.seat.s0 { left: 50%; top: 16%; }
-.seat.s1 { left: 84%; top: 55%; }
-.seat.s2 { left: 50%; top: 90%; }
-.seat.s3 { left: 16%; top: 55%; }
-.seat.held {
-  transform: translateY(-14px) scale(1.1);
-  border-color: var(--accent);
-  box-shadow: 0 14px 28px rgba(0,0,0,.5), 0 0 0 4px rgba(126,200,255,.35);
-  z-index: 6;
-}
-.seat.ghost {
-  opacity: .35; filter: grayscale(.3);
-  transform: scale(.92);
+.table-top {
+  position: absolute; inset: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,168,75,.2);
   pointer-events: none;
 }
-.seat.hover-ok {
-  border-color: var(--accent); border-style: solid;
-  box-shadow: 0 0 0 4px rgba(126,200,255,.28);
+.centerpiece {
+  position: absolute; left: 50%; top: 50%;
+  width: 54px; height: 54px; margin: -27px 0 0 -27px;
+  z-index: 2; pointer-events: none;
 }
-.seat.hover-friend { box-shadow: 0 0 0 4px rgba(69,224,160,.4), 0 0 20px rgba(69,224,160,.2); }
-.seat.hover-rival { box-shadow: 0 0 0 4px rgba(255,123,132,.45), 0 0 20px rgba(255,123,132,.2); animation: shiver .35s linear 2; }
+.dishes {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+}
+
+/* seats + chairs (static layer) */
+.layer-chairs {
+  position: absolute; left: 50%; top: 48%;
+  width: 0; height: 0; z-index: 3;
+}
+.seat-slot {
+  position: absolute;
+  width: 88px; height: 100px;
+  margin: -50px 0 0 -44px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  cursor: pointer;
+  touch-action: manipulation;
+  border: none; background: transparent; padding: 0;
+}
+.seat-slot:focus { outline: none; }
+.seat-slot .chair-wrap {
+  width: 78px; height: 64px;
+  pointer-events: none;
+  transition: transform .25s, filter .25s;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.4));
+}
+.seat-slot .chair-wrap svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.seat-slot.hot .chair-wrap { transform: scale(1.06); filter: drop-shadow(0 0 8px rgba(212,168,75,.55)); }
+.seat-slot.hot-friend .chair-wrap { filter: drop-shadow(0 0 10px rgba(94,207,138,.65)); }
+.seat-slot.hot-rival .chair-wrap { filter: drop-shadow(0 0 10px rgba(255,107,107,.7)); animation: shiver .35s linear 2; }
 @keyframes shiver {
   0%,100% { transform: translateX(0); }
   25% { transform: translateX(-3px); }
   75% { transform: translateX(3px); }
 }
-.seat.land { animation: land .4s cubic-bezier(.2,1.4,.4,1); }
-@keyframes land {
-  0% { transform: scale(.7) translateY(-10px); }
-  60% { transform: scale(1.08) translateY(0); }
-  100% { transform: scale(1); }
+.seat-hit {
+  position: absolute; inset: 10px 4px 0;
+  border-radius: 16px;
 }
-.seat.bump { animation: bump .45s ease-out; }
-@keyframes bump {
-  0% { transform: scale(1); }
-  30% { transform: translateX(10px) rotate(6deg) scale(1.05); }
-  100% { transform: scale(1); }
+
+/* characters live in a walker layer so they can move on the arc */
+.layer-actors {
+  position: absolute; left: 50%; top: 48%;
+  width: 0; height: 0; z-index: 5;
+  pointer-events: none;
 }
-.seat.friend-glow { box-shadow: 0 0 0 3px rgba(69,224,160,.45), 0 0 16px rgba(69,224,160,.2); }
-.seat.rival-glow { box-shadow: 0 0 0 3px rgba(255,123,132,.5), 0 0 16px rgba(255,123,132,.22); }
-
-
-/* 椅随关系/人数变 */
-.chair {
-  position: absolute; inset: 4px 2px 0;
-  pointer-events: none; z-index: 0;
-  display: flex; align-items: flex-end; justify-content: center;
+.actor {
+  position: absolute;
+  width: 72px; height: 78px;
+  margin: -62px 0 0 -36px;
+  transform-origin: 50% 80%;
+  pointer-events: none;
+  transition: none;
 }
-.chair svg { width: 78px; height: 70px; display: block; }
-.seat > .char { z-index: 1; }
-.seat.count-2 .chair { transform: scale(1.08); }
-.seat.count-4 .chair { transform: scale(.92); }
-
-.seat.friend-glow .chair { transform: rotate(-3deg); transform-origin: 50% 80%; }
-.seat.rival-glow .chair { transform: rotate(4deg); transform-origin: 50% 80%; }
-.seat.count-2.friend-glow .chair { transform: rotate(-3deg) scale(1.08); }
-.seat.count-2.rival-glow .chair { transform: rotate(4deg) scale(1.08); }
-.seat.count-4.friend-glow .chair { transform: rotate(-3deg) scale(.92); }
-.seat.count-4.rival-glow .chair { transform: rotate(4deg) scale(.92); }
-
-.seat.held .chair { animation: chairRebound .35s ease-out; }
-@keyframes chairRebound {
-  0% { transform: scaleY(.85); opacity: .7; }
-  100% { transform: scaleY(1); opacity: 1; }
+.actor .body {
+  width: 100%; height: 100%;
+  position: relative;
 }
-.seat.hover-friend .chair { transform: rotate(-4deg); }
-.seat.hover-rival .chair { transform: rotate(5deg); }
-.chair-svg.round, .chair-svg.spike, .chair-svg.host, .chair-svg.stool, .chair-svg.classic { overflow: visible; }
-
-
-
-.char { width: 78px; height: 78px; position: relative; transform-origin: 50% 70%; }
-.char svg { width: 100%; height: 100%; display: block; overflow: visible; }
-.char .bubble {
-  position: absolute; left: 50%; top: -2px;
-  transform: translate(-50%, -100%) scale(.85);
-  font-size: 16px; opacity: 0; pointer-events: none;
-  transition: .2s; filter: drop-shadow(0 2px 3px rgba(0,0,0,.55));
-}
-.char.show-bubble .bubble { opacity: 1; transform: translate(-50%, -110%) scale(1); }
-.char.idle { animation: breathe 2.6s ease-in-out infinite; }
+.actor .body svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.actor.idle .body { animation: breathe 2.8s ease-in-out infinite; }
 @keyframes breathe {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
 }
-.char.wave { animation: wave .8s ease-in-out 2; }
+.actor.held .body {
+  animation: none;
+  transform: translateY(-18px) scale(1.08);
+  filter: drop-shadow(0 10px 12px rgba(0,0,0,.45));
+}
+.actor.walking .body {
+  animation: walkBob .28s ease-in-out infinite;
+}
+@keyframes walkBob {
+  0%,100% { transform: translateY(-10px) rotate(-4deg); }
+  50% { transform: translateY(-16px) rotate(4deg); }
+}
+.actor.refuse .body {
+  animation: refusePose .55s ease-out forwards;
+}
+@keyframes refusePose {
+  0% { transform: translateY(-8px) scale(1); }
+  40% { transform: translateY(-22px) scale(1.05); }
+  100% { transform: translateY(-14px) scale(1.02) rotate(-6deg); }
+}
+.actor.bounce .body {
+  animation: bounceBack .55s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes bounceBack {
+  0% { transform: translateY(-12px); }
+  35% { transform: translateY(-4px) translateX(8px); }
+  100% { transform: translateY(0); }
+}
+.actor.greet .body { animation: wave .7s ease-in-out 2; }
 @keyframes wave {
   0%,100% { transform: rotate(0); }
-  25% { transform: rotate(-14deg); }
-  55% { transform: rotate(12deg); }
+  25% { transform: rotate(-12deg); }
+  55% { transform: rotate(10deg); }
 }
-.char.nod { animation: nod .6s ease-in-out 2; }
-@keyframes nod {
-  0%,100% { transform: translateY(0); }
-  40% { transform: translateY(5px) scale(1,.94); }
+.actor.clash .body { animation: clash .45s ease-out; }
+@keyframes clash {
+  0% { transform: scale(1); }
+  30% { transform: translateX(8px) rotate(8deg) scale(1.06); }
+  100% { transform: scale(1); }
 }
-.char.look-away-left { animation: lookL .9s ease-out forwards; }
-.char.look-away-right { animation: lookR .9s ease-out forwards; }
-@keyframes lookL { to { transform: rotate(-20deg) translateX(-5px); } }
-@keyframes lookR { to { transform: rotate(20deg) translateX(5px); } }
-.char.bristle { animation: bristle .45s ease-in-out 2; }
-@keyframes bristle {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.08); filter: saturate(1.3); }
-}
-.char.happy { animation: happy .7s ease-in-out 2; }
+.actor.happy .body { animation: happy .7s ease-in-out 2; }
 @keyframes happy {
   0%,100% { transform: translateY(0); }
   40% { transform: translateY(-8px) scale(1.05); }
 }
+.actor.bristle .body { animation: bristle .4s ease-in-out 3; }
+@keyframes bristle {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.08); filter: saturate(1.35); }
+}
+
+.bubble {
+  position: absolute; left: 50%; top: -2px;
+  transform: translate(-50%, -100%) scale(.7);
+  font-size: 15px; line-height: 1.1;
+  padding: 4px 8px;
+  background: #fffaf3; color: var(--ink);
+  border-radius: 12px;
+  border: 1.5px solid #e8d4b8;
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  opacity: 0; pointer-events: none;
+  white-space: nowrap;
+  transition: opacity .18s, transform .18s;
+  font-weight: 700; font-size: 13px;
+}
+.bubble::after {
+  content: "";
+  position: absolute; left: 50%; bottom: -6px;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-top-color: #fffaf3;
+}
+.bubble.on { opacity: 1; transform: translate(-50%, -112%) scale(1); }
+.bubble.bad { background: #ffe8e4; border-color: #ffb0a8; color: #a02828; }
+.bubble.bad::after { border-top-color: #ffe8e4; }
+.bubble.ok { background: #e8fff0; border-color: #a8e8c0; color: #1a6a3a; }
+.bubble.ok::after { border-top-color: #e8fff0; }
+
+.fx-layer {
+  position: absolute; left: 50%; top: 48%;
+  width: 0; height: 0; z-index: 6;
+  pointer-events: none;
+}
+.fx-pop {
+  position: absolute;
+  font-size: 18px;
+  animation: popFade .7s ease-out forwards;
+}
+@keyframes popFade {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(.6); }
+  100% { opacity: 0; transform: translate(-50%, -90%) scale(1.2); }
+}
 
 .dock {
+  position: relative; z-index: 4;
   padding: 8px 14px 16px;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,.4));
-  z-index: 2;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.45));
 }
-.hint { font-size: 12px; color: var(--muted); min-height: 1.2em; text-align: center; margin-bottom: 8px; }
+.hint {
+  font-size: 12px; color: var(--muted);
+  min-height: 1.35em; text-align: center; margin-bottom: 8px;
+}
+.escalate-bar {
+  height: 6px; border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  overflow: hidden; margin: 0 auto 8px; width: 70%;
+  opacity: 0; transition: opacity .2s;
+}
+.escalate-bar.on { opacity: 1; }
+.escalate-bar > i {
+  display: block; height: 100%; width: 0%;
+  background: linear-gradient(90deg, #ffb060, #ff6b6b);
+  transition: width .25s linear;
+}
 .tools { display: flex; gap: 8px; justify-content: center; }
 .btn {
-  border: 1px solid #4a5568; background: var(--panel); color: var(--text);
-  border-radius: 12px; padding: 10px 14px; font-size: 13px; min-height: 42px; cursor: pointer;
+  border: 1px solid rgba(212,168,75,.4);
+  background: rgba(60,36,24,.85); color: var(--cream);
+  border-radius: 12px; padding: 10px 14px; font-size: 13px;
+  min-height: 42px; cursor: pointer;
 }
 .btn:active { transform: scale(.97); }
-.btn.primary { border-color: var(--accent); color: var(--accent); }
+.btn.primary { border-color: var(--gold); color: var(--gold); }
 .outside {
   width: 390px; max-width: 100%; margin-top: 10px;
   font-size: 12px; color: #9a9084; text-align: center; line-height: 1.45;
 }
+.busy .seat-slot { pointer-events: none; }
+
+.fx-clash {
+  position: absolute;
+  width: 96px; height: auto;
+  transform: translate(-50%, -50%);
+  animation: popFade .65s ease-out forwards;
+  pointer-events: none;
+}
+
+
+.actor .body .char-img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.35));
+  pointer-events: none;
+}
+.seat-slot .chair-wrap .chair-img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+  pointer-events: none;
+}
+.actor { width: 84px; height: 96px; margin: -78px 0 0 -42px; }
+.seat-slot { width: 96px; height: 110px; margin: -55px 0 0 -48px; }
+.seat-slot .chair-wrap { width: 88px; height: 78px; }
+
 </style>
 </head>
 <body>
 <div class="stage-outer">
   <div class="banner" role="status">
     表现候选 / 非正式 — 不是正式三关
-    <small>正式主链：https://zhousong-xd.github.io/demo001/</small>
+    <small>正式主链：<a href="https://zhousong-xd.github.io/demo001/">https://zhousong-xd.github.io/demo001/</a></small>
   </div>
-  <div class="phone" id="phone" aria-label="重设计小样 390x844">
+  <div class="phone" id="phone" aria-label="表现小样 390x844">
     <div class="top">
-      <span class="mark">一桌 · 重设计</span>
+      <span class="mark"><span class="crest" aria-hidden="true"></span>这桌不能坐</span>
       <span class="beat" id="beat">…</span>
     </div>
-    <div class="modes" id="modes" aria-label="人数戏">
-      <button type="button" class="mode" data-n="2">俩</button>
-      <button type="button" class="mode on" data-n="3">仨</button>
-      <button type="button" class="mode" data-n="4">满</button>
-    </div>
-    <div class="table-wrap">
-      <div class="table" id="table" role="group" aria-label="圆桌四座"></div>
+    <div class="stage" id="stage">
+      <div class="layer-floor" data-layer="floor"></div>
+      <div class="layer-table" data-layer="table">
+        <div class="table-top"></div>
+        <svg class="dishes" viewBox="0 0 210 210" aria-hidden="true">
+          <ellipse cx="105" cy="70" rx="18" ry="10" fill="#6a4028" opacity=".85"/>
+          <ellipse cx="105" cy="68" rx="14" ry="7" fill="#c8e070" opacity=".9"/>
+          <ellipse cx="70" cy="110" rx="16" ry="9" fill="#6a4028" opacity=".85"/>
+          <circle cx="64" cy="108" r="4" fill="#f0e8d8"/><circle cx="72" cy="110" r="4" fill="#f0e8d8"/><circle cx="80" cy="108" r="4" fill="#f0e8d8"/>
+          <ellipse cx="140" cy="110" rx="16" ry="9" fill="#6a4028" opacity=".85"/>
+          <circle cx="134" cy="108" r="3.5" fill="#a85830"/><circle cx="142" cy="110" r="3.5" fill="#a85830"/><circle cx="148" cy="107" r="3.5" fill="#a85830"/>
+          <ellipse cx="105" cy="145" rx="12" ry="7" fill="#5a3820" opacity=".7"/>
+        </svg>
+        <svg class="centerpiece" viewBox="0 0 54 54" aria-hidden="true" data-asset="centerpiece">
+          <ellipse cx="27" cy="40" rx="14" ry="6" fill="#4a3020" opacity=".5"/>
+          <rect x="22" y="22" width="10" height="16" rx="3" fill="#c8b090"/>
+          <ellipse cx="27" cy="20" rx="10" ry="8" fill="#f0c060"/>
+          <circle cx="27" cy="16" r="4" fill="#fff4c8" opacity=".9"/>
+          <circle cx="18" cy="28" r="4" fill="#e888a8"/><circle cx="36" cy="28" r="4" fill="#e888a8"/>
+          <circle cx="27" cy="32" r="3.5" fill="#d87098"/>
+        </svg>
+      </div>
+      <div class="layer-chairs" id="chairs" data-layer="chairs"></div>
+      <div class="layer-actors" id="actors" data-layer="actors"></div>
+      <div class="fx-layer" id="fx" data-layer="fx"></div>
     </div>
     <div class="dock">
-      <div class="hint" id="hint"></div>
+      <div class="hint" id="hint">点角色 → 点空座/换座</div>
+      <div class="escalate-bar" id="escBar" aria-hidden="true"><i id="escFill"></i></div>
       <div class="tools">
-        <button class="btn" type="button" id="btnReplay">再看一遍</button>
+        <button class="btn" type="button" id="btnTip" title="试玩提示">怎么玩</button>
         <button class="btn primary" type="button" id="btnReset">开席</button>
       </div>
     </div>
   </div>
-  <p class="outside">T-058/T-059 · 凡动必有戏 · 椅随关系/人数变（D6）</p>
+  <p class="outside">T-065 · 走路换座 / 拒坐 / 不管升级 / 遇人招呼·冲突 · 分层可换素材</p>
 </div>
 <script>
-/** 狐↔兔仇；兔↔鹤友；刺猬中立凑数 */
+/** T-065 presentation sample — layered movable SVG placeholders (T-064 swap via assets/) */
 const REL = {
   fox: { rival: 'rabbit', friend: null },
   rabbit: { rival: 'fox', friend: 'crane' },
   crane: { rival: null, friend: 'rabbit' },
-  hedgehog: { rival: null, friend: null },
 };
-const COLOR = { fox: '#e8874a', rabbit: '#e0a8d4', crane: '#8ec4e8', hedgehog: '#c4a574' };
-const LABEL = { fox: '狐', rabbit: '兔', crane: '鹤', hedgehog: '猬' };
+const COLOR = { fox: '#e8874a', rabbit: '#f0d0c8', crane: '#7eb8d8' };
+const LABEL = { fox: '狐', rabbit: '兔', crane: '鹤' };
+/** T-064 layered PNGs (fallback to inline SVG if missing) */
+const ASSET_CHAR = {
+  fox: { idle: 'assets/chars/fox_idle.png', awkward: 'assets/chars/fox_awkward.png', mad: 'assets/chars/fox_mad.png',
+         refuse: 'assets/chars/fox_mad.png', happy: 'assets/chars/fox_idle.png', walk: 'assets/chars/fox_idle.png' },
+  rabbit: { idle: 'assets/chars/rabbit_idle.png', mad: 'assets/chars/rabbit_mad.png', refuse: 'assets/chars/rabbit_refuse_stand.png',
+            happy: 'assets/chars/rabbit_greet.png', walk: 'assets/chars/rabbit_walk.png', greet: 'assets/chars/rabbit_greet.png' },
+  crane: { idle: 'assets/chars/crane_idle.png', happy: 'assets/chars/crane_happy.png', mad: 'assets/chars/crane_idle.png',
+           refuse: 'assets/chars/crane_idle.png', walk: 'assets/chars/crane_idle.png' },
+};
+const ASSET_CHAIR = {
+  stool: 'assets/chairs/chair_stool.png',
+  round: 'assets/chairs/chair_round.png',
+  spike: 'assets/chairs/chair_spike.png',
+  classic: 'assets/chairs/chair_host.png',
+};
+const USE_PNG = true; // layered movable imgs — NOT a full-bleed mockup
 
-let seats = ['fox', 'rabbit', null, 'crane'];
+/** seat angles (deg): 0=right, 90=bottom, 180=left, 270=top — walk along table arc */
+const SEAT_ANGLE = [270, 0, 90, 180];
+const RADIUS = 148; // px from table center to actor pivot
+
+let seats = ['fox', 'crane', 'rabbit', null]; // 3 seated + 1 empty; fox↔rabbit not adj; rabbit↔crane friend
 let selected = null;
-let hover = null;
-let landSeat = null;
-let bumpSeat = null;
-let ghostSeat = null;
-let timers = [];
-let loopGen = 0;
-let countMode = 3;
+let busy = false;
+let escalateLv = 0;
+let escalateTimer = null;
+let escalateTick = null;
+let actorEls = {}; // id -> DOM
+let seatEls = [];
+let tipMode = false;
 
-function clearTimers() { timers.forEach(clearTimeout); timers = []; }
-function later(fn, ms) { const id = setTimeout(fn, ms); timers.push(id); return id; }
+function setBeat(t, kind) {
+  const el = document.getElementById('beat');
+  el.textContent = t;
+  el.className = 'beat' + (kind ? ' ' + kind : '');
+}
+function setHint(t) { document.getElementById('hint').textContent = t || ''; }
+function phoneBusy(on) {
+  busy = on;
+  document.getElementById('phone').classList.toggle('busy', on);
+}
+
+function polar(angleDeg) {
+  const a = (angleDeg * Math.PI) / 180;
+  return { x: Math.cos(a) * RADIUS, y: Math.sin(a) * RADIUS };
+}
+function shortestArc(from, to) {
+  let d = ((to - from + 540) % 360) - 180;
+  /* 180° ties: prefer arc that passes a seated character (walk-by readable) */
+  if (Math.abs(d) === 180) {
+    d = 180; // positive direction first; seatsOnArc will list passed seats
+  }
+  return { delta: d, steps: Math.max(12, Math.round(Math.abs(d) / 8)) };
+}
+function preferArc(fromIdx, toIdx) {
+  const fromA = angleAtSeat(fromIdx), toA = angleAtSeat(toIdx);
+  let d = ((toA - fromA + 540) % 360) - 180;
+  if (Math.abs(d) !== 180) {
+    return { delta: d, steps: Math.max(12, Math.round(Math.abs(d) / 8)), fromA, toA };
+  }
+  const score = (dirs) => seatsOnArc(fromIdx, toIdx, dirs).filter(i => seats[i]).length;
+  d = score(1) >= score(-1) ? 180 : -180;
+  return { delta: d, steps: Math.max(12, Math.round(180 / 8)), fromA, toA };
+}
+function angleAtSeat(i) { return SEAT_ANGLE[i]; }
+function seatIndexOf(who) { return seats.indexOf(who); }
+function adj(i, j) {
+  if (i < 0 || j < 0) return false;
+  const d = Math.abs(i - j);
+  return d === 1 || d === 3;
+}
+function neighbors(i) {
+  return [(i + 1) % 4, (i + 3) % 4].map(j => seats[j]).filter(Boolean);
+}
+function rivalsAdjacent() {
+  const a = seats.indexOf('fox'), b = seats.indexOf('rabbit');
+  return adj(a, b);
+}
+function friendsAdjacent() {
+  const a = seats.indexOf('rabbit'), b = seats.indexOf('crane');
+  return adj(a, b);
+}
+
+/** Arc seats passed when walking from→to (exclusive of endpoints) */
+function seatsOnArc(fromIdx, toIdx, delta) {
+  const dirs = delta >= 0 ? 1 : -1;
+  const passed = [];
+  let cur = fromIdx;
+  for (let n = 0; n < 3; n++) {
+    cur = (cur + dirs + 4) % 4;
+    if (cur === toIdx) break;
+    passed.push(cur);
+  }
+  return passed;
+}
 
 function face(mood) {
   if (mood === 'happy') return `
     <path d="M28 40 Q32 36 36 40" stroke="#2a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
     <path d="M44 40 Q48 36 52 40" stroke="#2a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
     <path d="M34 50 Q40 56 46 50" stroke="#2a1a18" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
-  if (mood === 'awkward') return `
-    <ellipse cx="30" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
-    <ellipse cx="50" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
-    <path d="M34 52 Q40 48 46 52" stroke="#2a1a18" stroke-width="2" fill="none"/>`;
   if (mood === 'mad') return `
     <path d="M24 34 L34 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
     <path d="M56 34 L46 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
     <ellipse cx="30" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
     <ellipse cx="50" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
-    <path d="M58 22 L66 14" stroke="#ff7b84" stroke-width="2" stroke-linecap="round"/>`;
+    <path d="M34 52 Q40 48 46 52" stroke="#2a1a18" stroke-width="2" fill="none"/>`;
+  if (mood === 'refuse') return `
+    <path d="M24 34 L34 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M56 34 L46 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="30" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
+    <ellipse cx="50" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
+    <path d="M33 54 L47 54" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M18 22 L10 14" stroke="#ff6b6b" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M62 22 L70 14" stroke="#ff6b6b" stroke-width="2.2" stroke-linecap="round"/>`;
+  if (mood === 'awkward') return `
+    <ellipse cx="30" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
+    <ellipse cx="50" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
+    <path d="M34 52 Q40 48 46 52" stroke="#2a1a18" stroke-width="2" fill="none"/>`;
   return `
     <ellipse cx="30" cy="40" rx="3.2" ry="3.8" fill="#2a1a18"/>
     <ellipse cx="50" cy="40" rx="3.2" ry="3.8" fill="#2a1a18"/>
     <circle cx="31.2" cy="38.6" r="1" fill="#fff" opacity=".7"/>
-    <circle cx="51.2" cy="38.6" r="1" fill="#fff" opacity=".7"/>`;
+    <circle cx="51.2" cy="38.6" r="1" fill="#fff" opacity=".7"/>
+    <path d="M34 52 Q40 54 46 52" stroke="#2a1a18" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
 }
 
-function svgFor(id, mood) {
+
+function charVisual(id, mood) {
+  const m = mood || 'idle';
+  if (USE_PNG && ASSET_CHAR[id]) {
+    const map = ASSET_CHAR[id];
+    const src = map[m] || map.idle;
+    /* onerror → inline SVG placeholder (Pages without assets still playable) */
+    return `<img class="char-img" data-asset="char-${id}" data-mood="${m}" src="${src}" alt="${LABEL[id]}" draggable="false" onerror="this.outerHTML=svgChar('${id}','${m}')" />`;
+  }
+  return svgChar(id, m);
+}
+function chairVisual(kind) {
+  const k = kind === 'empty' ? 'stool' : kind === 'friend' ? 'round' : kind === 'rival' ? 'spike' : (kind === 'stool' || kind === 'round' || kind === 'spike' || kind === 'classic') ? kind : 'classic';
+  if (USE_PNG && ASSET_CHAIR[k]) {
+    return `<img class="chair-img" data-asset="chair-${k}" src="${ASSET_CHAIR[k]}" alt="" draggable="false" onerror="this.outerHTML=chairSvg('${k}')" />`;
+  }
+  return chairSvg(kind);
+}
+
+function svgChar(id, mood) {
   const c = COLOR[id], f = face(mood || 'idle'), lab = LABEL[id];
-  if (id === 'fox') return `<svg viewBox="0 0 80 80"><circle cx="40" cy="44" r="24" fill="${c}"/>
-    <polygon points="18,34 22,10 34,32" fill="${c}"/><polygon points="46,32 58,10 62,34" fill="${c}"/>
-    <ellipse cx="40" cy="52" rx="10" ry="7" fill="#f3d2b0" opacity=".9"/>${f}
-    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
-  if (id === 'rabbit') return `<svg viewBox="0 0 80 80">
-    <ellipse cx="28" cy="18" rx="7" ry="16" fill="${c}"/><ellipse cx="52" cy="18" rx="7" ry="16" fill="${c}"/>
-    <circle cx="40" cy="46" r="23" fill="${c}"/>${f}
-    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
-  if (id === 'crane') return `<svg viewBox="0 0 80 80">
-    <ellipse cx="40" cy="22" rx="11" ry="14" fill="${c}"/>
-    <path d="M52 24 Q72 8 68 30 Q62 40 52 32" fill="${c}"/>
-    <circle cx="40" cy="48" r="22" fill="${c}"/>${f}
-    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
-  return `<svg viewBox="0 0 80 80"><ellipse cx="40" cy="48" rx="22" ry="20" fill="${c}"/>
-    <circle cx="40" cy="36" r="14" fill="${c}"/>
-    <circle cx="28" cy="28" r="4" fill="${c}"/><circle cx="52" cy="28" r="4" fill="${c}"/>${f}
-    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
+  /* data-asset slots for T-064 replacement */
+  if (id === 'fox') return `<svg viewBox="0 0 80 80" data-asset="char-fox" data-mood="${mood||'idle'}">
+    <circle cx="40" cy="46" r="22" fill="${c}"/>
+    <polygon points="16,36 20,8 34,34" fill="${c}"/><polygon points="46,34 60,8 64,36" fill="${c}"/>
+    <polygon points="20,30 22,14 30,30" fill="#f3d2b0" opacity=".85"/>
+    <polygon points="50,30 58,14 60,30" fill="#f3d2b0" opacity=".85"/>
+    <ellipse cx="40" cy="54" rx="10" ry="7" fill="#f3d2b0" opacity=".92"/>${f}
+    <text x="40" y="78" text-anchor="middle" font-size="10" fill="#c8b090">${lab}</text></svg>`;
+  if (id === 'rabbit') return `<svg viewBox="0 0 80 80" data-asset="char-rabbit" data-mood="${mood||'idle'}">
+    <ellipse cx="28" cy="16" rx="7" ry="16" fill="${c}"/><ellipse cx="52" cy="16" rx="7" ry="16" fill="${c}"/>
+    <ellipse cx="28" cy="14" rx="3.5" ry="10" fill="#f8e8e4"/><ellipse cx="52" cy="14" rx="3.5" ry="10" fill="#f8e8e4"/>
+    <circle cx="40" cy="46" r="22" fill="${c}"/>${f}
+    <ellipse cx="40" cy="56" rx="7" ry="5" fill="#e8b0b0" opacity=".55"/>
+    <text x="40" y="78" text-anchor="middle" font-size="10" fill="#c8b090">${lab}</text></svg>`;
+  return `<svg viewBox="0 0 80 80" data-asset="char-crane" data-mood="${mood||'idle'}">
+    <ellipse cx="40" cy="20" rx="11" ry="13" fill="${c}"/>
+    <path d="M50 18 Q72 4 68 28 Q62 38 50 30" fill="${c}"/>
+    <path d="M28 22 L18 28 L28 26" fill="#e85840"/>
+    <circle cx="40" cy="48" r="20" fill="${c}"/>
+    <path d="M40 8 L42 2 L38 2 Z" fill="#e85840"/>${f}
+    <text x="40" y="78" text-anchor="middle" font-size="10" fill="#c8b090">${lab}</text></svg>`;
 }
 
-
-/** D6：人数底（高背/经典/矮凳）× 关系盖（圆背/尖背/染色/倾角）；空座=虚线方凳 */
-function chairSvg(kind, countMode, seatIndex) {
-  // kind: empty | solo | friend | rival | mixed
-  if (kind === 'empty') {
-    return `<svg class="chair-svg stool" viewBox="0 0 80 70" aria-hidden="true">
-      <rect x="16" y="26" width="48" height="16" rx="3" fill="none" stroke="#7a8699" stroke-width="2" stroke-dasharray="5 4"/>
-      <rect x="22" y="42" width="5" height="18" fill="#3a4252" opacity=".5"/>
-      <rect x="53" y="42" width="5" height="18" fill="#3a4252" opacity=".5"/>
-      <rect x="37" y="44" width="5" height="16" fill="#3a4252" opacity=".5"/>
+function chairSvg(kind) {
+  if (kind === 'empty' || kind === 'stool') {
+    return `<svg class="chair-svg stool" viewBox="0 0 80 70" data-asset="chair-stool" aria-hidden="true">
+      <ellipse cx="40" cy="38" rx="26" ry="12" fill="#6a4a30" stroke="#a08060" stroke-width="2"/>
+      <path d="M18 36 Q40 18 62 36" fill="none" stroke="#8a6848" stroke-width="3" stroke-linecap="round"/>
+      <rect x="20" y="46" width="6" height="16" rx="1" fill="#4a3020"/>
+      <rect x="54" y="46" width="6" height="16" rx="1" fill="#4a3020"/>
+      <rect x="37" y="48" width="6" height="14" rx="1" fill="#4a3020"/>
     </svg>`;
   }
-  if (kind === 'friend') {
-    // 圆背 + 绿
-    const scale = countMode === 4 ? 0.9 : countMode === 2 ? 1.08 : 1;
-    return `<svg class="chair-svg round" viewBox="0 0 80 70" aria-hidden="true" style="transform:scale(${scale})">
-      <path d="M18 36 Q40 -2 62 36" fill="#5a4534" stroke="#45e0a0" stroke-width="2.5"/>
-      <ellipse cx="40" cy="40" rx="26" ry="13" fill="#2f5a48" stroke="#45e0a0" stroke-width="2"/>
-      <rect x="16" y="50" width="9" height="16" rx="2" fill="#5a4534"/>
-      <rect x="55" y="50" width="9" height="16" rx="2" fill="#5a4534"/>
+  if (kind === 'friend' || kind === 'round') {
+    return `<svg class="chair-svg round" viewBox="0 0 80 70" data-asset="chair-round" aria-hidden="true">
+      <path d="M16 38 Q40 -4 64 38" fill="#3a6a50" stroke="#5ecf8a" stroke-width="2.5"/>
+      <ellipse cx="40" cy="42" rx="28" ry="14" fill="#2f5a48" stroke="#5ecf8a" stroke-width="2"/>
+      <ellipse cx="40" cy="40" rx="20" ry="8" fill="#4a8a68" opacity=".5"/>
+      <rect x="14" y="52" width="10" height="14" rx="2" fill="#5a4534"/>
+      <rect x="56" y="52" width="10" height="14" rx="2" fill="#5a4534"/>
     </svg>`;
   }
-  if (kind === 'rival') {
-    // 尖背 + 红
-    const scale = countMode === 4 ? 0.9 : countMode === 2 ? 1.12 : 1;
-    return `<svg class="chair-svg spike" viewBox="0 0 80 70" aria-hidden="true" style="transform:scale(${scale})">
-      <path d="M22 38 L40 0 L58 38 Z" fill="#4a3028" stroke="#ff7b84" stroke-width="2.5"/>
-      <rect x="16" y="36" width="48" height="16" rx="2" fill="#6b3a42" stroke="#ff7b84" stroke-width="2"/>
-      <rect x="18" y="52" width="8" height="16" fill="#4a3028"/>
-      <rect x="54" y="52" width="8" height="16" fill="#4a3028"/>
+  if (kind === 'rival' || kind === 'spike') {
+    return `<svg class="chair-svg spike" viewBox="0 0 80 70" data-asset="chair-spike" aria-hidden="true">
+      <path d="M22 40 L28 8 L34 40 Z" fill="#d4a84b" stroke="#8a6020" stroke-width="1"/>
+      <path d="M36 40 L40 2 L44 40 Z" fill="#d4a84b" stroke="#8a6020" stroke-width="1"/>
+      <path d="M46 40 L52 8 L58 40 Z" fill="#d4a84b" stroke="#8a6020" stroke-width="1"/>
+      <path d="M18 38 L62 38 L58 18 L22 18 Z" fill="#8a3040" stroke="#ff6b6b" stroke-width="2"/>
+      <rect x="14" y="36" width="52" height="16" rx="3" fill="#6b3a42" stroke="#ff6b6b" stroke-width="1.5"/>
+      <rect x="16" y="52" width="9" height="14" fill="#4a3028"/>
+      <rect x="55" y="52" width="9" height="14" fill="#4a3028"/>
     </svg>`;
   }
-  if (kind === 'mixed') {
-    return `<svg class="chair-svg mixed" viewBox="0 0 80 70" aria-hidden="true">
-      <path d="M20 36 Q40 6 50 36" fill="#4a3a2c" stroke="#e0b060" stroke-width="2"/>
-      <path d="M40 6 L58 36 L40 36 Z" fill="#5a3028" stroke="#ff7b84" stroke-width="1.5"/>
-      <rect x="16" y="36" width="48" height="15" rx="3" fill="#5a4a38" stroke="#e0b060" stroke-width="1.5"/>
-      <rect x="18" y="51" width="7" height="16" fill="#4a3a2c"/>
-      <rect x="55" y="51" width="7" height="16" fill="#4a3a2c"/>
-    </svg>`;
-  }
-  // solo：按人数底
-  if (countMode === 2 || seatIndex === 0) {
-    // 主座/高背
-    return `<svg class="chair-svg host" viewBox="0 0 80 70" aria-hidden="true">
-      <rect x="16" y="4" width="48" height="32" rx="4" fill="#5c4030" stroke="#7ec8ff" stroke-width="2.5"/>
-      <rect x="12" y="34" width="56" height="16" rx="4" fill="#4a5468" stroke="#7ec8ff" stroke-width="1.5"/>
-      <rect x="14" y="50" width="10" height="18" fill="#5c4030"/>
-      <rect x="56" y="50" width="10" height="18" fill="#5c4030"/>
-    </svg>`;
-  }
-  if (countMode === 4) {
-    // 矮方凳
-    return `<svg class="chair-svg stool" viewBox="0 0 80 70" aria-hidden="true">
-      <rect x="14" y="28" width="52" height="16" rx="3" fill="#3a4252" stroke="#9aa3b2" stroke-width="2"/>
-      <rect x="18" y="44" width="6" height="20" fill="#4a3a2c"/>
-      <rect x="56" y="44" width="6" height="20" fill="#4a3a2c"/>
-      <rect x="30" y="46" width="5" height="18" fill="#4a3a2c"/>
-      <rect x="45" y="46" width="5" height="18" fill="#4a3a2c"/>
-    </svg>`;
-  }
-  // 仨 · 经典靠背
-  return `<svg class="chair-svg classic" viewBox="0 0 80 70" aria-hidden="true">
-    <path d="M22 14 Q40 4 58 14 L58 34 L22 34 Z" fill="#5a4534" stroke="#8b95a8" stroke-width="2"/>
-    <rect x="16" y="32" width="48" height="16" rx="4" fill="#3a4252"/>
-    <rect x="18" y="48" width="8" height="16" fill="#5a4534"/>
-    <rect x="54" y="48" width="8" height="16" fill="#5a4534"/>
+  /* solo classic warm chair */
+  return `<svg class="chair-svg classic" viewBox="0 0 80 70" data-asset="chair-classic" aria-hidden="true">
+    <path d="M20 12 Q40 2 60 12 L60 36 L20 36 Z" fill="#5a3a58" stroke="#d4a84b" stroke-width="2"/>
+    <rect x="14" y="34" width="52" height="16" rx="4" fill="#4a3050" stroke="#d4a84b" stroke-width="1.5"/>
+    <rect x="16" y="50" width="10" height="14" fill="#5a4534"/>
+    <rect x="54" y="50" width="10" height="14" fill="#5a4534"/>
   </svg>`;
 }
 
 function chairKindFor(i, who) {
-  if (!who) return 'empty';
+  if (!who) return 'stool';
   const ns = neighbors(i);
   const hasFriend = REL[who].friend && ns.includes(REL[who].friend);
   const hasRival = REL[who].rival && ns.includes(REL[who].rival);
-  if (hasFriend && hasRival) return 'mixed';
-  if (hasFriend) return 'friend';
-  if (hasRival) return 'rival';
-  return 'solo';
+  if (hasRival) return 'spike';
+  if (hasFriend) return 'round';
+  return 'classic';
 }
 
-function adj(i, j) {
-
-
-  if (i < 0 || j < 0) return false;
-  const d = Math.abs(i - j);
-  return d === 1 || d === 3;
-}
-function neighbors(i) {
-  const n = seats.length;
-  return [(i + 1) % n, (i + n - 1) % n].map(j => seats[j]).filter(Boolean);
-}
-function flags() {
-  const foxI = seats.indexOf('fox'), rabI = seats.indexOf('rabbit'), crI = seats.indexOf('crane');
-  return {
-    foxI, rabI, crI,
-    rivalsAdjacent: adj(foxI, rabI),
-    friendsAdjacent: adj(rabI, crI),
-  };
-}
 function moodFor(who) {
-  const { rivalsAdjacent, friendsAdjacent } = flags();
   if (!who) return 'idle';
   const i = seats.indexOf(who);
+  if (i < 0) return 'idle';
   const ns = neighbors(i);
-  if (REL[who].rival && rivalsAdjacent && ns.includes(REL[who].rival)) return who === 'fox' ? 'awkward' : 'mad';
-  if (REL[who].friend && friendsAdjacent && ns.includes(REL[who].friend)) return 'happy';
+  if (REL[who].rival && ns.includes(REL[who].rival)) return who === 'fox' ? 'awkward' : 'mad';
+  if (REL[who].friend && ns.includes(REL[who].friend)) return 'happy';
   return 'idle';
 }
 
-/** Hover preview: if placing selected next to someone, flash relation on that neighbor seat */
-function hoverKind(targetIdx) {
-  if (selected === null) return null;
-  const who = seats[selected];
-  if (!who) return null;
-  // simulate: who moves to targetIdx
+function placeActor(el, angleDeg) {
+  const p = polar(angleDeg);
+  el.style.left = p.x + 'px';
+  el.style.top = p.y + 'px';
+  el.dataset.angle = String(angleDeg);
+}
+
+function showBubble(who, text, kind) {
+  const el = actorEls[who];
+  if (!el) return;
+  const b = el.querySelector('.bubble');
+  b.textContent = text;
+  b.className = 'bubble on' + (kind ? ' ' + kind : '');
+}
+function hideBubbles() {
+  Object.values(actorEls).forEach(el => {
+    const b = el.querySelector('.bubble');
+    if (b) { b.className = 'bubble'; b.textContent = ''; }
+  });
+}
+function fxPop(angleDeg, emoji) {
+  const layer = document.getElementById('fx');
+  const p = polar(angleDeg);
+  const n = document.createElement('div');
+  n.className = 'fx-pop';
+  n.textContent = emoji;
+  n.style.left = p.x + 'px';
+  n.style.top = (p.y - 40) + 'px';
+  layer.appendChild(n);
+  setTimeout(() => n.remove(), 700);
+}
+function fxClash(angleDeg) {
+  const layer = document.getElementById('fx');
+  const p = polar(angleDeg);
+  const n = document.createElement('img');
+  n.src = 'assets/fx/fx_clash.png';
+  n.alt = '';
+  n.className = 'fx-clash';
+  n.style.left = p.x + 'px';
+  n.style.top = (p.y - 20) + 'px';
+  layer.appendChild(n);
+  setTimeout(() => n.remove(), 650);
+}
+
+
+function rebuildChairs() {
+  const root = document.getElementById('chairs');
+  root.innerHTML = '';
+  seatEls = [];
+  for (let i = 0; i < 4; i++) {
+    const who = seats[i];
+    const ang = angleAtSeat(i);
+    const p = polar(ang);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'seat-slot';
+    btn.dataset.seat = String(i);
+    btn.style.left = p.x + 'px';
+    btn.style.top = (p.y + 18) + 'px';
+    btn.setAttribute('aria-label', who ? LABEL[who] : '空座');
+    const wrap = document.createElement('div');
+    wrap.className = 'chair-wrap';
+    wrap.innerHTML = chairVisual(chairKindFor(i, who));
+    btn.appendChild(wrap);
+    btn.addEventListener('click', () => onSeat(i));
+    btn.addEventListener('pointerenter', () => onHover(i, true));
+    btn.addEventListener('pointerleave', () => onHover(i, false));
+    root.appendChild(btn);
+    seatEls[i] = btn;
+  }
+}
+
+function rebuildActors() {
+  const root = document.getElementById('actors');
+  root.innerHTML = '';
+  actorEls = {};
+  seats.forEach((who, i) => {
+    if (!who) return;
+    const el = document.createElement('div');
+    el.className = 'actor idle';
+    el.dataset.char = who;
+    el.innerHTML = `<div class="bubble"></div><div class="body">${charVisual(who, moodFor(who))}</div>`;
+    placeActor(el, angleAtSeat(i));
+    root.appendChild(el);
+    actorEls[who] = el;
+  });
+}
+
+function refreshFaces() {
+  Object.keys(actorEls).forEach(who => {
+    const el = actorEls[who];
+    if (!el || el.classList.contains('walking') || el.classList.contains('held') || el.classList.contains('refuse')) return;
+    const body = el.querySelector('.body');
+    const mood = moodFor(who);
+    body.innerHTML = charVisual(who, mood);
+  });
+}
+
+function clearSeatHot() {
+  seatEls.forEach(s => s && s.classList.remove('hot', 'hot-friend', 'hot-rival'));
+}
+
+function wouldRefuse(who, targetIdx) {
+  /* refuse sit: empty seat whose neighbors include rival (after placing who there) */
+  if (seats[targetIdx]) return false; // swaps allowed
   const trial = seats.slice();
-  const other = trial[targetIdx];
-  trial[selected] = other;
+  const from = trial.indexOf(who);
+  trial[from] = null;
   trial[targetIdx] = who;
-  const tNeighbors = [(targetIdx + 1) % 4, (targetIdx + 3) % 4].map(j => trial[j]).filter(Boolean);
-  if (REL[who].rival && tNeighbors.includes(REL[who].rival)) return 'rival';
-  if (REL[who].friend && tNeighbors.includes(REL[who].friend)) return 'friend';
+  const ns = [(targetIdx + 1) % 4, (targetIdx + 3) % 4].map(j => trial[j]).filter(Boolean);
+  return !!(REL[who].rival && ns.includes(REL[who].rival));
+}
+
+function hoverKind(who, targetIdx) {
+  if (wouldRefuse(who, targetIdx)) return 'rival';
+  const trial = seats.slice();
+  const from = trial.indexOf(who);
+  const other = trial[targetIdx];
+  trial[from] = other;
+  trial[targetIdx] = who;
+  const ns = [(targetIdx + 1) % 4, (targetIdx + 3) % 4].map(j => trial[j]).filter(Boolean);
+  if (REL[who].friend && ns.includes(REL[who].friend)) return 'friend';
+  if (REL[who].rival && ns.includes(REL[who].rival)) return 'rival';
   return 'ok';
 }
 
-function render() {
-  const table = document.getElementById('table');
-  const phone = document.getElementById('phone');
-  phone.classList.toggle('dim', selected !== null);
-  table.innerHTML = '';
-  const { rivalsAdjacent, friendsAdjacent } = flags();
+function onHover(i, on) {
+  if (busy || selected === null) return;
+  const who = seats[selected];
+  if (!who || selected === i) return;
+  clearSeatHot();
+  if (!on) return;
+  const k = hoverKind(who, i);
+  seatEls[i].classList.add(k === 'friend' ? 'hot-friend' : k === 'rival' ? 'hot-rival' : 'hot');
+}
 
-  seats.forEach((who, i) => {
-    const el = document.createElement('button');
-    el.type = 'button';
-    el.className = 'seat s' + i + (who ? '' : ' empty') + ' count-' + countMode;
-    el.dataset.seat = String(i);
-    const chair = document.createElement('div');
-    chair.className = 'chair';
-    chair.innerHTML = chairSvg(chairKindFor(i, who), countMode, i);
-    el.appendChild(chair);
-    if (selected === i) el.classList.add('held');
-    // origin seat while held: keep character lifted via .held (no double ghost)
-    if (landSeat === i) el.classList.add('land');
-    if (bumpSeat === i) el.classList.add('bump');
-    if (hover === i && selected !== null && selected !== i) {
-      const k = hoverKind(i);
-      el.classList.add(k === 'friend' ? 'hover-friend' : k === 'rival' ? 'hover-rival' : 'hover-ok');
+function stopEscalate() {
+  if (escalateTimer) clearTimeout(escalateTimer);
+  if (escalateTick) clearInterval(escalateTick);
+  escalateTimer = escalateTick = null;
+  escalateLv = 0;
+  const bar = document.getElementById('escBar');
+  const fill = document.getElementById('escFill');
+  bar.classList.remove('on');
+  fill.style.width = '0%';
+}
+
+function startEscalate() {
+  stopEscalate();
+  if (!rivalsAdjacent()) return;
+  const bar = document.getElementById('escBar');
+  const fill = document.getElementById('escFill');
+  bar.classList.add('on');
+  setBeat('修罗场', 'bad');
+  setHint('不管会升级… 拉开他们');
+  showBubble('fox', '…', 'bad');
+  showBubble('rabbit', '💢', 'bad');
+  const fox = actorEls.fox, rab = actorEls.rabbit;
+  if (fox) { fox.classList.remove('idle'); fox.classList.add('bristle'); }
+  if (rab) { rab.classList.remove('idle'); rab.classList.add('bristle'); }
+
+  let progress = 0;
+  escalateTick = setInterval(() => {
+    if (!rivalsAdjacent() || busy || selected !== null) return;
+    progress += 4;
+    fill.style.width = Math.min(100, progress) + '%';
+    if (progress >= 33 && escalateLv < 1) {
+      escalateLv = 1;
+      showBubble('fox', '哼', 'bad');
+      showBubble('rabbit', '💢💢', 'bad');
+      setBeat('升级·1', 'warn');
+      fxPop(angleAtSeat(seats.indexOf('rabbit')), '💢');
     }
-    if (who && selected !== i) {
-      const wrap = document.createElement('div');
-      wrap.className = 'char idle';
-      wrap.dataset.char = who;
-      wrap.innerHTML = `<span class="bubble" data-bubble></span>` + svgFor(who, moodFor(who));
-      el.appendChild(wrap);
-      const ns = neighbors(i);
-      if (REL[who].friend && ns.includes(REL[who].friend)) el.classList.add('friend-glow');
-      if (REL[who].rival && ns.includes(REL[who].rival)) el.classList.add('rival-glow');
-    } else if (who && selected === i) {
-      const wrap = document.createElement('div');
-      wrap.className = 'char';
-      wrap.dataset.char = who;
-      wrap.innerHTML = `<span class="bubble" data-bubble></span>` + svgFor(who, 'idle');
-      el.appendChild(wrap);
+    if (progress >= 66 && escalateLv < 2) {
+      escalateLv = 2;
+      showBubble('fox', '走开!', 'bad');
+      showBubble('rabbit', '可恶!', 'bad');
+      setBeat('升级·2', 'bad');
+      if (fox) fox.classList.add('clash');
+      if (rab) rab.classList.add('clash');
     }
-    el.addEventListener('click', () => onSeat(i));
-    el.addEventListener('pointerenter', () => {
-      if (selected === null || selected === i) return;
-      hover = i;
-      render();
-    });
-    el.addEventListener('pointerleave', () => {
-      if (hover === i) { hover = null; render(); }
-    });
-    table.appendChild(el);
+    if (progress >= 100 && escalateLv < 3) {
+      escalateLv = 3;
+      showBubble('fox', '💥', 'bad');
+      showBubble('rabbit', '💥', 'bad');
+      setBeat('吵翻了', 'bad');
+      setHint('快拉开！');
+      fxPop(angleAtSeat(seats.indexOf('fox')), '💥');
+      fxPop(angleAtSeat(seats.indexOf('rabbit')), '💥');
+    }
+  }, 280);
+}
+
+function afterSettle() {
+  rebuildChairs();
+  refreshFaces();
+  hideBubbles();
+  Object.values(actorEls).forEach(el => {
+    el.className = 'actor idle';
   });
-
-  if (landSeat !== null) {
-    const s = landSeat; landSeat = null;
-    later(() => { const n = table.querySelector(`[data-seat="${s}"]`); if (n) n.classList.remove('land'); }, 420);
-  }
-  if (bumpSeat !== null) {
-    const s = bumpSeat; bumpSeat = null;
-    later(() => { const n = table.querySelector(`[data-seat="${s}"]`); if (n) n.classList.remove('bump'); }, 480);
-  }
-}
-
-function setBeat(t, kind) {
-  const el = document.getElementById('beat');
-  el.textContent = t;
-  el.classList.remove('ok', 'bad');
-  if (kind) el.classList.add(kind);
-}
-function setHint(t) { document.getElementById('hint').textContent = t; }
-
-function clearPerf() {
-  document.querySelectorAll('.char').forEach(c => {
-    c.classList.remove('wave','nod','look-away-left','look-away-right','bristle','happy','show-bubble');
-    c.classList.add('idle');
-    const b = c.querySelector('[data-bubble]');
-    if (b) b.textContent = '';
-  });
-}
-function charEl(id) { return document.querySelector(`.char[data-char="${id}"]`); }
-function bubble(id, emoji) {
-  const el = charEl(id);
-  if (!el) return;
-  const b = el.querySelector('[data-bubble]');
-  if (b) b.textContent = emoji;
-  el.classList.add('show-bubble');
-}
-
-function reactNow() {
-  clearPerf();
-  const { rivalsAdjacent, friendsAdjacent } = flags();
-  setHint('');
-  if (rivalsAdjacent && friendsAdjacent) {
-    setBeat('修罗场', 'bad');
-    const a = charEl('fox'), b = charEl('rabbit'), c = charEl('crane');
-    if (a) { a.classList.remove('idle'); a.classList.add('look-away-left'); bubble('fox', '😒'); }
-    if (b) { b.classList.remove('idle'); b.classList.add('bristle'); bubble('rabbit', '💢'); }
-    if (c) { c.classList.remove('idle'); c.classList.add('wave'); bubble('crane', '😅'); }
-  } else if (rivalsAdjacent) {
-    setBeat('修罗场', 'bad');
-    const a = charEl('fox'), b = charEl('rabbit');
-    if (a) { a.classList.remove('idle'); a.classList.add('look-away-left'); bubble('fox', '😒'); }
-    if (b) { b.classList.remove('idle'); b.classList.add('look-away-right','bristle'); bubble('rabbit', '💢'); }
-  } else if (friendsAdjacent) {
-    setBeat('成了', 'ok');
-    const a = charEl('rabbit'), b = charEl('crane');
-    if (a) { a.classList.remove('idle'); a.classList.add('wave','happy'); bubble('rabbit', '👋'); }
-    if (b) { b.classList.remove('idle'); b.classList.add('nod','happy'); bubble('crane', '✨'); }
+  if (rivalsAdjacent()) {
+    startEscalate();
   } else {
-    setBeat('…');
+    stopEscalate();
+    if (friendsAdjacent()) {
+      setBeat('成了', 'ok');
+      showBubble('rabbit', '👋', 'ok');
+      showBubble('crane', '✨', 'ok');
+      const a = actorEls.rabbit, b = actorEls.crane;
+      if (a) { a.classList.remove('idle'); a.classList.add('greet', 'happy'); }
+      if (b) { b.classList.remove('idle'); b.classList.add('greet', 'happy'); }
+      setHint('');
+    } else {
+      setBeat('…');
+      setHint('点角色 → 点空座/换座');
+    }
   }
 }
 
-function playLoop() {
-  clearTimers();
-  const gen = ++loopGen;
-  clearPerf();
-  const { rivalsAdjacent, friendsAdjacent } = flags();
-  setBeat('看他们');
+function animateWalk(who, fromIdx, toIdx, opts) {
+  return new Promise(resolve => {
+    const el = actorEls[who];
+    if (!el) { resolve({ passed: [] }); return; }
+    const { delta, steps, fromA, toA } = preferArc(fromIdx, toIdx);
+    const passed = seatsOnArc(fromIdx, toIdx, delta);
+    el.classList.remove('idle', 'held', 'refuse', 'bounce');
+    el.classList.add('walking');
+    el.querySelector('.body').innerHTML = charVisual(who, 'walk');
+    hideBubbles();
+    let step = 0;
+    const triggered = new Set();
+    const iv = setInterval(() => {
+      step++;
+      const t = step / steps;
+      const ang = fromA + delta * t;
+      placeActor(el, ang);
+      /* walk-by: when near a passed seat angle, greet/clash */
+      passed.forEach(si => {
+        if (triggered.has(si)) return;
+        const sa = angleAtSeat(si);
+        let diff = Math.abs(((ang - sa + 540) % 360) - 180);
+        if (diff < 12) {
+          triggered.add(si);
+          const other = seats[si];
+          if (!other) return;
+          onWalkBy(who, other, si);
+        }
+      });
+      if (step >= steps) {
+        clearInterval(iv);
+        placeActor(el, toA);
+        el.classList.remove('walking');
+        resolve({ passed, opts });
+      }
+    }, 28);
+  });
+}
+
+function onWalkBy(walker, other, seatIdx) {
+  const otherEl = actorEls[other];
+  const wEl = actorEls[walker];
+  if (REL[walker].friend === other || REL[other].friend === walker) {
+    setBeat('打招呼', 'ok');
+    showBubble(walker, '嗨', 'ok');
+    showBubble(other, '👋', 'ok');
+    if (wEl) {
+      wEl.classList.remove('idle'); wEl.classList.add('greet');
+      const b = wEl.querySelector('.body'); if (b) b.innerHTML = charVisual(walker, 'happy');
+    }
+    if (otherEl) {
+      otherEl.classList.remove('idle'); otherEl.classList.add('greet');
+      const b = otherEl.querySelector('.body'); if (b) b.innerHTML = charVisual(other, 'happy');
+    }
+    fxPop(angleAtSeat(seatIdx), '✨');
+  } else if (REL[walker].rival === other || REL[other].rival === walker) {
+    setBeat('撞一下', 'bad');
+    showBubble(walker, '哼', 'bad');
+    showBubble(other, '💢', 'bad');
+    if (wEl) {
+      wEl.classList.add('clash');
+      const b = wEl.querySelector('.body'); if (b) b.innerHTML = charVisual(walker, 'mad');
+    }
+    if (otherEl) {
+      otherEl.classList.remove('idle'); otherEl.classList.add('clash');
+      const b = otherEl.querySelector('.body'); if (b) b.innerHTML = charVisual(other, 'mad');
+    }
+    fxPop(angleAtSeat(seatIdx), '💢');
+    fxClash(angleAtSeat(seatIdx));
+  }
+}
+
+async function doRefuse(who, fromIdx, targetIdx) {
+  setBeat('拒坐', 'bad');
+  setHint('站立拒坐');
+  phoneBusy(true);
+  /* approach partway along arc */
+  const el = actorEls[who];
+  const fromA = angleAtSeat(fromIdx);
+  const toA = angleAtSeat(targetIdx);
+  const { delta } = shortestArc(fromA, toA);
+  const approach = fromA + delta * 0.55;
+  el.classList.remove('idle', 'held');
+  el.classList.add('walking');
+  await new Promise(r => {
+    let step = 0, steps = 10;
+    const iv = setInterval(() => {
+      step++;
+      placeActor(el, fromA + (approach - fromA) * (step / steps));
+      if (step >= steps) { clearInterval(iv); r(); }
+    }, 30);
+  });
+  el.classList.remove('walking');
+  el.classList.add('bounce', 'refuse');
+  const body = el.querySelector('.body');
+  body.innerHTML = charVisual(who, 'refuse');
+  showBubble(who, '不坐', 'bad');
+  fxPop(approach, '💢');
+  await new Promise(r => setTimeout(r, 650));
+  /* bounce back home */
+  el.classList.remove('bounce');
+  el.classList.add('walking');
+  await new Promise(r => {
+    let step = 0, steps = 12;
+    const start = parseFloat(el.dataset.angle);
+    const iv = setInterval(() => {
+      step++;
+      placeActor(el, start + (fromA - start) * (step / steps));
+      if (step >= steps) { clearInterval(iv); r(); }
+    }, 28);
+  });
+  placeActor(el, fromA);
+  el.classList.remove('walking', 'refuse');
+  el.classList.add('idle');
+  body.innerHTML = charVisual(who, moodFor(who));
+  hideBubbles();
+  selected = null;
+  clearSeatHot();
+  phoneBusy(false);
+  setBeat('不坐', 'bad');
+  setHint('换别处试试');
+  afterSettle();
+}
+
+async function doMove(who, fromIdx, toIdx) {
+  phoneBusy(true);
+  stopEscalate();
+  hideBubbles();
+  const other = seats[toIdx];
+  setBeat(other ? '换座' : '落座');
   setHint('');
-  later(() => {
-    if (gen !== loopGen || selected !== null) return;
-    clearPerf();
-    if (friendsAdjacent) {
-      setBeat('好友', 'ok');
-      const a = charEl('rabbit'), b = charEl('crane');
-      if (a) { a.classList.remove('idle'); a.classList.add('wave'); bubble('rabbit', '👋'); }
-      if (b) { b.classList.remove('idle'); b.classList.add('nod'); bubble('crane', '🙂'); }
-    } else setBeat('…');
-  }, 400);
-  later(() => {
-    if (gen !== loopGen || selected !== null) return;
-    clearPerf();
-    if (rivalsAdjacent) {
-      setBeat('仇人', 'bad');
-      const a = charEl('fox'), b = charEl('rabbit');
-      if (a) { a.classList.remove('idle'); a.classList.add('look-away-left'); bubble('fox', '😒'); }
-      if (b) { b.classList.remove('idle'); b.classList.add('look-away-right','bristle'); bubble('rabbit', '💢'); }
-    } else if (friendsAdjacent) setBeat('成了', 'ok');
-    else setBeat('…');
-  }, 1700);
-  later(() => {
-    if (gen !== loopGen || selected !== null) return;
-    playLoop();
-  }, 5200);
+  const el = actorEls[who];
+  if (el) el.classList.remove('held');
+
+  /* if swap, briefly lift other then they'll land on fromIdx after walk */
+  await animateWalk(who, fromIdx, toIdx, {});
+
+  seats[fromIdx] = other;
+  seats[toIdx] = who;
+
+  if (other) {
+    const otherEl = actorEls[other];
+    if (otherEl) {
+      /* slide other across shorter path without full walk-by spam */
+      otherEl.classList.add('walking');
+      const fromA = angleAtSeat(toIdx);
+      const toA = angleAtSeat(fromIdx);
+      const { delta, steps } = shortestArc(fromA, toA);
+      await new Promise(r => {
+        let step = 0;
+        const iv = setInterval(() => {
+          step++;
+          placeActor(otherEl, fromA + delta * (step / steps));
+          if (step >= steps) { clearInterval(iv); r(); }
+        }, 22);
+      });
+      placeActor(otherEl, toA);
+      otherEl.classList.remove('walking');
+    }
+  }
+
+  selected = null;
+  clearSeatHot();
+  phoneBusy(false);
+  afterSettle();
 }
 
 function onSeat(i) {
+  if (busy) return;
   const who = seats[i];
   if (selected === null) {
     if (!who) return;
     selected = i;
-    ghostSeat = i;
-    hover = null;
-    setHint('');
+    stopEscalate();
+    hideBubbles();
+    const el = actorEls[who];
+    if (el) {
+      el.classList.remove('idle', 'greet', 'clash', 'happy', 'bristle');
+      el.classList.add('held');
+    }
     setBeat('拿起');
-    clearTimers();
-    loopGen++;
-    clearPerf();
-    render();
+    setHint('点空座落座，或点别人换座');
     return;
   }
   if (selected === i) {
-    selected = null; ghostSeat = null; hover = null;
-    setHint('');
-    render();
-    playLoop();
+    const w = seats[selected];
+    if (actorEls[w]) {
+      actorEls[w].classList.remove('held');
+      actorEls[w].classList.add('idle');
+    }
+    selected = null;
+    clearSeatHot();
+    setHint('点角色 → 点空座/换座');
+    afterSettle();
     return;
   }
-  // 落下 / 挤开
   const from = selected;
-  const a = seats[from];
-  const b = seats[i];
-  const squeezing = !!b;
-  if (squeezing) bumpSeat = i;
-  seats[from] = b;
-  seats[i] = a;
+  const mover = seats[from];
+  if (!mover) { selected = null; return; }
+
+  if (wouldRefuse(mover, i)) {
+    const el = actorEls[mover];
+    if (el) el.classList.remove('held');
+    doRefuse(mover, from, i);
+    return;
+  }
+  doMove(mover, from, i);
+}
+
+function reset() {
+  stopEscalate();
   selected = null;
-  ghostSeat = null;
-  hover = null;
-  landSeat = i;
-  setBeat(squeezing ? '挤开' : '落下');
-  clearTimers();
-  loopGen++;
-  render();
-  later(() => reactNow(), squeezing ? 280 : 120);
-  later(() => { if (selected === null) playLoop(); }, 1800);
+  busy = false;
+  phoneBusy(false);
+  seats = ['fox', 'crane', 'rabbit', null];
+  clearSeatHot();
+  rebuildChairs();
+  rebuildActors();
+  setBeat('开席');
+  setHint('点角色 → 点空座/换座');
+  setTimeout(afterSettle, 200);
 }
 
-function applyCount(n) {
-  countMode = n;
-  document.querySelectorAll('.mode').forEach(btn => {
-    btn.classList.toggle('on', Number(btn.dataset.n) === n);
-  });
-  if (n === 2) seats = ['fox', 'rabbit', null, null];
-  else if (n === 3) seats = ['fox', 'rabbit', null, 'crane'];
-  else seats = ['fox', 'rabbit', 'hedgehog', 'crane'];
-  selected = null; ghostSeat = null; hover = null;
-  clearTimers(); loopGen++;
-  render();
-  later(() => reactNow(), 100);
-  later(() => { if (selected === null) playLoop(); }, 1600);
+function showTip() {
+  tipMode = !tipMode;
+  if (tipMode) {
+    setHint('试：①兔→空座(拒坐) ②狐↔兔对座(走路遇鹤) ③换到挨坐等升级');
+    setBeat('提示');
+  } else {
+    setHint('点角色 → 点空座/换座');
+  }
 }
 
-document.querySelectorAll('.mode').forEach(btn => {
-  btn.addEventListener('click', () => applyCount(Number(btn.dataset.n)));
-});
-document.getElementById('btnReplay').addEventListener('click', () => {
-  selected = null; ghostSeat = null; hover = null;
-  render(); playLoop();
-});
-document.getElementById('btnReset').addEventListener('click', () => applyCount(countMode));
+document.getElementById('btnReset').addEventListener('click', reset);
+document.getElementById('btnTip').addEventListener('click', showTip);
 
-applyCount(3);
+reset();
 </script>
 </body>
 </html>
