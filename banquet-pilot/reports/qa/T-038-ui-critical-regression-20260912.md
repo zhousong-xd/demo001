@@ -126,3 +126,8 @@
 - 输入路径仅为 headless Chrome CDP mouse-sim，不等于真机触屏。
 - dist 只读；未 merge；未装新依赖。
 - shippedClaim=false；不升正式宣称。
+
+## Push
+
+- tip: `efba6df2d74f619604fb2cc70ac3627387ab5293` on `bot/banquet-pilot` (reports/evidence only)
+- issue comment: https://github.com/zhousong-xd/demo001/issues/44#issuecomment-5644665449
