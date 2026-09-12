@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>表现重设计小样 · T-057</title>
+<style>
+:root {
+  --bg:#12161e; --panel:#1a2030; --seat:#3b4456; --text:#eef2f7; --muted:#8b95a8;
+  --accent:#7ec8ff; --ok:#45e0a0; --bad:#ff7b84; --warn:#e6c35c;
+  --fox:#e8874a; --rabbit:#e0a8d4; --crane:#8ec4e8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#07090d;color:var(--text);
+  font-family:"Segoe UI","PingFang SC","Noto Sans SC",system-ui,sans-serif;user-select:none}
+.wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:10px 8px 24px}
+.banner{width:390px;max-width:100%;margin-bottom:8px;padding:8px 10px;background:#f3e0d6;border:2px solid #8b3a2a;
+  border-radius:10px;color:#8b3a2a;font-size:12px;font-weight:650;text-align:center}
+.banner small{display:block;margin-top:3px;font-weight:500;color:#7a6a58;font-size:11px}
+.phone{width:390px;max-width:100%;height:844px;max-height:calc(100vh - 80px);background:radial-gradient(120% 70% at 50% 0%,#1c2536,#12161e 60%);
+  border-radius:28px;border:2px solid #2a3344;box-shadow:0 16px 48px rgba(0,0,0,.55);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.top{padding:14px 14px 6px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.mark{font-size:12px;color:var(--muted)}
+.beat{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid rgba(126,200,255,.3);color:var(--accent);background:rgba(126,200,255,.1)}
+.beat.bad{color:var(--bad);border-color:rgba(255,123,132,.35);background:rgba(255,123,132,.1)}
+.beat.ok{color:var(--ok);border-color:rgba(69,224,160,.35);background:rgba(69,224,160,.1)}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:4px 12px;position:relative}
+.table{width:300px;height:300px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 50% 42%,#6b4a34 0%,#5c4030 45%,#3d2a1e 80%,#241810 100%);
+  box-shadow:0 0 0 10px #4a3426,0 0 0 14px #2a1c14,0 18px 36px rgba(0,0,0,.45),inset 0 0 50px rgba(0,0,0,.35)}
+.table .cloth{position:absolute;left:18%;top:20%;right:18%;bottom:22%;border-radius:50%;background:radial-gradient(circle at 50% 40%,#3a465c,#2a3344 70%);opacity:.92;pointer-events:none}
+.table .dish{position:absolute;left:50%;top:50%;width:78px;height:78px;margin:-39px 0 0 -39px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#f0e6d4,#d2c0a4 60%,#a89070);box-shadow:0 0 0 3px #8a7050;pointer-events:none;z-index:1;transition:transform .2s}
+.table.rattle .dish{animation:rattle .35s ease}
+@keyframes rattle{0%,100%{transform:rotate(0)}30%{transform:rotate(-4deg)}60%{transform:rotate(4deg)}}
+.seat{position:absolute;width:88px;height:88px;margin:-44px;border-radius:18px;background:linear-gradient(160deg,#4a5468,#3b4456 60%,#2e3544);
+  border:2px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;
+  box-shadow:0 6px 14px rgba(0,0,0,.35);transition:box-shadow .2s,border-color .2s,transform .15s}
+.seat.empty{background:repeating-linear-gradient(-45deg,#2a3140,#2a3140 6px,#323a4a 6px,#323a4a 12px);border-style:dashed;border-color:#5a657a}
+.seat.empty::after{content:"";width:24px;height:24px;border-radius:50%;border:2px dashed #7a8699}
+.seat.s0{left:50%;top:15%}.seat.s1{left:85%;top:55%}.seat.s2{left:50%;top:91%}.seat.s3{left:15%;top:55%}
+.seat.hl{border-color:var(--accent);box-shadow:0 0 0 3px rgba(126,200,255,.35);transform:scale(1.05)}
+.seat.preview-ok{box-shadow:0 0 0 3px rgba(69,224,160,.55),0 0 16px rgba(69,224,160,.25)}
+.seat.preview-bad{box-shadow:0 0 0 3px rgba(255,123,132,.55),0 0 16px rgba(255,123,132,.25)}
+.seat.preview-swap{box-shadow:0 0 0 3px rgba(230,195,92,.55)}
+.seat .ghost{position:absolute;inset:10px;border-radius:14px;border:2px dashed rgba(255,255,255,.2);opacity:0;pointer-events:none;transition:opacity .2s}
+.seat.has-ghost .ghost{opacity:1}
+.char{width:74px;height:74px;position:relative;transform-origin:50% 80%}
+.char svg{width:100%;height:100%;overflow:visible;display:block}
+.char .bubble{position:absolute;left:50%;top:0;transform:translate(-50%,-110%) scale(.8);opacity:0;font-size:15px;transition:.2s;filter:drop-shadow(0 2px 2px #000)}
+.char.show-bubble .bubble{opacity:1;transform:translate(-50%,-120%) scale(1)}
+.char.held{animation:held 1s ease-in-out infinite;filter:drop-shadow(0 8px 6px rgba(0,0,0,.45))}
+@keyframes held{0%,100%{transform:translateY(-10px) scale(1.06)}50%{transform:translateY(-14px) scale(1.08)}}
+.char.pop-out{animation:popOut .45s ease forwards}
+@keyframes popOut{0%{transform:scale(1)}40%{transform:scale(1.15) translateY(-8px)}100%{transform:scale(.5) translate(40px,60px);opacity:0}}
+.char.land{animation:land .35s ease}
+@keyframes land{0%{transform:translateY(-16px)}60%{transform:translateY(3px)}100%{transform:translateY(0)}}
+.char.wave{animation:wave .8s ease 2}
+@keyframes wave{0%,100%{transform:rotate(0)}30%{transform:rotate(-12deg)}60%{transform:rotate(10deg)}}
+.char.awayL{animation:awayL .8s ease forwards}
+.char.awayR{animation:awayR .8s ease forwards}
+@keyframes awayL{to{transform:rotate(-18deg) translateX(-4px)}}
+@keyframes awayR{to{transform:rotate(18deg) translateX(4px)}}
+.char.bristle{animation:bristle .45s ease 2}
+@keyframes bristle{50%{transform:scale(1.08);filter:saturate(1.3)}}
+.waiting{width:100%;padding:0 12px;z-index:2}
+.waiting h3{margin:0 0 6px;font-size:11px;color:var(--muted);font-weight:500}
+.waiting-row{min-height:78px;background:var(--panel);border-radius:14px;padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.waiting-row .slot{width:70px;height:70px;border-radius:14px;background:#252c3c;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid transparent}
+.waiting-row .slot.hl{border-color:var(--accent)}
+.dock{padding:8px 12px 16px;z-index:2}
+.hint{font-size:12px;color:var(--muted);text-align:center;min-height:1.3em;margin-bottom:8px}
+.tools{display:flex;gap:8px;justify-content:center}
+.btn{border:1px solid #4a5568;background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;font-size:13px;min-height:40px;cursor:pointer}
+.btn.primary{border-color:var(--accent);color:var(--accent)}
+.legend{margin-top:8px;font-size:10px;color:var(--muted);text-align:center;opacity:.7}
+.outside{width:390px;max-width:100%;margin-top:10px;font-size:12px;color:#9a9084;text-align:center;line-height:1.45}
+.outside a{color:#c9b8a0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner">表现重设计小样 / 非正式<small>说明见 重设计说明.md · 设计表.md · 正式主链 https://zhousong-xd.github.io/demo001/</small></div>
+  <div class="phone">
+    <div class="top"><span class="mark">一桌 · 凡动必有戏</span><span class="beat" id="beat">…</span></div>
+    <div class="stage">
+      <div class="table" id="table"><div class="cloth"></div><div class="dish"></div></div>
+      <div class="waiting"><h3>候客</h3><div class="waiting-row" id="waiting"></div></div>
+    </div>
+    <div class="dock">
+      <div class="hint" id="hint"></div>
+      <div class="tools">
+        <button class="btn" type="button" id="btnReset">重来</button>
+        <button class="btn primary" type="button" id="btnDemo">演示一遍</button>
+      </div>
+      <div class="legend">拿起 → 悬停预演 → 落下/挤开 · 少字看戏</div>
+    </div>
+  </div>
+  <p class="outside">T-057 新小样 · <a href="./index.html">旧小样</a> · <a href="./重设计说明.md">说明</a></p>
+</div>
+<script>
+const REL={fox:{rival:'rabbit'},rabbit:{rival:'fox',friend:'crane'},crane:{friend:'rabbit'}};
+const COLOR={fox:'#e8874a',rabbit:'#e0a8d4',crane:'#8ec4e8'};
+const LABEL={fox:'狐',rabbit:'兔',crane:'鹤'};
+let seats=['fox','rabbit',null,'crane']; // 3 on table + later waiting
+let waiting=[];
+let held=null; // {from:'seat'|'wait', index, id}
+let hover=null;
+
+function face(mood){
+  if(mood==='happy')return `<path d="M28 40 Q32 36 36 40" stroke="#2a1a18" stroke-width="2" fill="none"/><path d="M44 40 Q48 36 52 40" stroke="#2a1a18" stroke-width="2" fill="none"/><path d="M34 50 Q40 56 46 50" stroke="#2a1a18" stroke-width="2.2" fill="none"/>`;
+  if(mood==='mad')return `<path d="M24 34 L34 38" stroke="#2a1a18" stroke-width="2"/><path d="M56 34 L46 38" stroke="#2a1a18" stroke-width="2"/><ellipse cx="30" cy="42" rx="3" ry="3.4" fill="#2a1a18"/><ellipse cx="50" cy="42" rx="3" ry="3.4" fill="#2a1a18"/><path d="M34 54 Q40 50 46 54" stroke="#2a1a18" stroke-width="2" fill="none"/>`;
+  if(mood==='awkward')return `<ellipse cx="30" cy="40" rx="3" ry="3.4" fill="#2a1a18"/><ellipse cx="50" cy="40" rx="3" ry="3.4" fill="#2a1a18"/><path d="M34 52 Q40 48 46 52" stroke="#2a1a18" stroke-width="2" fill="none"/>`;
+  return `<ellipse cx="30" cy="40" rx="3.1" ry="3.6" fill="#2a1a18"/><ellipse cx="50" cy="40" rx="3.1" ry="3.6" fill="#2a1a18"/><ellipse cx="40" cy="50" rx="3" ry="2.2" fill="#5a3030" opacity=".75"/>`;
+}
+function svgFor(id,mood){
+  const c=COLOR[id],f=face(mood||'idle');
+  if(id==='fox')return `<svg viewBox="0 0 80 80"><ellipse cx="40" cy="72" rx="14" ry="3" fill="#000" opacity=".2"/><polygon points="18,34 22,10 34,32" fill="${c}"/><polygon points="46,32 58,10 62,34" fill="${c}"/><circle cx="40" cy="44" r="23" fill="${c}"/><ellipse cx="40" cy="52" rx="9" ry="6" fill="#f3d2b0" opacity=".9"/>${f}<text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${LABEL[id]}</text></svg>`;
+  if(id==='rabbit')return `<svg viewBox="0 0 80 80"><ellipse cx="40" cy="72" rx="14" ry="3" fill="#000" opacity=".2"/><ellipse cx="28" cy="18" rx="7" ry="15" fill="${c}"/><ellipse cx="52" cy="18" rx="7" ry="15" fill="${c}"/><circle cx="40" cy="46" r="22" fill="${c}"/>${f}<text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${LABEL[id]}</text></svg>`;
+  return `<svg viewBox="0 0 80 80"><ellipse cx="40" cy="72" rx="14" ry="3" fill="#000" opacity=".2"/><ellipse cx="40" cy="22" rx="10" ry="13" fill="${c}"/><path d="M52 24 Q70 8 66 30 Q60 40 52 32" fill="${c}"/><circle cx="40" cy="48" r="21" fill="${c}"/>${f}<text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${LABEL[id]}</text></svg>`;
+}
+function neighbors(i){const n=4;return [(i+1)%n,(i+3)%n].map(j=>seats[j]).filter(Boolean)}
+function wouldRival(id,seatIdx){
+  const riv=REL[id]?.rival; if(!riv) return false;
+  const occ=seats.map((x,i)=>i===seatIdx?id:x);
+  const ns=[(seatIdx+1)%4,(seatIdx+3)%4].map(j=>occ[j]);
+  return ns.includes(riv);
+}
+function wouldFriend(id,seatIdx){
+  const fr=REL[id]?.friend; if(!fr) return false;
+  const occ=seats.map((x,i)=>i===seatIdx?id:x);
+  const ns=[(seatIdx+1)%4,(seatIdx+3)%4].map(j=>occ[j]);
+  return ns.includes(fr);
+}
+function moodAt(id,seatIdx){
+  if(seatIdx==null||!id) return 'idle';
+  const ns=neighbors(seatIdx);
+  if(REL[id]?.rival && ns.includes(REL[id].rival)) return id==='rabbit'?'mad':'awkward';
+  if(REL[id]?.friend && ns.includes(REL[id].friend)) return 'happy';
+  return 'idle';
+}
+function setBeat(t,k){const el=document.getElementById('beat');el.textContent=t;el.className='beat'+(k?' '+k:'')}
+function setHint(t){document.getElementById('hint').textContent=t}
+function rattle(){const t=document.getElementById('table');t.classList.remove('rattle');void t.offsetWidth;t.classList.add('rattle')}
+
+function render(){
+  const table=document.getElementById('table');
+  table.querySelectorAll('.seat').forEach(e=>e.remove());
+  seats.forEach((who,i)=>{
+    const el=document.createElement('button'); el.type='button'; el.className='seat s'+i+(who?'':' empty');
+    if(held&&held.from==='seat'&&held.index===i) el.classList.add('has-ghost','hl');
+    if(hover===i && held){
+      const id=held.id;
+      if(!who) el.classList.add(wouldRival(id,i)?'preview-bad':wouldFriend(id,i)?'preview-ok':'hl');
+      else if(who!==id) el.classList.add('preview-swap');
+    }
+    const ghost=document.createElement('div'); ghost.className='ghost'; el.appendChild(ghost);
+    if(who && !(held&&held.from==='seat'&&held.index===i)){
+      const wrap=document.createElement('div'); wrap.className='char'; wrap.dataset.char=who;
+      wrap.innerHTML=`<span class="bubble" data-b></span>`+svgFor(who,moodAt(who,i));
+      el.appendChild(wrap);
+    }
+    el.onclick=()=>onSeat(i);
+    el.onmouseenter=()=>{if(held){hover=i; render(); previewHint(i)}};
+    el.onmouseleave=()=>{if(hover===i){hover=null; render()}};
+    table.appendChild(el);
+  });
+  const wait=document.getElementById('waiting'); wait.innerHTML='';
+  waiting.forEach((who,i)=>{
+    const slot=document.createElement('button'); slot.type='button'; slot.className='slot'+(held&&held.from==='wait'&&held.index===i?' hl':'');
+    const wrap=document.createElement('div'); wrap.className='char'+(held&&held.from==='wait'&&held.index===i?' held':'');
+    wrap.innerHTML=`<span class="bubble" data-b></span>`+svgFor(who,'idle');
+    slot.appendChild(wrap);
+    slot.onclick=()=>onWait(i);
+    wait.appendChild(slot);
+  });
+  if(held){
+    // floating held marker in beat
+  }
+}
+function bubble(sel,emoji){
+  const el=document.querySelector(sel); if(!el) return;
+  const b=el.querySelector('[data-b]'); if(b) b.textContent=emoji; el.classList.add('show-bubble');
+}
+function clearBubbles(){document.querySelectorAll('.char').forEach(c=>{c.classList.remove('show-bubble','wave','awayL','awayR','bristle','land','pop-out'); const b=c.querySelector('[data-b]'); if(b)b.textContent=''})}
+
+function previewHint(i){
+  if(!held) return;
+  const id=held.id; const who=seats[i];
+  if(!who){
+    if(wouldRival(id,i)){setBeat('别扭?', 'bad'); setHint('悬停：仇人会挨着')}
+    else if(wouldFriend(id,i)){setBeat('正好', 'ok'); setHint('悬停：好友会挨着')}
+    else {setBeat('可坐'); setHint('悬停空座')}
+  } else if(who!==id){
+    setBeat(waiting.length||seats.includes(null)?'交换/挤开':'交换');
+    setHint('悬停有人：对方已预演反应');
+    // react target
+    setTimeout(()=>{
+      const t=document.querySelector(`.s${i} .char`);
+      if(!t) return;
+      if(REL[who]?.rival===id){ t.classList.add('awayL'); bubble(`.s${i} .char`,'😒'); }
+      else if(REL[who]?.friend===id){ t.classList.add('wave'); bubble(`.s${i} .char`,'🙂'); }
+      else bubble(`.s${i} .char`,'❓');
+    },0);
+  }
+}
+
+function pickupFromSeat(i){
+  const id=seats[i]; if(!id) return;
+  held={from:'seat',index:i,id}; hover=null;
+  setBeat('拿起'); setHint('原座留影 · 再点空位落下，或点有人挤开/交换');
+  clearBubbles(); render();
+  // held visual: temporarily show in waiting as held? keep ghost on seat
+}
+function pickupFromWait(i){
+  const id=waiting[i]; if(!id) return;
+  held={from:'wait',index:i,id}; hover=null;
+  setBeat('拿起'); setHint('候客上场 · 点空位入座，或点有人挤开');
+  render();
+}
+function onWait(i){
+  if(held && held.from==='wait' && held.index===i){ held=null; setBeat('…'); setHint(''); render(); return; }
+  if(held){ setHint('先点座位放下'); return; }
+  pickupFromWait(i);
+}
+function settleRelations(){
+  rattle();
+  seats.forEach((who,i)=>{
+    if(!who) return;
+    const m=moodAt(who,i);
+    const el=document.querySelector(`.s${i} .char`);
+    if(!el) return;
+    el.classList.add('land');
+    if(m==='happy'){ el.classList.add('wave'); bubble(`.s${i} .char`,'✨'); setBeat('好友', 'ok'); }
+    if(m==='mad'||m==='awkward'){ el.classList.add(i%2?'awayR':'awayL','bristle'); bubble(`.s${i} .char`, m==='mad'?'💢':'😒'); setBeat('仇人', 'bad'); }
+  });
+}
+function dropOn(i){
+  if(!held) return;
+  const id=held.id; const target=seats[i];
+  if(held.from==='seat' && held.index===i){ held=null; setHint(''); render(); return; }
+
+  if(!target){
+    // move to empty
+    if(held.from==='seat'){ seats[held.index]=null; seats[i]=id; }
+    else { waiting.splice(held.index,1); seats[i]=id; }
+    held=null; hover=null; render();
+    setHint(''); settleRelations();
+    return;
+  }
+  // occupied
+  if(held.from==='seat'){
+    // swap
+    seats[held.index]=target; seats[i]=id;
+    held=null; hover=null; render(); setBeat('交换'); setHint(''); settleRelations();
+    return;
+  }
+  // from waiting: displace target to waiting
+  const victim=target;
+  seats[i]=id; waiting.splice(held.index,1); waiting.push(victim);
+  held=null; hover=null;
+  render();
+  setBeat('挤开', 'bad'); setHint('');
+  const v=document.querySelector('#waiting .char:last-child');
+  if(v){ v.classList.add('pop-out'); bubble('#waiting .slot:last-child .char','💢'); }
+  setTimeout(()=>{ render(); settleRelations(); }, 400);
+}
+function onSeat(i){
+  if(!held){
+    if(!seats[i]){ setHint('先点角色拿起'); return; }
+    pickupFromSeat(i); return;
+  }
+  dropOn(i);
+}
+
+function reset(){
+  seats=['fox','rabbit',null,'crane']; waiting=[]; held=null; hover=null;
+  setBeat('…'); setHint('点角色拿起，悬停看预演，再点空位/有人');
+  render();
+}
+function demo(){
+  reset();
+  setBeat('演示'); setHint('看：拿起 → 悬停预演 → 落下');
+  // auto: pick rabbit, hover empty near crane-friendly? seats: 0 fox,1 rabbit,2 empty,3 crane — rabbit next to fox (bad). Move rabbit to empty(2) next to crane(3)=friend
+  setTimeout(()=>{ pickupFromSeat(1); }, 500);
+  setTimeout(()=>{ hover=2; render(); previewHint(2); }, 1400);
+  setTimeout(()=>{ dropOn(2); }, 2600);
+  setTimeout(()=>{
+    // put fox into waiting then displace? simpler: pick fox onto... 
+    setHint('再试：候客挤开（先把狐请下桌）');
+    // move fox to waiting manually via pickup empty? pick fox to waiting by displace demo:
+    pickupFromSeat(0);
+  }, 4200);
+  setTimeout(()=>{ // drop fox to waiting artificially
+    if(held&&held.id==='fox'){ seats[0]=null; waiting.push('fox'); held=null; render(); }
+  }, 5000);
+  setTimeout(()=>{ pickupFromWait(0); }, 5600);
+  setTimeout(()=>{ hover=1; render(); previewHint(1); }, 6400);
+  setTimeout(()=>{ dropOn(1); }, 7600);
+}
+
+document.getElementById('btnReset').onclick=reset;
+document.getElementById('btnDemo').onclick=demo;
+reset();
+</script>
+</body>
+</html>

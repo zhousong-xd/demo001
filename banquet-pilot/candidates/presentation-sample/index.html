@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>这桌不能坐 · 表现小样</title>
+<title>这桌不能坐 · 重设计小样 T-058</title>
 <style>
 :root {
-  --bg: #14181f;
-  --panel: #1e2430;
-  --seat: #3a4252;
-  --seat-empty: #2a3140;
+  --bg: #12151c;
+  --panel: #1c2230;
+  --seat: #3a4456;
   --text: #eef1f6;
   --muted: #8b95a8;
   --accent: #7ec8ff;
@@ -18,14 +17,14 @@
   --fox: #e8874a;
   --rabbit: #e0a8d4;
   --crane: #8ec4e8;
+  --hedgehog: #c4a574;
   --wood1: #5c4030;
   --wood2: #3d2a1e;
-  --cloth: #2a3344;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body {
   margin: 0; min-height: 100%;
-  background: #0a0c10; color: var(--text);
+  background: #080a0e; color: var(--text);
   font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
   user-select: none;
 }
@@ -44,251 +43,175 @@ html, body {
 .phone {
   width: 390px; max-width: 100%;
   height: 844px; max-height: calc(100vh - 70px);
-  background:
-    radial-gradient(120% 80% at 50% 0%, #1c2433 0%, var(--bg) 55%);
+  background: radial-gradient(120% 80% at 50% 0%, #1c2433 0%, var(--bg) 55%);
   border-radius: 28px;
   border: 2px solid #2a3140;
-  box-shadow: 0 16px 48px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
+  box-shadow: 0 16px 48px rgba(0,0,0,.55);
   overflow: hidden;
   display: flex; flex-direction: column;
   position: relative;
 }
-.phone::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(circle at 50% 28%, rgba(255,200,120,.06), transparent 42%);
-}
+.phone.dim .table-wrap { filter: brightness(.82); }
 .top {
-  padding: 16px 16px 4px;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 14px 4px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
   z-index: 2;
 }
-.top .mark { font-size: 12px; color: var(--muted); letter-spacing: .06em; }
+.mark { font-size: 12px; color: var(--muted); letter-spacing: .06em; }
 .beat {
   font-size: 11px; color: var(--accent);
   background: rgba(126,200,255,.12);
   border: 1px solid rgba(126,200,255,.25);
   border-radius: 999px; padding: 4px 12px;
-  min-width: 52px; text-align: center;
-  transition: color .25s, border-color .25s, background .25s;
+  min-width: 64px; text-align: center;
+  transition: .2s;
 }
-.beat.bad { color: var(--bad); border-color: rgba(255,123,132,.35); background: rgba(255,123,132,.1); }
 .beat.ok { color: var(--ok); border-color: rgba(69,224,160,.35); background: rgba(69,224,160,.1); }
-
+.beat.bad { color: var(--bad); border-color: rgba(255,123,132,.35); background: rgba(255,123,132,.1); }
+.modes {
+  display: flex; gap: 6px; justify-content: center; padding: 4px 12px 0; z-index: 2;
+}
+.mode {
+  border: 1px solid #3a4558; background: var(--panel); color: var(--muted);
+  border-radius: 999px; padding: 4px 10px; font-size: 11px; cursor: pointer;
+}
+.mode.on { color: var(--accent); border-color: var(--accent); }
 .table-wrap {
-  flex: 1;
-  display: flex; align-items: center; justify-content: center;
-  padding: 4px 10px 0;
-  z-index: 1;
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 4px 10px 0; z-index: 1; transition: filter .2s;
 }
 .table {
-  width: 310px; height: 310px;
-  border-radius: 50%;
-  position: relative;
-  background:
-    radial-gradient(circle at 50% 42%, #6b4a34 0%, var(--wood1) 42%, var(--wood2) 78%, #241810 100%);
-  box-shadow:
-    0 0 0 10px #4a3426,
-    0 0 0 14px #2a1c14,
-    0 18px 36px rgba(0,0,0,.45),
-    inset 0 0 50px rgba(0,0,0,.35);
-}
-.table::before {
-  /* tablecloth oval */
-  content: "";
-  position: absolute; left: 18%; top: 20%; right: 18%; bottom: 22%;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 40%, #3a465c 0%, var(--cloth) 70%);
-  box-shadow: inset 0 0 24px rgba(0,0,0,.35);
-  opacity: .92;
+  width: 310px; height: 310px; border-radius: 50%; position: relative;
+  background: radial-gradient(circle at 50% 42%, #6b4a34 0%, var(--wood1) 42%, var(--wood2) 78%, #241810 100%);
+  box-shadow: 0 0 0 10px #4a3426, 0 0 0 14px #2a1c14, 0 18px 36px rgba(0,0,0,.45);
 }
 .table::after {
-  /* dishes */
   content: "";
   position: absolute; left: 50%; top: 50%;
-  width: 86px; height: 86px; margin: -43px 0 0 -43px;
+  width: 78px; height: 78px; margin: -39px 0 0 -39px;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 40% 35%, #f0e6d4 0%, #d2c0a4 55%, #a89070 100%);
-  box-shadow:
-    0 0 0 3px #8a7050,
-    -38px -8px 0 -18px #c8b89a,
-    36px -6px 0 -20px #b8a888,
-    0 34px 0 -22px #d0c0a0,
-    0 0 20px rgba(255,220,160,.15);
+  background: radial-gradient(circle at 40% 35%, #f0e6d4 0%, #d2c0a4 55%, #a89070 100%);
+  box-shadow: 0 0 0 3px #8a7050;
   z-index: 1;
 }
-.steam {
-  position: absolute; left: 50%; top: 42%;
-  width: 40px; height: 40px; margin-left: -20px;
-  z-index: 2; pointer-events: none; opacity: .55;
-}
-.steam i {
-  position: absolute; bottom: 0; width: 6px; height: 18px;
-  border-radius: 8px;
-  background: rgba(230,240,255,.35);
-  animation: steam 2.4s ease-in-out infinite;
-}
-.steam i:nth-child(1) { left: 6px; animation-delay: 0s; }
-.steam i:nth-child(2) { left: 17px; height: 22px; animation-delay: .4s; }
-.steam i:nth-child(3) { left: 28px; animation-delay: .8s; }
-@keyframes steam {
-  0%,100% { transform: translateY(0) scaleY(1); opacity: .15; }
-  50% { transform: translateY(-16px) scaleY(1.2); opacity: .55; }
-}
-
 .seat {
-  position: absolute;
-  width: 92px; height: 92px;
-  margin: -46px 0 0 -46px;
+  position: absolute; width: 92px; height: 92px; margin: -46px 0 0 -46px;
   border-radius: 20px;
   background: linear-gradient(160deg, #4a5468 0%, var(--seat) 55%, #2e3544 100%);
   border: 2px solid rgba(255,255,255,.06);
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  z-index: 3;
-  transition: border-color .2s, box-shadow .25s, transform .2s;
+  cursor: pointer; z-index: 3;
+  transition: border-color .18s, box-shadow .2s, transform .18s, opacity .18s;
+  touch-action: manipulation;
   box-shadow: 0 6px 14px rgba(0,0,0,.35);
 }
 .seat:focus { outline: none; }
+.seat:active { transform: scale(.95); }
 .seat.empty {
-  background: repeating-linear-gradient(-45deg, var(--seat-empty), var(--seat-empty) 6px, #323a4a 6px, #323a4a 12px);
-  border-style: dashed; border-color: #5a657a; opacity: .9;
+  background: repeating-linear-gradient(-45deg, #2a3140, #2a3140 6px, #323a4a 6px, #323a4a 12px);
+  border-style: dashed; border-color: #5a657a;
 }
 .seat.empty::after {
-  content: "";
-  width: 26px; height: 26px; border-radius: 50%;
+  content: ""; width: 24px; height: 24px; border-radius: 50%;
   border: 2px dashed #7a8699;
 }
-.seat { touch-action: manipulation; }
-.seat:active { transform: scale(.94); }
-.seat.hl {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(126,200,255,.38), 0 10px 20px rgba(0,0,0,.4);
-  transform: translateY(-7px) scale(1.07);
-  z-index: 5;
-}
-.seat.target {
-  border-color: var(--accent);
-  border-style: solid;
-  animation: pulseTarget 1s ease-in-out infinite;
-}
-@keyframes pulseTarget {
-  0%,100% { box-shadow: 0 0 0 3px rgba(126,200,255,.2), 0 6px 14px rgba(0,0,0,.35); }
-  50% { box-shadow: 0 0 0 7px rgba(126,200,255,.34), 0 6px 14px rgba(0,0,0,.35); }
-}
-.picking .seat:not(.hl):not(.target) { opacity: .52; filter: brightness(.88); }
-.seat.land { animation: land .42s cubic-bezier(.2,1.4,.4,1); }
-@keyframes land {
-  0% { transform: scale(.7); }
-  60% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-.char.pop { animation: pop .35s cubic-bezier(.2,1.6,.4,1); }
-@keyframes pop {
-  0% { transform: scale(.65); }
-  100% { transform: scale(1); }
-}
-.seat.friend-glow { box-shadow: 0 0 0 3px rgba(69,224,160,.45), 0 0 18px rgba(69,224,160,.2); }
-.seat.rival-glow { box-shadow: 0 0 0 3px rgba(255,123,132,.5), 0 0 18px rgba(255,123,132,.22); }
 .seat.s0 { left: 50%; top: 16%; }
 .seat.s1 { left: 84%; top: 55%; }
 .seat.s2 { left: 50%; top: 90%; }
 .seat.s3 { left: 16%; top: 55%; }
-
-.char {
-  width: 78px; height: 78px;
-  position: relative;
-  transform-origin: 50% 70%;
+.seat.held {
+  transform: translateY(-14px) scale(1.1);
+  border-color: var(--accent);
+  box-shadow: 0 14px 28px rgba(0,0,0,.5), 0 0 0 4px rgba(126,200,255,.35);
+  z-index: 6;
 }
+.seat.ghost {
+  opacity: .35; filter: grayscale(.3);
+  transform: scale(.92);
+  pointer-events: none;
+}
+.seat.hover-ok {
+  border-color: var(--accent); border-style: solid;
+  box-shadow: 0 0 0 4px rgba(126,200,255,.28);
+}
+.seat.hover-friend { box-shadow: 0 0 0 4px rgba(69,224,160,.4), 0 0 20px rgba(69,224,160,.2); }
+.seat.hover-rival { box-shadow: 0 0 0 4px rgba(255,123,132,.45), 0 0 20px rgba(255,123,132,.2); animation: shiver .35s linear 2; }
+@keyframes shiver {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+.seat.land { animation: land .4s cubic-bezier(.2,1.4,.4,1); }
+@keyframes land {
+  0% { transform: scale(.7) translateY(-10px); }
+  60% { transform: scale(1.08) translateY(0); }
+  100% { transform: scale(1); }
+}
+.seat.bump { animation: bump .45s ease-out; }
+@keyframes bump {
+  0% { transform: scale(1); }
+  30% { transform: translateX(10px) rotate(6deg) scale(1.05); }
+  100% { transform: scale(1); }
+}
+.seat.friend-glow { box-shadow: 0 0 0 3px rgba(69,224,160,.45), 0 0 16px rgba(69,224,160,.2); }
+.seat.rival-glow { box-shadow: 0 0 0 3px rgba(255,123,132,.5), 0 0 16px rgba(255,123,132,.22); }
+
+.char { width: 78px; height: 78px; position: relative; transform-origin: 50% 70%; }
 .char svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .char .bubble {
   position: absolute; left: 50%; top: -2px;
   transform: translate(-50%, -100%) scale(.85);
-  font-size: 16px; line-height: 1;
-  opacity: 0; pointer-events: none;
-  transition: opacity .2s, transform .2s;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,.55));
+  font-size: 16px; opacity: 0; pointer-events: none;
+  transition: .2s; filter: drop-shadow(0 2px 3px rgba(0,0,0,.55));
 }
 .char.show-bubble .bubble { opacity: 1; transform: translate(-50%, -110%) scale(1); }
-
 .char.idle { animation: breathe 2.6s ease-in-out infinite; }
-.char.idle .ear-l { animation: earL 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
-.char.idle .ear-r { animation: earR 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
 @keyframes breathe {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
 }
-@keyframes earL {
-  0%,100% { transform: rotate(-2deg); }
-  50% { transform: rotate(6deg); }
-}
-@keyframes earR {
-  0%,100% { transform: rotate(2deg); }
-  50% { transform: rotate(-7deg); }
-}
-.char.wave { animation: wave 0.85s ease-in-out 2; }
+.char.wave { animation: wave .8s ease-in-out 2; }
 @keyframes wave {
   0%,100% { transform: rotate(0); }
-  25% { transform: rotate(-14deg) translateY(-2px); }
-  55% { transform: rotate(12deg) translateY(-1px); }
+  25% { transform: rotate(-14deg); }
+  55% { transform: rotate(12deg); }
 }
-.char.nod { animation: nod 0.65s ease-in-out 2; }
+.char.nod { animation: nod .6s ease-in-out 2; }
 @keyframes nod {
   0%,100% { transform: translateY(0); }
-  40% { transform: translateY(5px) scale(1, .94); }
+  40% { transform: translateY(5px) scale(1,.94); }
 }
-.char.look-away-left { animation: lookL 1.1s ease-in-out forwards; }
-.char.look-away-right { animation: lookR 1.1s ease-in-out forwards; }
-@keyframes lookL {
-  0% { transform: rotate(0); }
-  100% { transform: rotate(-20deg) translateX(-5px); }
-}
-@keyframes lookR {
-  0% { transform: rotate(0); }
-  100% { transform: rotate(20deg) translateX(5px); }
-}
-.char.bristle { animation: bristle .5s ease-in-out 3; }
+.char.look-away-left { animation: lookL .9s ease-out forwards; }
+.char.look-away-right { animation: lookR .9s ease-out forwards; }
+@keyframes lookL { to { transform: rotate(-20deg) translateX(-5px); } }
+@keyframes lookR { to { transform: rotate(20deg) translateX(5px); } }
+.char.bristle { animation: bristle .45s ease-in-out 2; }
 @keyframes bristle {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.08) rotate(-3deg); filter: saturate(1.35) brightness(1.05); }
+  50% { transform: scale(1.08); filter: saturate(1.3); }
 }
-.char.happy { animation: happy .75s ease-in-out 2; }
+.char.happy { animation: happy .7s ease-in-out 2; }
 @keyframes happy {
-  0%,100% { transform: translateY(0) scale(1); }
+  0%,100% { transform: translateY(0); }
   40% { transform: translateY(-8px) scale(1.05); }
-  70% { transform: translateY(-2px) scale(1.02); }
-}
-.char.shy { animation: shy 1s ease-in-out forwards; }
-@keyframes shy {
-  0% { transform: scale(1); }
-  100% { transform: scale(.94) translateY(2px); filter: brightness(.95); }
 }
 
 .dock {
-  padding: 8px 14px 18px;
+  padding: 8px 14px 16px;
   background: linear-gradient(180deg, transparent, rgba(0,0,0,.4));
   z-index: 2;
 }
-.hint {
-  font-size: 12px; color: var(--muted);
-  min-height: 1.35em; text-align: center; margin-bottom: 8px;
-}
-.tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.hint { font-size: 12px; color: var(--muted); min-height: 1.2em; text-align: center; margin-bottom: 8px; }
+.tools { display: flex; gap: 8px; justify-content: center; }
 .btn {
   border: 1px solid #4a5568; background: var(--panel); color: var(--text);
-  border-radius: 12px; padding: 10px 14px; font-size: 13px; min-height: 42px;
-  cursor: pointer;
+  border-radius: 12px; padding: 10px 14px; font-size: 13px; min-height: 42px; cursor: pointer;
 }
-.btn:active { transform: scale(.98); }
-.btn.primary { border-color: var(--accent); color: var(--accent); background: rgba(126,200,255,.08); }
-.legend {
-  margin-top: 8px; font-size: 10px; color: var(--muted); text-align: center; opacity: .65;
-}
+.btn:active { transform: scale(.97); }
+.btn.primary { border-color: var(--accent); color: var(--accent); }
 .outside {
-  width: 390px; max-width: 100%;
-  margin-top: 10px; font-size: 12px; color: #9a9084; line-height: 1.45; text-align: center;
+  width: 390px; max-width: 100%; margin-top: 10px;
+  font-size: 12px; color: #9a9084; text-align: center; line-height: 1.45;
 }
 </style>
 </head>
@@ -298,209 +221,214 @@ html, body {
     表现候选 / 非正式 — 不是正式三关
     <small>正式主链：https://zhousong-xd.github.io/demo001/</small>
   </div>
-  <div class="phone" id="phone" aria-label="表现小样 390x844">
+  <div class="phone" id="phone" aria-label="重设计小样 390x844">
     <div class="top">
-      <span class="mark">一桌 · 小样</span>
+      <span class="mark">一桌 · 重设计</span>
       <span class="beat" id="beat">…</span>
     </div>
+    <div class="modes" id="modes" aria-label="人数戏">
+      <button type="button" class="mode" data-n="2">俩</button>
+      <button type="button" class="mode on" data-n="3">仨</button>
+      <button type="button" class="mode" data-n="4">满</button>
+    </div>
     <div class="table-wrap">
-      <div class="table" id="table" role="group" aria-label="圆桌四座">
-        <div class="steam" aria-hidden="true"><i></i><i></i><i></i></div>
-      </div>
+      <div class="table" id="table" role="group" aria-label="圆桌四座"></div>
     </div>
     <div class="dock">
       <div class="hint" id="hint"></div>
       <div class="tools">
         <button class="btn" type="button" id="btnReplay">再看一遍</button>
-        <button class="btn primary" type="button" id="btnShuffle">换个座试试</button>
+        <button class="btn primary" type="button" id="btnReset">开席</button>
       </div>
     </div>
   </div>
-  <p class="outside">T-055 画面 · T-056 手感 · candidates/presentation-sample</p>
+  <p class="outside">T-058 重设计小样 · 凡动必有戏 · 见 DESIGN_MATRIX_T058.md</p>
 </div>
-
 <script>
+/** 狐↔兔仇；兔↔鹤友；刺猬中立凑数 */
 const REL = {
   fox: { rival: 'rabbit', friend: null },
   rabbit: { rival: 'fox', friend: 'crane' },
   crane: { rival: null, friend: 'rabbit' },
+  hedgehog: { rival: null, friend: null },
 };
-const COLOR = { fox: '#e8874a', rabbit: '#e0a8d4', crane: '#8ec4e8' };
+const COLOR = { fox: '#e8874a', rabbit: '#e0a8d4', crane: '#8ec4e8', hedgehog: '#c4a574' };
+const LABEL = { fox: '狐', rabbit: '兔', crane: '鹤', hedgehog: '猬' };
 
 let seats = ['fox', 'rabbit', null, 'crane'];
 let selected = null;
+let hover = null;
 let landSeat = null;
-let perfTimer = null;
-let beatTimer = null;
-let loopTimer = null;
-let reactTimer = null;
+let bumpSeat = null;
+let ghostSeat = null;
+let timers = [];
 let loopGen = 0;
+let countMode = 3;
+
+function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+function later(fn, ms) { const id = setTimeout(fn, ms); timers.push(id); return id; }
 
 function face(mood) {
-  // mood: idle | happy | awkward | mad | wave
-  if (mood === 'happy') {
-    return `
-      <path d="M28 40 Q32 36 36 40" stroke="#2a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M44 40 Q48 36 52 40" stroke="#2a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M34 50 Q40 56 46 50" stroke="#2a1a18" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <circle cx="30" cy="46" r="3.2" fill="#ff9aa2" opacity=".55"/>
-      <circle cx="50" cy="46" r="3.2" fill="#ff9aa2" opacity=".55"/>`;
-  }
-  if (mood === 'awkward') {
-    return `
-      <ellipse cx="30" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
-      <ellipse cx="50" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
-      <path d="M34 52 Q40 48 46 52" stroke="#2a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M24 34 L28 36" stroke="#2a1a18" stroke-width="1.6" stroke-linecap="round"/>
-      <path d="M56 34 L52 36" stroke="#2a1a18" stroke-width="1.6" stroke-linecap="round"/>`;
-  }
-  if (mood === 'mad') {
-    return `
-      <path d="M24 34 L34 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
-      <path d="M56 34 L46 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
-      <ellipse cx="30" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
-      <ellipse cx="50" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
-      <path d="M34 54 Q40 50 46 54" stroke="#2a1a18" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <path d="M58 22 L66 14 M62 24 L70 18" stroke="#ff7b84" stroke-width="2" stroke-linecap="round"/>`;
-  }
-  // idle / wave default
+  if (mood === 'happy') return `
+    <path d="M28 40 Q32 36 36 40" stroke="#2a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M44 40 Q48 36 52 40" stroke="#2a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M34 50 Q40 56 46 50" stroke="#2a1a18" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  if (mood === 'awkward') return `
+    <ellipse cx="30" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
+    <ellipse cx="50" cy="40" rx="3" ry="3.5" fill="#2a1a18"/>
+    <path d="M34 52 Q40 48 46 52" stroke="#2a1a18" stroke-width="2" fill="none"/>`;
+  if (mood === 'mad') return `
+    <path d="M24 34 L34 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M56 34 L46 38" stroke="#2a1a18" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="30" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
+    <ellipse cx="50" cy="42" rx="3.2" ry="3.6" fill="#2a1a18"/>
+    <path d="M58 22 L66 14" stroke="#ff7b84" stroke-width="2" stroke-linecap="round"/>`;
   return `
     <ellipse cx="30" cy="40" rx="3.2" ry="3.8" fill="#2a1a18"/>
     <ellipse cx="50" cy="40" rx="3.2" ry="3.8" fill="#2a1a18"/>
     <circle cx="31.2" cy="38.6" r="1" fill="#fff" opacity=".7"/>
-    <circle cx="51.2" cy="38.6" r="1" fill="#fff" opacity=".7"/>
-    <ellipse cx="40" cy="50" rx="3" ry="2.2" fill="#5a3030" opacity=".75"/>`;
+    <circle cx="51.2" cy="38.6" r="1" fill="#fff" opacity=".7"/>`;
 }
 
 function svgFor(id, mood) {
-  const c = COLOR[id];
-  const f = face(mood || 'idle');
-  if (id === 'fox') {
-    return `<svg viewBox="0 0 80 80" aria-hidden="true">
-      <ellipse cx="40" cy="72" rx="16" ry="4" fill="#000" opacity=".18"/>
-      <g class="ear-l"><polygon points="18,34 22,10 34,32" fill="${c}"/><polygon points="22,30 24,16 30,30" fill="#f0c4a0"/></g>
-      <g class="ear-r"><polygon points="46,32 58,10 62,34" fill="${c}"/><polygon points="50,30 56,16 58,30" fill="#f0c4a0"/></g>
-      <circle cx="40" cy="44" r="24" fill="${c}"/>
-      <ellipse cx="40" cy="52" rx="10" ry="7" fill="#f3d2b0" opacity=".9"/>
-      ${f}
-      <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2" font-family="sans-serif">狐</text>
-    </svg>`;
-  }
-  if (id === 'rabbit') {
-    return `<svg viewBox="0 0 80 80" aria-hidden="true">
-      <ellipse cx="40" cy="72" rx="16" ry="4" fill="#000" opacity=".18"/>
-      <g class="ear-l"><ellipse cx="28" cy="18" rx="7" ry="16" fill="${c}"/><ellipse cx="28" cy="18" rx="3.2" ry="10" fill="#f6d8ec"/></g>
-      <g class="ear-r"><ellipse cx="52" cy="18" rx="7" ry="16" fill="${c}"/><ellipse cx="52" cy="18" rx="3.2" ry="10" fill="#f6d8ec"/></g>
-      <circle cx="40" cy="46" r="23" fill="${c}"/>
-      ${f}
-      <circle cx="40" cy="52" r="2.4" fill="#8a4068"/>
-      <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2" font-family="sans-serif">兔</text>
-    </svg>`;
-  }
-  return `<svg viewBox="0 0 80 80" aria-hidden="true">
-    <ellipse cx="40" cy="72" rx="16" ry="4" fill="#000" opacity=".18"/>
+  const c = COLOR[id], f = face(mood || 'idle'), lab = LABEL[id];
+  if (id === 'fox') return `<svg viewBox="0 0 80 80"><circle cx="40" cy="44" r="24" fill="${c}"/>
+    <polygon points="18,34 22,10 34,32" fill="${c}"/><polygon points="46,32 58,10 62,34" fill="${c}"/>
+    <ellipse cx="40" cy="52" rx="10" ry="7" fill="#f3d2b0" opacity=".9"/>${f}
+    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
+  if (id === 'rabbit') return `<svg viewBox="0 0 80 80">
+    <ellipse cx="28" cy="18" rx="7" ry="16" fill="${c}"/><ellipse cx="52" cy="18" rx="7" ry="16" fill="${c}"/>
+    <circle cx="40" cy="46" r="23" fill="${c}"/>${f}
+    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
+  if (id === 'crane') return `<svg viewBox="0 0 80 80">
     <ellipse cx="40" cy="22" rx="11" ry="14" fill="${c}"/>
-    <path class="ear-r" d="M52 24 Q72 8 68 30 Q62 40 52 32" fill="${c}"/>
-    <circle cx="40" cy="48" r="22" fill="${c}"/>
-    <ellipse cx="40" cy="54" rx="9" ry="6" fill="#d8eef8" opacity=".55"/>
-    ${f}
-    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2" font-family="sans-serif">鹤</text>
-  </svg>`;
+    <path d="M52 24 Q72 8 68 30 Q62 40 52 32" fill="${c}"/>
+    <circle cx="40" cy="48" r="22" fill="${c}"/>${f}
+    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
+  return `<svg viewBox="0 0 80 80"><ellipse cx="40" cy="48" rx="22" ry="20" fill="${c}"/>
+    <circle cx="40" cy="36" r="14" fill="${c}"/>
+    <circle cx="28" cy="28" r="4" fill="${c}"/><circle cx="52" cy="28" r="4" fill="${c}"/>${f}
+    <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
 }
 
+function adj(i, j) {
+  if (i < 0 || j < 0) return false;
+  const d = Math.abs(i - j);
+  return d === 1 || d === 3;
+}
 function neighbors(i) {
   const n = seats.length;
   return [(i + 1) % n, (i + n - 1) % n].map(j => seats[j]).filter(Boolean);
 }
-
-function moodFor(who, rivalsAdjacent, friendsAdjacent) {
+function flags() {
+  const foxI = seats.indexOf('fox'), rabI = seats.indexOf('rabbit'), crI = seats.indexOf('crane');
+  return {
+    foxI, rabI, crI,
+    rivalsAdjacent: adj(foxI, rabI),
+    friendsAdjacent: adj(rabI, crI),
+  };
+}
+function moodFor(who) {
+  const { rivalsAdjacent, friendsAdjacent } = flags();
   if (!who) return 'idle';
-  if (REL[who].rival && rivalsAdjacent && neighbors(seats.indexOf(who)).includes(REL[who].rival)) {
-    return who === 'fox' ? 'awkward' : 'mad';
-  }
-  if (REL[who].friend && friendsAdjacent && neighbors(seats.indexOf(who)).includes(REL[who].friend)) {
-    return 'happy';
-  }
+  const i = seats.indexOf(who);
+  const ns = neighbors(i);
+  if (REL[who].rival && rivalsAdjacent && ns.includes(REL[who].rival)) return who === 'fox' ? 'awkward' : 'mad';
+  if (REL[who].friend && friendsAdjacent && ns.includes(REL[who].friend)) return 'happy';
   return 'idle';
 }
 
-function render(forceMood) {
+/** Hover preview: if placing selected next to someone, flash relation on that neighbor seat */
+function hoverKind(targetIdx) {
+  if (selected === null) return null;
+  const who = seats[selected];
+  if (!who) return null;
+  // simulate: who moves to targetIdx
+  const trial = seats.slice();
+  const other = trial[targetIdx];
+  trial[selected] = other;
+  trial[targetIdx] = who;
+  const tNeighbors = [(targetIdx + 1) % 4, (targetIdx + 3) % 4].map(j => trial[j]).filter(Boolean);
+  if (REL[who].rival && tNeighbors.includes(REL[who].rival)) return 'rival';
+  if (REL[who].friend && tNeighbors.includes(REL[who].friend)) return 'friend';
+  return 'ok';
+}
+
+function render() {
   const table = document.getElementById('table');
-  // keep steam
-  const steam = table.querySelector('.steam');
-  table.innerHTML = '';
-  if (steam) table.appendChild(steam);
-  else {
-    const s = document.createElement('div');
-    s.className = 'steam'; s.setAttribute('aria-hidden', 'true');
-    s.innerHTML = '<i></i><i></i><i></i>';
-    table.appendChild(s);
-  }
-
-  const foxI = seats.indexOf('fox');
-  const rabI = seats.indexOf('rabbit');
-  const crI = seats.indexOf('crane');
-  const rivalsAdjacent = foxI >= 0 && rabI >= 0 && (Math.abs(foxI - rabI) === 1 || Math.abs(foxI - rabI) === 3);
-  const friendsAdjacent = rabI >= 0 && crI >= 0 && (Math.abs(rabI - crI) === 1 || Math.abs(rabI - crI) === 3);
-
   const phone = document.getElementById('phone');
-  phone.classList.toggle('picking', selected !== null);
+  phone.classList.toggle('dim', selected !== null);
+  table.innerHTML = '';
+  const { rivalsAdjacent, friendsAdjacent } = flags();
 
   seats.forEach((who, i) => {
     const el = document.createElement('button');
     el.type = 'button';
     el.className = 'seat s' + i + (who ? '' : ' empty');
     el.dataset.seat = String(i);
-    if (selected === i) el.classList.add('hl');
-    if (selected !== null && selected !== i) el.classList.add('target');
+    if (selected === i) el.classList.add('held');
+    // origin seat while held: keep character lifted via .held (no double ghost)
     if (landSeat === i) el.classList.add('land');
-    if (who) {
-      const mood = forceMood && forceMood[who] ? forceMood[who] : moodFor(who, rivalsAdjacent, friendsAdjacent);
+    if (bumpSeat === i) el.classList.add('bump');
+    if (hover === i && selected !== null && selected !== i) {
+      const k = hoverKind(i);
+      el.classList.add(k === 'friend' ? 'hover-friend' : k === 'rival' ? 'hover-rival' : 'hover-ok');
+    }
+    if (who && selected !== i) {
       const wrap = document.createElement('div');
       wrap.className = 'char idle';
       wrap.dataset.char = who;
-      wrap.dataset.mood = mood;
-      wrap.innerHTML = `<span class="bubble" data-bubble></span>` + svgFor(who, mood);
-      if (landSeat === i) wrap.classList.add('pop');
+      wrap.innerHTML = `<span class="bubble" data-bubble></span>` + svgFor(who, moodFor(who));
       el.appendChild(wrap);
       const ns = neighbors(i);
       if (REL[who].friend && ns.includes(REL[who].friend)) el.classList.add('friend-glow');
       if (REL[who].rival && ns.includes(REL[who].rival)) el.classList.add('rival-glow');
+    } else if (who && selected === i) {
+      const wrap = document.createElement('div');
+      wrap.className = 'char';
+      wrap.dataset.char = who;
+      wrap.innerHTML = `<span class="bubble" data-bubble></span>` + svgFor(who, 'idle');
+      el.appendChild(wrap);
     }
     el.addEventListener('click', () => onSeat(i));
+    el.addEventListener('pointerenter', () => {
+      if (selected === null || selected === i) return;
+      hover = i;
+      render();
+    });
+    el.addEventListener('pointerleave', () => {
+      if (hover === i) { hover = null; render(); }
+    });
     table.appendChild(el);
   });
+
   if (landSeat !== null) {
-    const s = landSeat;
-    landSeat = null;
-    setTimeout(() => {
-      const seat = table.querySelector(`[data-seat="${s}"]`);
-      if (seat) seat.classList.remove('land');
-      const ch = seat && seat.querySelector('.char');
-      if (ch) ch.classList.remove('pop');
-    }, 450);
+    const s = landSeat; landSeat = null;
+    later(() => { const n = table.querySelector(`[data-seat="${s}"]`); if (n) n.classList.remove('land'); }, 420);
+  }
+  if (bumpSeat !== null) {
+    const s = bumpSeat; bumpSeat = null;
+    later(() => { const n = table.querySelector(`[data-seat="${s}"]`); if (n) n.classList.remove('bump'); }, 480);
   }
 }
 
 function setBeat(t, kind) {
   const el = document.getElementById('beat');
   el.textContent = t;
-  el.classList.remove('bad', 'ok');
+  el.classList.remove('ok', 'bad');
   if (kind) el.classList.add(kind);
 }
 function setHint(t) { document.getElementById('hint').textContent = t; }
 
-function clearPerfClasses() {
+function clearPerf() {
   document.querySelectorAll('.char').forEach(c => {
-    c.classList.remove('wave','nod','look-away-left','look-away-right','bristle','happy','shy','show-bubble');
+    c.classList.remove('wave','nod','look-away-left','look-away-right','bristle','happy','show-bubble');
     c.classList.add('idle');
     const b = c.querySelector('[data-bubble]');
     if (b) b.textContent = '';
   });
 }
-
 function charEl(id) { return document.querySelector(`.char[data-char="${id}"]`); }
-
 function bubble(id, emoji) {
   const el = charEl(id);
   if (!el) return;
@@ -509,177 +437,132 @@ function bubble(id, emoji) {
   el.classList.add('show-bubble');
 }
 
-function swapFace(id, mood) {
-  const el = charEl(id);
-  if (!el) return;
-  const bub = el.querySelector('.bubble')?.outerHTML || '<span class="bubble" data-bubble></span>';
-  el.innerHTML = bub + svgFor(id, mood);
-  el.dataset.mood = mood;
-}
-
-function clearTimers() {
-  clearTimeout(perfTimer); clearTimeout(beatTimer); clearTimeout(loopTimer); clearTimeout(reactTimer);
-}
-
 function reactNow() {
-  clearPerfClasses();
-  const foxI = seats.indexOf('fox');
-  const rabI = seats.indexOf('rabbit');
-  const crI = seats.indexOf('crane');
-  const rivalsAdjacent = foxI >= 0 && rabI >= 0 && (Math.abs(foxI - rabI) === 1 || Math.abs(foxI - rabI) === 3);
-  const friendsAdjacent = rabI >= 0 && crI >= 0 && (Math.abs(rabI - crI) === 1 || Math.abs(rabI - crI) === 3);
+  clearPerf();
+  const { rivalsAdjacent, friendsAdjacent } = flags();
   setHint('');
-  if (rivalsAdjacent) {
-    setBeat('别扭', 'bad');
-    swapFace('fox', 'awkward');
-    swapFace('rabbit', 'mad');
+  if (rivalsAdjacent && friendsAdjacent) {
+    setBeat('修罗场', 'bad');
+    const a = charEl('fox'), b = charEl('rabbit'), c = charEl('crane');
+    if (a) { a.classList.remove('idle'); a.classList.add('look-away-left'); bubble('fox', '😒'); }
+    if (b) { b.classList.remove('idle'); b.classList.add('bristle'); bubble('rabbit', '💢'); }
+    if (c) { c.classList.remove('idle'); c.classList.add('wave'); bubble('crane', '😅'); }
+  } else if (rivalsAdjacent) {
+    setBeat('修罗场', 'bad');
     const a = charEl('fox'), b = charEl('rabbit');
-    if (a) { a.classList.remove('idle'); a.classList.add('look-away-left','shy'); bubble('fox', '😒'); }
+    if (a) { a.classList.remove('idle'); a.classList.add('look-away-left'); bubble('fox', '😒'); }
     if (b) { b.classList.remove('idle'); b.classList.add('look-away-right','bristle'); bubble('rabbit', '💢'); }
   } else if (friendsAdjacent) {
     setBeat('成了', 'ok');
-    swapFace('rabbit', 'happy');
-    swapFace('crane', 'happy');
     const a = charEl('rabbit'), b = charEl('crane');
     if (a) { a.classList.remove('idle'); a.classList.add('wave','happy'); bubble('rabbit', '👋'); }
     if (b) { b.classList.remove('idle'); b.classList.add('nod','happy'); bubble('crane', '✨'); }
   } else {
     setBeat('…');
-    swapFace('fox', 'happy');
-    const a = charEl('fox');
-    if (a) { a.classList.remove('idle'); a.classList.add('happy'); }
   }
 }
 
 function playLoop() {
   clearTimers();
   const gen = ++loopGen;
-  clearPerfClasses();
-  const foxI = seats.indexOf('fox');
-  const rabI = seats.indexOf('rabbit');
-  const crI = seats.indexOf('crane');
-  const rivalsAdjacent = foxI >= 0 && rabI >= 0 && (Math.abs(foxI - rabI) === 1 || Math.abs(foxI - rabI) === 3);
-  const friendsAdjacent = rabI >= 0 && crI >= 0 && (Math.abs(rabI - crI) === 1 || Math.abs(rabI - crI) === 3);
-
+  clearPerf();
+  const { rivalsAdjacent, friendsAdjacent } = flags();
   setBeat('看他们');
   setHint('');
-
-  beatTimer = setTimeout(() => {
+  later(() => {
     if (gen !== loopGen || selected !== null) return;
-    clearPerfClasses();
+    clearPerf();
     if (friendsAdjacent) {
       setBeat('好友', 'ok');
-      swapFace('rabbit', 'happy');
-      swapFace('crane', 'happy');
       const a = charEl('rabbit'), b = charEl('crane');
       if (a) { a.classList.remove('idle'); a.classList.add('wave'); bubble('rabbit', '👋'); }
       if (b) { b.classList.remove('idle'); b.classList.add('nod'); bubble('crane', '🙂'); }
-    } else {
-      setBeat('…');
-      swapFace('rabbit', 'shy');
-      swapFace('crane', 'awkward');
-      const a = charEl('rabbit'), b = charEl('crane');
-      if (a) { a.classList.remove('idle'); a.classList.add('shy'); }
-      if (b) { b.classList.remove('idle'); b.classList.add('look-away-left'); }
-    }
-  }, 350);
-
-  perfTimer = setTimeout(() => {
+    } else setBeat('…');
+  }, 400);
+  later(() => {
     if (gen !== loopGen || selected !== null) return;
-    clearPerfClasses();
+    clearPerf();
     if (rivalsAdjacent) {
       setBeat('仇人', 'bad');
-      swapFace('fox', 'awkward');
-      swapFace('rabbit', 'mad');
       const a = charEl('fox'), b = charEl('rabbit');
-      if (a) { a.classList.remove('idle'); a.classList.add('look-away-left','shy'); bubble('fox', '😒'); }
+      if (a) { a.classList.remove('idle'); a.classList.add('look-away-left'); bubble('fox', '😒'); }
       if (b) { b.classList.remove('idle'); b.classList.add('look-away-right','bristle'); bubble('rabbit', '💢'); }
-    } else {
-      setBeat(friendsAdjacent ? '成了' : '…', friendsAdjacent ? 'ok' : undefined);
-      swapFace('fox', 'happy');
-      if (friendsAdjacent) swapFace('rabbit', 'happy');
-      const a = charEl('fox'), b = charEl('rabbit');
-      if (a) { a.classList.remove('idle'); a.classList.add('happy'); }
-      if (b && friendsAdjacent) { b.classList.remove('idle'); b.classList.add('happy'); bubble('rabbit', '✨'); }
-    }
-  }, 1600);
-
-  beatTimer = setTimeout(() => {
-    if (gen !== loopGen || selected !== null) return;
-    if (rivalsAdjacent) setBeat('…', 'bad');
-    else if (friendsAdjacent) {
-      setBeat('成了', 'ok');
-      clearPerfClasses();
-      swapFace('rabbit', 'happy');
-      swapFace('crane', 'happy');
-      ['rabbit','crane'].forEach(id => {
-        const el = charEl(id);
-        if (el) { el.classList.remove('idle'); el.classList.add('happy'); }
-      });
-      bubble('crane', '✨');
-    } else setBeat('…');
-  }, 3000);
-
-  loopTimer = setTimeout(() => {
+    } else if (friendsAdjacent) setBeat('成了', 'ok');
+    else setBeat('…');
+  }, 1700);
+  later(() => {
     if (gen !== loopGen || selected !== null) return;
     playLoop();
-  }, 5600);
+  }, 5200);
 }
 
 function onSeat(i) {
   const who = seats[i];
   if (selected === null) {
-    if (!who) return; // silent — no rule toast
+    if (!who) return;
     selected = i;
+    ghostSeat = i;
+    hover = null;
     setHint('');
-    setBeat('挪');
+    setBeat('拿起');
     clearTimers();
     loopGen++;
-    clearPerfClasses();
+    clearPerf();
     render();
     return;
   }
   if (selected === i) {
-    selected = null;
+    selected = null; ghostSeat = null; hover = null;
     setHint('');
     render();
     playLoop();
     return;
   }
-  const a = seats[selected];
+  // 落下 / 挤开
+  const from = selected;
+  const a = seats[from];
   const b = seats[i];
-  seats[selected] = b;
+  const squeezing = !!b;
+  if (squeezing) bumpSeat = i;
+  seats[from] = b;
   seats[i] = a;
   selected = null;
+  ghostSeat = null;
+  hover = null;
   landSeat = i;
-  setHint('');
+  setBeat(squeezing ? '挤开' : '落下');
   clearTimers();
   loopGen++;
   render();
-  reactTimer = setTimeout(() => reactNow(), 120);
-  loopTimer = setTimeout(() => { if (selected === null) playLoop(); }, 1700);
+  later(() => reactNow(), squeezing ? 280 : 120);
+  later(() => { if (selected === null) playLoop(); }, 1800);
 }
 
-function shuffleNice() {
-  seats = ['fox', null, 'rabbit', 'crane'];
-  selected = null;
-  landSeat = 2;
-  clearTimers();
-  loopGen++;
+function applyCount(n) {
+  countMode = n;
+  document.querySelectorAll('.mode').forEach(btn => {
+    btn.classList.toggle('on', Number(btn.dataset.n) === n);
+  });
+  if (n === 2) seats = ['fox', 'rabbit', null, null];
+  else if (n === 3) seats = ['fox', 'rabbit', null, 'crane'];
+  else seats = ['fox', 'rabbit', 'hedgehog', 'crane'];
+  selected = null; ghostSeat = null; hover = null;
+  clearTimers(); loopGen++;
   render();
-  reactTimer = setTimeout(() => reactNow(), 120);
-  loopTimer = setTimeout(() => { if (selected === null) playLoop(); }, 1700);
+  later(() => reactNow(), 100);
+  later(() => { if (selected === null) playLoop(); }, 1600);
 }
 
-document.getElementById('btnReplay').addEventListener('click', () => {
-  selected = null;
-  render();
-  playLoop();
+document.querySelectorAll('.mode').forEach(btn => {
+  btn.addEventListener('click', () => applyCount(Number(btn.dataset.n)));
 });
-document.getElementById('btnShuffle').addEventListener('click', shuffleNice);
+document.getElementById('btnReplay').addEventListener('click', () => {
+  selected = null; ghostSeat = null; hover = null;
+  render(); playLoop();
+});
+document.getElementById('btnReset').addEventListener('click', () => applyCount(countMode));
 
-render();
-playLoop();
+applyCount(3);
 </script>
 </body>
 </html>

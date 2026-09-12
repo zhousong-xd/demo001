@@ -71,6 +71,7 @@ Docs tip: after **T-052** — 公网可玩仍挂 STATUS；产品 SHA 冻结不�
 | #58 | T-052 STATUS 收口候选抽样 c04–c12 | done / ACCEPT · c04–c12 自测+独检收口；仅文档 |
 | #60 | T-054 表现小样预览页（副链·表现候选） | done / ACCEPT · 副链骨架；主链不动 |
 | #62 | T-056 表现小样打磨：点选/换座手感 | done / awaiting ACCEPT · presentation-sample 手感；副链已刷；主链不动 |
+| #64 | T-058 表现线重设计新小样 | done / awaiting ACCEPT · presentation-sample 重设计；副链已刷；主链不动 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
