@@ -15,7 +15,7 @@
 | **HTML path** | `banquet-pilot/dist/banquet-pilot.html` |
 | **HTML size (LF bytes)** | `73182` |
 | **HTML sha256** | `19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5` |
-| **Report / delivery SHA** | `f161d2a048e92a60880e1de97c626c3c310fc40b` |
+| **Report / delivery SHA** | `ff71a7aa1d642bb5439aae90307176413cc49938` (evidence package; product remains `f28893f3…`) |
 | **Pre-verify** | Product SHA + HTML size/hash verified **before** and **after** evidence runs; **no rebuild / no product modify** |
 
 ---
