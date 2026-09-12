@@ -120,9 +120,9 @@
     "evidence": "banquet-pilot/evidence/t032-ui-mouse-sim/"
   },
   "push": {
-    "pushed": false,
+    "pushed": true,
     "reason": null,
-    "tip": null,
+    "tip": "5c037ea9415cf9a5805293fef9bdb4a35aa22062",
     "branch": "bot/banquet-pilot",
     "note": "reports/evidence only; dist/src untouched"
   },
