@@ -1,0 +1,51 @@
+{
+  "task": "T-037",
+  "kind": "candidates-playtest-ui-critical-regression",
+  "shippedClaim": false,
+  "input": "mouse-sim (CDP Input.dispatchMouseEvent)",
+  "deviceUntested": true,
+  "multitouchUntested": true,
+  "oneCommand": "node --experimental-websocket tests/evidence/scripts/t037-playtest-ui-critical-regression.mjs",
+  "results": [
+    {
+      "step": "place_c01",
+      "pass": true
+    },
+    {
+      "step": "undo_c01",
+      "pass": true
+    },
+    {
+      "step": "switch_c02",
+      "pass": true
+    },
+    {
+      "step": "swap_c02",
+      "pass": true
+    },
+    {
+      "step": "displace_c01",
+      "pass": true
+    },
+    {
+      "step": "calm_miss_fox",
+      "pass": true
+    },
+    {
+      "step": "calm_hit_rabbit",
+      "pass": true
+    }
+  ],
+  "pageErrors": [],
+  "dist": {
+    "bytes": 73182,
+    "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "hasCR": false
+  },
+  "expectedProductSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "consolidates": [
+    "T-031",
+    "T-033",
+    "T-035"
+  ]
+}
