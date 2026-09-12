@@ -156,6 +156,26 @@ html, body {
 .seat.friend-glow { box-shadow: 0 0 0 3px rgba(69,224,160,.45), 0 0 16px rgba(69,224,160,.2); }
 .seat.rival-glow { box-shadow: 0 0 0 3px rgba(255,123,132,.5), 0 0 16px rgba(255,123,132,.22); }
 
+
+/* 椅随关系/人数变 */
+.chair {
+  position: absolute; inset: 4px 2px 0;
+  pointer-events: none; z-index: 0;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.chair svg { width: 78px; height: 70px; display: block; }
+.seat > .char { z-index: 1; }
+.seat.count-2 .chair { transform: scale(1.08); }
+.seat.count-4 .chair { transform: scale(.92); }
+
+.seat.friend-glow .chair { transform: rotate(-3deg); transform-origin: 50% 80%; }
+.seat.rival-glow .chair { transform: rotate(4deg); transform-origin: 50% 80%; }
+.seat.count-2.friend-glow .chair { transform: rotate(-3deg) scale(1.08); }
+.seat.count-2.rival-glow .chair { transform: rotate(4deg) scale(1.08); }
+.seat.count-4.friend-glow .chair { transform: rotate(-3deg) scale(.92); }
+.seat.count-4.rival-glow .chair { transform: rotate(4deg) scale(.92); }
+
+
 .char { width: 78px; height: 78px; position: relative; transform-origin: 50% 70%; }
 .char svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .char .bubble {
@@ -242,7 +262,7 @@ html, body {
       </div>
     </div>
   </div>
-  <p class="outside">T-058 重设计小样 · 凡动必有戏 · 见 DESIGN_MATRIX_T058.md</p>
+  <p class="outside">T-058 重设计 · 凡动必有戏 · 椅随关系/人数变</p>
 </div>
 <script>
 /** 狐↔兔仇；兔↔鹤友；刺猬中立凑数 */
@@ -311,7 +331,88 @@ function svgFor(id, mood) {
     <text x="40" y="78" text-anchor="middle" font-size="11" fill="#cfd6e2">${lab}</text></svg>`;
 }
 
+
+/** 椅型词汇（对齐设计表 D）：圆背/尖背/方凳/主座感；随人数编排 + 关系染色 */
+function chairSvg(kind, countMode, seatIndex) {
+  // kind: empty | solo | friend | rival | mixed
+  const isHost = seatIndex === 0; // s0 略作主座
+  if (kind === 'friend' || (kind === 'solo' && countMode === 3 && !isHost)) {
+    // 圆背椅
+    const cush = '#3d6b55', wood = '#5a4534', stroke = '#45e0a0';
+    return `<svg viewBox="0 0 80 70" aria-hidden="true">
+      <path d="M20 34 Q40 2 60 34" fill="${wood}" stroke="${stroke}" stroke-width="2"/>
+      <ellipse cx="40" cy="38" rx="24" ry="12" fill="${cush}" stroke="${stroke}" stroke-width="1.5"/>
+      <rect x="18" y="48" width="8" height="16" rx="2" fill="${wood}"/>
+      <rect x="54" y="48" width="8" height="16" rx="2" fill="${wood}"/>
+    </svg>`;
+  }
+  if (kind === 'rival') {
+    // 尖背椅
+    const cush = '#6b3a42', wood = '#4a3028', stroke = '#ff7b84';
+    return `<svg viewBox="0 0 80 70" aria-hidden="true">
+      <path d="M24 36 L40 4 L56 36 Z" fill="${wood}" stroke="${stroke}" stroke-width="2"/>
+      <rect x="18" y="34" width="44" height="16" rx="3" fill="${cush}" stroke="${stroke}" stroke-width="1.5"/>
+      <rect x="20" y="50" width="7" height="16" fill="${wood}"/>
+      <rect x="53" y="50" width="7" height="16" fill="${wood}"/>
+    </svg>`;
+  }
+  if (kind === 'mixed') {
+    const cush = '#5a4a38', wood = '#4a3a2c', stroke = '#e0b060';
+    return `<svg viewBox="0 0 80 70" aria-hidden="true">
+      <path d="M22 34 Q40 8 58 34" fill="${wood}" stroke="${stroke}" stroke-width="2"/>
+      <path d="M40 8 L46 34 L34 34 Z" fill="${wood}" opacity=".85"/>
+      <rect x="16" y="34" width="48" height="16" rx="4" fill="${cush}"/>
+      <rect x="18" y="50" width="7" height="16" fill="${wood}"/>
+      <rect x="55" y="50" width="7" height="16" fill="${wood}"/>
+    </svg>`;
+  }
+  if (countMode === 4 || kind === 'empty') {
+    // 方凳 / 空凳
+    const cush = kind === 'empty' ? '#2a3140' : '#3a4252';
+    const wood = '#4a3a2c';
+    const stroke = kind === 'empty' ? '#5a657a' : '#2a3140';
+    const dash = kind === 'empty' ? 'stroke-dasharray="4 3"' : '';
+    return `<svg viewBox="0 0 80 70" aria-hidden="true">
+      <rect x="16" y="24" width="48" height="18" rx="4" fill="${cush}" stroke="${stroke}" stroke-width="2" ${dash}/>
+      <rect x="20" y="42" width="6" height="20" fill="${wood}"/>
+      <rect x="54" y="42" width="6" height="20" fill="${wood}"/>
+      <rect x="30" y="44" width="5" height="18" fill="${wood}"/>
+      <rect x="45" y="44" width="5" height="18" fill="${wood}"/>
+    </svg>`;
+  }
+  if (countMode === 2 || isHost) {
+    // 主座 / 对峙高背
+    const cush = '#4a5468', wood = '#5c4030', stroke = '#7ec8ff';
+    return `<svg viewBox="0 0 80 70" aria-hidden="true">
+      <rect x="18" y="6" width="44" height="30" rx="5" fill="${wood}" stroke="${stroke}" stroke-width="2"/>
+      <rect x="14" y="34" width="52" height="16" rx="4" fill="${cush}"/>
+      <rect x="16" y="50" width="8" height="16" fill="${wood}"/>
+      <rect x="56" y="50" width="8" height="16" fill="${wood}"/>
+    </svg>`;
+  }
+  // default classic
+  const cush = '#3a4252', wood = '#5a4534';
+  return `<svg viewBox="0 0 80 70" aria-hidden="true">
+    <path d="M22 12 Q40 4 58 12 L58 32 L22 32 Z" fill="${wood}"/>
+    <rect x="16" y="30" width="48" height="18" rx="5" fill="${cush}"/>
+    <rect x="18" y="48" width="7" height="16" fill="${wood}"/>
+    <rect x="55" y="48" width="7" height="16" fill="${wood}"/>
+  </svg>`;
+}
+
+function chairKindFor(i, who) {
+  if (!who) return 'empty';
+  const ns = neighbors(i);
+  const hasFriend = REL[who].friend && ns.includes(REL[who].friend);
+  const hasRival = REL[who].rival && ns.includes(REL[who].rival);
+  if (hasFriend && hasRival) return 'mixed';
+  if (hasFriend) return 'friend';
+  if (hasRival) return 'rival';
+  return 'solo';
+}
+
 function adj(i, j) {
+
   if (i < 0 || j < 0) return false;
   const d = Math.abs(i - j);
   return d === 1 || d === 3;
@@ -364,8 +465,12 @@ function render() {
   seats.forEach((who, i) => {
     const el = document.createElement('button');
     el.type = 'button';
-    el.className = 'seat s' + i + (who ? '' : ' empty');
+    el.className = 'seat s' + i + (who ? '' : ' empty') + ' count-' + countMode;
     el.dataset.seat = String(i);
+    const chair = document.createElement('div');
+    chair.className = 'chair';
+    chair.innerHTML = chairSvg(chairKindFor(i, who), countMode, i);
+    el.appendChild(chair);
     if (selected === i) el.classList.add('held');
     // origin seat while held: keep character lifted via .held (no double ghost)
     if (landSeat === i) el.classList.add('land');
