@@ -129,5 +129,5 @@
 ## 8. 推送
 
 - branch: `bot/banquet-pilot`
-- tip: *(commit after reports)*
+- tip: `43de9a6576828406846ccc48d85348e304aadd65`
 - 仅 reports/qa + evidence；dist/src 未改

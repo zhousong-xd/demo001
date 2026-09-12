@@ -104,8 +104,14 @@
     "displace": {
       "fileId": "c01",
       "seat": "A1",
-      "before": { "fox": "A1", "rabbit": null },
-      "after": { "rabbit": "A1", "fox": null },
+      "before": {
+        "fox": "A1",
+        "rabbit": null
+      },
+      "after": {
+        "rabbit": "A1",
+        "fox": null
+      },
       "kind": "displace"
     }
   },
@@ -115,9 +121,9 @@
     "evidence": "banquet-pilot/evidence/t030-playtest-smoke/"
   },
   "push": {
-    "pushed": false,
-    "reason": "tip filled after first reports commit",
-    "tip": null,
+    "pushed": true,
+    "reason": null,
+    "tip": "43de9a6576828406846ccc48d85348e304aadd65",
     "branch": "bot/banquet-pilot",
     "note": "reports/evidence only; dist/src untouched"
   },
