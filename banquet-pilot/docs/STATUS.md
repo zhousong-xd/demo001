@@ -181,3 +181,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 - No formal `levels/` edits from candidate briefs/JSON alone.
 - No inventing counts beyond enum; C01–C12 candidates filled — still not formal levels.
 - Candidates playtest ≠ shipped levels; do not promote via the playtest page alone.
+
+## Process
+
+See [LOOP.md](./LOOP.md) — human closed-loop + role checklist + digest shape (2026-09-12).
