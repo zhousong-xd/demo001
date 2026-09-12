@@ -1,22 +1,38 @@
-# 表现小样预览（表现候选 · 非正式）
+# 表现小样（T-053 美术 · T-054 工程骨架）
 
-> **不是**正式三关。正式可玩主链：https://zhousong-xd.github.io/demo001/  
+> **不是**正式三关。正式可玩：https://zhousong-xd.github.io/demo001/  
 > 产品 SHA（只读）：`f28893f3c419d794c6ba102bac67038683cb462c`
 
-## 打开方式
-
-本地：
+## 打开预览
 
 ```bash
 cd banquet-pilot
 python3 -m http.server 8761
 # → http://127.0.0.1:8761/candidates/presentation-sample/
+# 或 …/preview.html（跳到 index）
 ```
 
-公网副链（若已部署）：https://zhousong-xd.github.io/demo001/presentation/
+也可直接打开 `index.html`（file://，无外网依赖）。手机框 390×844。
 
-## 与 T-053
+## 怎么看出玩法（少字）
 
-美术小样到位后，资源放入 `assets/` 并在 `index.html` 嵌入。工程骨架先到位，不挡美术。
+1. **座位关系在演**：看着谁、背对谁，比文字规则更先到。
+2. **好友短循环**：兔 ↔ 鹤会招手/点头；挨着有绿光。
+3. **仇人短循环**：狐 ↔ 兔会别扭、互不看；挨着有红光/炸毛。
+4. **你的活**：点角色再点空位（或另一只交换）——把仇人分开、把好友凑近。
+5. **范围**：固定一桌；「老街」以后再加。
 
-— agent:宴席·工程 role:BOT · T-054
+开局故意让狐挨兔（别扭）。点「换个座试试」可看好友挨近后的「成了」。
+
+## 文件
+
+| 路径 | 说明 |
+| --- | --- |
+| `index.html` | 可玩表现小样（内联 SVG + CSS 表演） |
+| `preview.html` | 入口跳转 → index |
+| `ASSETS.md` | 资产表 |
+| `assets/` | 预留栅格资源目录（本环以内联为主） |
+
+不改 `dist/` / 正式玩法。
+
+— agent:宴席·美术 role:BOT · T-053/#59
