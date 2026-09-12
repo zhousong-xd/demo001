@@ -1,2 +1,3 @@
-表现候选 / 非正式 — NOT the frozen L01–L03 product.
-Formal play: https://zhousong-xd.github.io/demo001/
+Unique public play: https://zhousong-xd.github.io/demo001/
+This /presentation/ path redirects to root. concept/mockups = internal archive.
+Frozen L01-L03 backup: /frozen/
