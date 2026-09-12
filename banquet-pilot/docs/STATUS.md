@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: after T-022 — product SHA frozen; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
+Docs tip: after T-023 — product SHA frozen; playtest smoke c01–c06; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -45,7 +45,8 @@ Docs tip: after T-022 — product SHA frozen; [`LESSONS.md`](./LESSONS.md) · [`
 | #24 | T-018 刷新 PR #11 说明（人类可读现状） | done / awaiting ACCEPT · REST 刷新 PR #11 中文 body；负责人 宴席·工程；产品 SHA 未改 |
 | #25 | T-019 候选 playtest 稳定性小修 | done / awaiting ACCEPT · 修 `history` 遮蔽 window.history + 切换竞态；smoke c01–c03；不改 dist |
 | #27 | T-021 经验短卡收纳（近几环） | done / ACCEPT · `docs/LESSONS.md` 10 条；STATUS 已链；不改 dist |
-| #28 | T-022 一页计划 CURRENT_PLAN.md | done / awaiting ACCEPT · `docs/CURRENT_PLAN.md`；STATUS 已链；不改 dist |
+| #28 | T-022 一页计划 CURRENT_PLAN.md | done / ACCEPT · `docs/CURRENT_PLAN.md`；STATUS 已链；不改 dist |
+| #29 | T-023 playtest 扩到 c04–c06 冒烟 | done / awaiting ACCEPT · `smoke.mjs` c01–c06；CDP 切 c04–c06 可入座；不改 dist |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -172,6 +173,14 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Covers | 主目标（冻结三关+候选收口）；后续：LESSONS → 计划页 → 升正式须独检；中长期未拍板 |
 | Claim | **docs-only**；不改 dist / 不 merge |
 
+### T-023 playtest smoke c04–c06
+
+| Item | Value |
+| --- | --- |
+| Scope | `candidates/playtest/smoke.mjs`（+ README 一行） |
+| Verify | `node candidates/playtest/smoke.mjs`；http.server + CDP：c04→c05→c06 入座 |
+| Claim | **candidates only**；不改 dist / 不 merge |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -201,7 +210,8 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (docs) | **#24 / T-018** PR #11 Chinese body refresh | Human summary via REST `pulls/11`; still draft / do not merge · await demo001 ACCEPT |
 | Done (candidates) | **#25 / T-019** playtest stability | `playHistory` + loadGen; smoke c01–c03; await ACCEPT |
 | Done (docs) | **#27 / T-021** LESSONS short cards | `docs/LESSONS.md`; ACCEPT |
-| Done (docs) | **#28 / T-022** CURRENT_PLAN one-pager | `docs/CURRENT_PLAN.md`; await ACCEPT |
+| Done (docs) | **#28 / T-022** CURRENT_PLAN one-pager | `docs/CURRENT_PLAN.md`; ACCEPT |
+| Done (candidates) | **#29 / T-023** playtest smoke c04–c06 | `smoke.mjs` c01–c06; await ACCEPT |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines

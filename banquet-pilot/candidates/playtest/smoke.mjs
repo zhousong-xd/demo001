@@ -1,6 +1,6 @@
 /** Kernel smoke for candidates playtest (no browser).
- * Proves c01–c03 JSON + relative ESM core/board can load and place one guest.
- * Not a shipped-level claim. (T-016 / T-019)
+ * Proves c01–c06 JSON + relative ESM core/board can load and place one guest.
+ * Not a shipped-level claim. (T-016 / T-019 / T-023)
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -19,8 +19,9 @@ function load(id) {
   return JSON.parse(fs.readFileSync(jsonPath, "utf8"));
 }
 
+const IDS = ["c01", "c02", "c03", "c04", "c05", "c06"];
 const results = [];
-for (const id of ["c01", "c02", "c03"]) {
+for (const id of IDS) {
   const level = load(id);
   const assignment = createInitialAssignment(level);
   const inventory = createInitialInventory(level);
@@ -38,10 +39,12 @@ for (const id of ["c01", "c02", "c03"]) {
     title: level.title,
     placed: `${char0}→${seat0}`,
     seated: Object.values(placed.next).filter(Boolean).length,
+    chars: level.characters.length,
+    seats: level.seats.length,
     evalOk: ev.ok,
     bell: inventory.calm_bell ?? 0,
   });
 }
 
-console.log("T-019 smoke OK: switched c01→c02→c03 (kernel) and placed first guest each");
+console.log("T-023 smoke OK: switched c01→c06 (kernel) and placed first guest each");
 console.log(JSON.stringify({ kind: "candidates-only", shippedClaim: false, results }, null, 2));
