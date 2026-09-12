@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: see latest `bot/banquet-pilot` commit after T-018 push — product SHA above stays frozen; PR #11 body refreshed (Chinese human summary).
+Docs tip: see latest `bot/banquet-pilot` commit after T-019 push — product SHA above stays frozen; candidates playtest loader stability fix; PR #11 still draft.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -43,6 +43,7 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-018 push — product SHA
 | #22 | T-017 候选试玩说明 PLAYTEST.md（中文） | done / closed · `candidates/PLAYTEST.md`；产品 file:// vs 候选 server；c01–c12 / art preview / known gaps；UI 轻量标注 candidates |
 | #23 | T-018 刷新 PR #11 中文人体摘要（仅文档） | superseded by #24 · 旧 GROKBOT01 跟踪单，待主导关闭 |
 | #24 | T-018 刷新 PR #11 说明（人类可读现状） | done / awaiting ACCEPT · REST 刷新 PR #11 中文 body；负责人 宴席·工程；产品 SHA 未改 |
+| #25 | T-019 候选 playtest 稳定性小修 | done / awaiting ACCEPT · 修 `history` 遮蔽 window.history + 切换竞态；smoke c01–c03；不改 dist |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -144,6 +145,15 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Links | 总控台 [#4](https://github.com/zhousong-xd/demo001/issues/4)；跟踪 [#24](https://github.com/zhousong-xd/demo001/issues/24)；相关 closed #5–#22；旧 #23 superseded |
 | Claim | **doc-only**；不 merge PR #11；不改 dist / 产品玩法 |
 
+### T-019 candidates playtest stability (docs+loader)
+
+| Item | Value |
+| --- | --- |
+| Scope | `candidates/playtest/playtest.js` + `smoke.mjs`；`docs/STATUS.md` |
+| Fix | 玩法历史改名 `playHistory`，URL 用 `window.history.replaceState`；`loadGen` 防快速切换竞态；失败时提示 |
+| Verify | `node candidates/playtest/smoke.mjs`；http.server + headless CDP：c01→c02→c03，URL `?c=` 同步，c03 可入座+安心铃 |
+| Claim | **candidates only**；不改 dist / 产品 SHA；不 merge PR #11 |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -171,6 +181,7 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (candidates) | **#21 / T-016** playtest page c01–c12 | `candidates/playtest/`; ESM reuse src; still not formal `levels/` |
 | Done (docs) | **#22 / T-017** PLAYTEST.md + UI label polish | Chinese guide: product file:// vs candidates server; gaps; still not formal `levels/` |
 | Done (docs) | **#24 / T-018** PR #11 Chinese body refresh | Human summary via REST `pulls/11`; still draft / do not merge · await demo001 ACCEPT |
+| Done (candidates) | **#25 / T-019** playtest stability | `playHistory` + loadGen; smoke c01–c03; await ACCEPT |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines

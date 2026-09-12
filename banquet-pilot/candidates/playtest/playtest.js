@@ -45,7 +45,7 @@ let calm = new Set();
 /** @type {Record<string, number>} */
 let inventory = {};
 /** @type {any[]} */
-let history = createHistory();
+let playHistory = createHistory();
 /** @type {string|null} */
 let selectedChar = null;
 /** @type {string|null} */
@@ -72,7 +72,7 @@ function resetCandidate() {
   assignment = createInitialAssignment(level);
   calm = new Set();
   inventory = createInitialInventory(level);
-  history = createHistory();
+  playHistory = createHistory();
   selectedChar = null;
   propMode = null;
   highlightRuleId = null;
@@ -80,15 +80,30 @@ function resetCandidate() {
   render();
 }
 
+/** Bumps on each switch so a slow fetch cannot clobber a newer candidate. */
+let loadGen = 0;
+
 async function switchCandidate(id) {
   const name = String(id).toLowerCase();
-  level = await loadCandidateJson(name);
+  const gen = ++loadGen;
+  let next;
+  try {
+    next = await loadCandidateJson(name);
+  } catch (e) {
+    if (gen !== loadGen) return;
+    if (app) {
+      app.textContent = `切换失败（${name}）：${e.message}。请确认从 banquet-pilot/ 根目录开 http.server，再刷新重试。`;
+    }
+    throw e;
+  }
+  if (gen !== loadGen) return; // superseded by a newer switch
+  level = next;
   fileId = name;
   try {
     const url = new URL(location.href);
     url.searchParams.set("c", name);
-    if (typeof history.replaceState === "function") {
-      history.replaceState(null, "", url);
+    if (typeof window.history.replaceState === "function") {
+      window.history.replaceState(null, "", url);
     }
   } catch {
     /* headless / restricted History API */
@@ -104,7 +119,7 @@ function commitAction(charId, seat) {
   const before = snapshotPlay(playState());
   const result = applySeatAction(assignment, charId, seat, availableSeats());
   if (!result) return false;
-  pushPlayHistory(history, before);
+  pushPlayHistory(playHistory, before);
   assignment = result.next;
   assertBoardIntegrity(assignment, level.characters, availableSeats());
   selectedChar = null;
@@ -115,7 +130,7 @@ function commitAction(charId, seat) {
 }
 
 function undo() {
-  const prev = popPlayHistory(history);
+  const prev = popPlayHistory(playHistory);
   if (!prev) return;
   assignment = prev.assignment;
   calm = prev.calm;
@@ -143,7 +158,7 @@ function tryApplyCalm(targetChar) {
     return true;
   }
   if (r.next) {
-    pushPlayHistory(history, before);
+    pushPlayHistory(playHistory, before);
     assignment = r.next.assignment;
     calm = r.next.calm;
     inventory = r.next.inventory;
@@ -225,7 +240,7 @@ function expose() {
     assignment: cloneAssignment(assignment),
     calm: [...calm],
     inventory: cloneInventory(inventory),
-    historyLen: history.length,
+    historyLen: playHistory.length,
     selectedChar,
     won,
     evalOk: result.ok,
@@ -268,7 +283,7 @@ function render() {
     if (id === fileId) opt.selected = true;
     sel.appendChild(opt);
   }
-  sel.addEventListener("change", () => switchCandidate(sel.value));
+  sel.addEventListener("change", () => { switchCandidate(sel.value).catch((e) => console.error(e)); });
   pick.appendChild(sel);
   header.appendChild(pick);
 
@@ -276,7 +291,7 @@ function render() {
   undoBtn.className = "btn";
   undoBtn.type = "button";
   undoBtn.textContent = "撤销";
-  undoBtn.disabled = history.length === 0;
+  undoBtn.disabled = playHistory.length === 0;
   undoBtn.addEventListener("click", () => undo());
   header.appendChild(undoBtn);
 
@@ -314,7 +329,7 @@ function render() {
   } else {
     const seated = level.characters.filter((c) => assignment[c]).length;
     const invBits = hasBell ? ` · 安心铃×${bellStock}` : "";
-    status.textContent = `已入座 ${seated}/${level.characters.length} · 历史 ${history.length}${invBits} · 点选角色再点座位`;
+    status.textContent = `已入座 ${seated}/${level.characters.length} · 历史 ${playHistory.length}${invBits} · 点选角色再点座位`;
   }
   app.appendChild(status);
 
