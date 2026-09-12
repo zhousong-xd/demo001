@@ -2,7 +2,8 @@
 
 **Scope:** design-intent docs under `banquet-pilot/candidates/levels/`.
 
-**T-008 (this slice):** fill **C01–C03** briefs only (learning goal, seats/guests/rules sketch, solution count **TBD**, tips outline, `ruleVersion` 0.1). C04–C12 remain stubs.
+**T-008:** filled **C01–C03** briefs (learning goal, seats/guests/rules sketch, tips, `ruleVersion` 0.1).  
+**T-009 (this slice):** machine-checkable candidate JSON drafts (`c01.json`–`c03.json`) + enum under `candidates/` only; briefs TBD→actual counts. C04–C12 remain stubs.
 
 **Not in scope:**
 
@@ -16,16 +17,19 @@
 ## What “12 candidates” means
 
 Twelve **design slots** (C01–C12).  
-C01–C03 are **brief-filled shipped references** to L01–L03 (frozen product).  
+C01–C03 are **brief+enum shipped references** to L01–L03 (frozen product); JSON drafts live here only.  
 C04–C12 are **stubs** for future design; they are not level JSON and are not solvable claims.
 
 ## Layout
 
 ```
 banquet-pilot/candidates/levels/
-  README.md          ← this file (scope / stop lines)
-  CATALOG.md         ← index of C01–C12
-  c01.md … c12.md    ← per-slot design intent / briefs
+  README.md                  ← this file (scope / stop lines)
+  CATALOG.md                 ← index of C01–C12
+  c01.md … c12.md            ← per-slot design intent / briefs
+  c01.json … c03.json        ← machine-checkable candidate drafts (not formal levels/)
+  enumerate_candidates.py    ← enum against candidates/ only (adapted; no product edit)
+  enumerate_candidates.mjs   ← JS twin
 ```
 
 ## Rule vocabulary (existing kernel only)
@@ -40,6 +44,6 @@ No new rule kinds in this folder.
 ## Stop lines
 
 - Design docs ≠ playable levels.
-- Solution counts in briefs are **TBD** until enum.
+- C01–C03 solution counts filled by T-009 enum; C04–C12 remain **TBD**.
 - Do not copy these files into `levels/` without a separate, accepted engineering task.
 - Do not expand art or import assets from this task.

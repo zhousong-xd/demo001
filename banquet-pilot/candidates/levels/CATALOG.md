@@ -5,9 +5,9 @@ This catalog does **not** assert 12 finished or implemented levels.
 
 | ID | Title (working) | Status | Formal level | Focus (intent) | ruleVersion | Solution count |
 | --- | --- | --- | --- | --- | --- | --- |
-| C01 | 先让大家坐下 | brief-filled (shipped-ref) | L01 | `at` + `not_beside` intro | 0.1 | **TBD** |
-| C02 | 隔桌也算陪伴 | brief-filled (shipped-ref) | L02 | `faces` + `end` + `same_row` | 0.1 | **TBD** |
-| C03 | 不是所有矛盾都要换座 | brief-filled (shipped-ref) | L03 | calm_bell + `not_faces_unless` | 0.1 | **TBD** |
+| C01 | 先让大家坐下 | brief+enum (shipped-ref) | L01 | `at` + `not_beside` intro | 0.1 | **1** |
+| C02 | 隔桌也算陪伴 | brief+enum (shipped-ref) | L02 | `faces` + `end` + `same_row` | 0.1 | **1** |
+| C03 | 不是所有矛盾都要换座 | brief+enum (shipped-ref) | L03 | calm_bell + `not_faces_unless` | 0.1 | **0** no-calm / **1** calm-rabbit |
 | C04 | 同排也要留空隙 | stub | — | reinforce `same_row` / spacing | 0.1 | TBD |
 | C05 | 末端不是角落而已 | stub | — | `end` with misdirection | 0.1 | TBD |
 | C06 | 面对面的误会 | stub | — | multi-`faces` tension | 0.1 | TBD |
@@ -20,9 +20,10 @@ This catalog does **not** assert 12 finished or implemented levels.
 
 ## Legend
 
-- **brief-filled (shipped-ref)** — C01–C03 design briefs filled (T-008); still reference accepted product levels; do not rewrite formal JSON here.
+- **brief+enum (shipped-ref)** — C01–C03 briefs (T-008) + candidate JSON drafts + enum counts (T-009) under `candidates/levels/`; still not formal `levels/`.
 - **stub** — teaching goal + suggested rule mix + open questions only; no `known_solution`, no claim of unique solvability.
-- **TBD** solution count — unknown until a dedicated enumerate task; briefs must not invent counts.
+- **TBD** solution count — unknown until a dedicated enumerate task; C04–C12 remain TBD.
+- Machine-checkable drafts: `c01.json` / `c02.json` / `c03.json`; runner: `enumerate_candidates.py` (+ `.mjs`).
 
 ## Next gates (out of this slice)
 

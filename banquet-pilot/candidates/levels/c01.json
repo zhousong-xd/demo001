@@ -1,0 +1,19 @@
+{
+  "id": "C01",
+  "title": "先让大家坐下",
+  "layout": "4",
+  "seats": ["A1", "A2", "B1", "B2"],
+  "characters": ["fox", "rabbit", "crane", "otter"],
+  "props": [],
+  "rules": [
+    {"id": "C01-r1", "kind": "at", "subject": "fox", "seat": "A1"},
+    {"id": "C01-r2", "kind": "at", "subject": "crane", "seat": "B1"},
+    {"id": "C01-r3", "kind": "not_beside", "subject": "rabbit", "other": "fox"}
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": "levels/l01.json",
+    "note": "Design candidate draft under candidates/levels only; not formal levels/."
+  }
+}
