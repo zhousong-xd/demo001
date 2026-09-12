@@ -108,9 +108,9 @@
     "evidence": "banquet-pilot/evidence/t034-ui-swap-displace/"
   },
   "push": {
-    "pushed": false,
+    "pushed": true,
     "reason": null,
-    "tip": null,
+    "tip": "e2cdce0aa5651c7f9e2ba14d4e246e08bf4aad9d",
     "branch": "bot/banquet-pilot",
     "note": "reports/evidence only; dist/src untouched"
   },

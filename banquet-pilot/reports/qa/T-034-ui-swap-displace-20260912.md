@@ -127,5 +127,5 @@
 ## 8. 推送
 
 - branch: `bot/banquet-pilot`
-- tip: _(filled after push)_
+- tip: 
 - 仅 reports/qa + evidence/t034；dist/src 未改
