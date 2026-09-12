@@ -1,37 +1,4 @@
-T-068 vivid sprite sheets (SVG分帧占位 → PNG strips)
-Player MUST cut frames (background-position / drawImage). No single-bitmap CSS bob.
-T-067 art may replace same filenames keeping frameW/frameH/count in *.json.
-
-fox_idle: 6 frames @ 96x112 → fox_idle.png
-fox_walk: 4 frames @ 96x112 → fox_walk.png
-fox_stand: 3 frames @ 96x112 → fox_stand.png
-fox_sit: 3 frames @ 96x112 → fox_sit.png
-fox_refuse: 3 frames @ 96x112 → fox_refuse.png
-fox_greet: 4 frames @ 96x112 → fox_greet.png
-fox_mad: 3 frames @ 96x112 → fox_mad.png
-fox_awkward: 2 frames @ 96x112 → fox_awkward.png
-fox_happy: 2 frames @ 96x112 → fox_happy.png
-fox_held: 2 frames @ 96x112 → fox_held.png
-fox_clash: 3 frames @ 96x112 → fox_clash.png
-rabbit_idle: 6 frames @ 96x112 → rabbit_idle.png
-rabbit_walk: 4 frames @ 96x112 → rabbit_walk.png
-rabbit_stand: 3 frames @ 96x112 → rabbit_stand.png
-rabbit_sit: 3 frames @ 96x112 → rabbit_sit.png
-rabbit_refuse: 3 frames @ 96x112 → rabbit_refuse.png
-rabbit_greet: 4 frames @ 96x112 → rabbit_greet.png
-rabbit_mad: 3 frames @ 96x112 → rabbit_mad.png
-rabbit_awkward: 2 frames @ 96x112 → rabbit_awkward.png
-rabbit_happy: 2 frames @ 96x112 → rabbit_happy.png
-rabbit_held: 2 frames @ 96x112 → rabbit_held.png
-rabbit_clash: 3 frames @ 96x112 → rabbit_clash.png
-crane_idle: 6 frames @ 96x112 → crane_idle.png
-crane_walk: 4 frames @ 96x112 → crane_walk.png
-crane_stand: 3 frames @ 96x112 → crane_stand.png
-crane_sit: 3 frames @ 96x112 → crane_sit.png
-crane_refuse: 3 frames @ 96x112 → crane_refuse.png
-crane_greet: 4 frames @ 96x112 → crane_greet.png
-crane_mad: 3 frames @ 96x112 → crane_mad.png
-crane_awkward: 2 frames @ 96x112 → crane_awkward.png
-crane_happy: 2 frames @ 96x112 → crane_happy.png
-crane_held: 2 frames @ 96x112 → crane_held.png
-crane_clash: 3 frames @ 96x112 → crane_clash.png
+T-067 hard-gate sprite strips (切帧，禁止单图 bob)
+HD: sheets/{who}_{walk|idle|rise|sit|refuse}.png + .json
+Compat 96x112: {who}_{anim}.png + .json (fpsHint/order in json)
+Preview: sheets/catalog.html

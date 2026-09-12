@@ -1,1 +1,17 @@
-{"frameW":96,"frameH":112,"count":6,"fpsHint":8}
+{
+  "frameW": 96,
+  "frameH": 112,
+  "count": 6,
+  "fpsHint": 6,
+  "order": [
+    "open",
+    "open",
+    "half",
+    "closed",
+    "half",
+    "open"
+  ],
+  "note": "坐姿眨眼",
+  "layout": "horizontal",
+  "source": "sheets/fox_idle.png"
+}

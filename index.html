@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>这桌不能坐 · 生动改版 T-068</title>
+<title>这桌不能坐 · 生动改版 T-069</title>
 <style>
 :root {
   --bg0: #1a100c; --bg1: #2a1810;
@@ -329,55 +329,54 @@ html, body {
   <p class="outside">T-068 · 精灵表切帧（走/闲/起/坐/拒）· 伪3D 遮挡微镜头 · 不加新规则</p>
 </div>
 <script>
-/** T-068 vivid playable — sprite-sheet FRAME CUTS only (no CSS bob on characters). */
+/** T-069 vivid playable — sheets/ primary + root strips; FRAME CUTS only (no CSS bob). tip 598c18d */
 const REL = {
   fox: { rival: 'rabbit', friend: null },
   rabbit: { rival: 'fox', friend: 'crane' },
   crane: { rival: null, friend: 'rabbit' },
 };
 const LABEL = { fox: '狐', rabbit: '兔', crane: '鹤' };
-const FW = 96, FH = 112;
-const SHEET = {
-  fox: {
-    idle: { src: 'assets/vivid/fox_idle.png', count: 6, fps: 5 },
-    walk: { src: 'assets/vivid/fox_walk.png', count: 4, fps: 8 },
-    stand: { src: 'assets/vivid/fox_stand.png', count: 3, fps: 7 },
-    sit: { src: 'assets/vivid/fox_sit.png', count: 3, fps: 7 },
-    refuse: { src: 'assets/vivid/fox_refuse.png', count: 3, fps: 6 },
-    greet: { src: 'assets/vivid/fox_greet.png', count: 4, fps: 7 },
-    mad: { src: 'assets/vivid/fox_mad.png', count: 3, fps: 6 },
-    awkward: { src: 'assets/vivid/fox_awkward.png', count: 2, fps: 4 },
-    happy: { src: 'assets/vivid/fox_happy.png', count: 2, fps: 5 },
-    held: { src: 'assets/vivid/fox_held.png', count: 2, fps: 4 },
-    clash: { src: 'assets/vivid/fox_clash.png', count: 3, fps: 8 },
-  },
-  rabbit: {
-    idle: { src: 'assets/vivid/rabbit_idle.png', count: 6, fps: 5 },
-    walk: { src: 'assets/vivid/rabbit_walk.png', count: 4, fps: 8 },
-    stand: { src: 'assets/vivid/rabbit_stand.png', count: 3, fps: 7 },
-    sit: { src: 'assets/vivid/rabbit_sit.png', count: 3, fps: 7 },
-    refuse: { src: 'assets/vivid/rabbit_refuse.png', count: 3, fps: 6 },
-    greet: { src: 'assets/vivid/rabbit_greet.png', count: 4, fps: 7 },
-    mad: { src: 'assets/vivid/rabbit_mad.png', count: 3, fps: 6 },
-    awkward: { src: 'assets/vivid/rabbit_awkward.png', count: 2, fps: 4 },
-    happy: { src: 'assets/vivid/rabbit_happy.png', count: 2, fps: 5 },
-    held: { src: 'assets/vivid/rabbit_held.png', count: 2, fps: 4 },
-    clash: { src: 'assets/vivid/rabbit_clash.png', count: 3, fps: 8 },
-  },
-  crane: {
-    idle: { src: 'assets/vivid/crane_idle.png', count: 6, fps: 5 },
-    walk: { src: 'assets/vivid/crane_walk.png', count: 4, fps: 8 },
-    stand: { src: 'assets/vivid/crane_stand.png', count: 3, fps: 7 },
-    sit: { src: 'assets/vivid/crane_sit.png', count: 3, fps: 7 },
-    refuse: { src: 'assets/vivid/crane_refuse.png', count: 3, fps: 6 },
-    greet: { src: 'assets/vivid/crane_greet.png', count: 4, fps: 7 },
-    mad: { src: 'assets/vivid/crane_mad.png', count: 3, fps: 6 },
-    awkward: { src: 'assets/vivid/crane_awkward.png', count: 2, fps: 4 },
-    happy: { src: 'assets/vivid/crane_happy.png', count: 2, fps: 5 },
-    held: { src: 'assets/vivid/crane_held.png', count: 2, fps: 4 },
-    clash: { src: 'assets/vivid/crane_clash.png', count: 3, fps: 8 },
-  },
+const FW = 96, FH = 112; /* display box; sheets 192×224 scale via background-size */
+/** Prefer assets/vivid/sheets/ (hi-res); root vivid/* same API fallback. Art tip 598c18d. */
+const CORE_ACTS = ['idle', 'walk', 'stand', 'rise', 'sit', 'refuse'];
+const LEFTOVER_ACTS = ['greet', 'mad', 'awkward', 'happy', 'held', 'clash'];
+const FALLBACK_META = {
+  idle: { count: 6, fps: 6 }, walk: { count: 4, fps: 8 },
+  stand: { count: 3, fps: 8 }, rise: { count: 3, fps: 8 },
+  sit: { count: 3, fps: 8 }, refuse: { count: 3, fps: 6 },
+  greet: { count: 4, fps: 7 }, mad: { count: 3, fps: 6 },
+  awkward: { count: 2, fps: 4 }, happy: { count: 2, fps: 5 },
+  held: { count: 2, fps: 4 }, clash: { count: 3, fps: 8 },
 };
+/* Known sheet presence (crane has no sheets/stand — use root). */
+const SHEET_HAS = {
+  fox: { idle:1, walk:1, stand:1, rise:1, sit:1, refuse:1 },
+  rabbit: { idle:1, walk:1, stand:1, rise:1, sit:1, refuse:1 },
+  crane: { idle:1, walk:1, rise:1, sit:1, refuse:1 },
+};
+function packFor(who, name) {
+  const fb = FALLBACK_META[name] || FALLBACK_META.idle;
+  const useSheet = !!(SHEET_HAS[who] && SHEET_HAS[who][name]);
+  const base = useSheet
+    ? `assets/vivid/sheets/${who}_${name}`
+    : `assets/vivid/${who}_${name}`;
+  return {
+    src: base + '.png',
+    metaUrl: base + '.json',
+    count: fb.count,
+    fps: fb.fps,
+    frameW: useSheet ? 192 : 96,
+    frameH: useSheet ? 224 : 112,
+    fromSheets: useSheet,
+  };
+}
+const SHEET = {};
+['fox', 'rabbit', 'crane'].forEach(who => {
+  SHEET[who] = {};
+  CORE_ACTS.concat(LEFTOVER_ACTS).forEach(name => {
+    SHEET[who][name] = packFor(who, name);
+  });
+});
 const ASSET_CHAIR = {
   stool: 'assets/chairs/chair_stool.png',
   round: 'assets/chairs/chair_round.png',
@@ -486,27 +485,40 @@ function placeActor(el, angleDeg, extra) {
   }
 }
 
-/** Frame-cut sprite player */
+/** Frame-cut sprite player — background-position crop only (no CSS bob). */
 function applyFrame(who, st) {
   const el = actorEls[who];
   if (!el || !st) return;
   const sp = el.querySelector('.sprite');
   const idx = ((st.frame % st.count) + st.count) % st.count;
+  const scale = FH / (st.frameH || FH);
+  const dispFw = (st.frameW || FW) * scale;
   sp.style.backgroundImage = `url("${st.src}")`;
-  sp.style.backgroundPosition = `${-idx * FW}px 0`;
+  sp.style.backgroundRepeat = 'no-repeat';
+  sp.style.backgroundSize = `auto ${FH}px`;
+  sp.style.backgroundPosition = `${-idx * dispFw}px 0`;
   sp.dataset.anim = st.name;
   sp.dataset.frame = String(idx);
+  sp.dataset.src = st.fromSheets ? 'sheets' : 'root';
+}
+function resolveAnimName(who, name) {
+  if (SHEET[who][name]) return name;
+  if (name === 'stand' && SHEET[who].rise) return 'rise';
+  if (name === 'rise' && SHEET[who].stand) return 'stand';
+  return 'idle';
 }
 function playAnim(who, name, opts) {
   opts = opts || {};
-  const pack = SHEET[who][name] || SHEET[who].idle;
-  const prev = animState[who];
-  if (prev && prev.onDone && prev !== animState[who]) { /* no-op */ }
+  const key = resolveAnimName(who, name);
+  const pack = SHEET[who][key] || SHEET[who].idle;
   animState[who] = {
-    name,
+    name: key,
     src: pack.src,
     count: pack.count,
     fps: opts.fps || pack.fps,
+    frameW: pack.frameW,
+    frameH: pack.frameH,
+    fromSheets: !!pack.fromSheets,
     frame: 0,
     acc: 0,
     loop: opts.loop !== false,
@@ -1059,13 +1071,28 @@ stage.addEventListener('pointermove', onPointerMove);
 stage.addEventListener('pointerup', onPointerUp);
 stage.addEventListener('pointercancel', onPointerUp);
 
-/* preload sheets */
-Object.values(SHEET).forEach(ch => {
-  Object.values(ch).forEach(s => { const i = new Image(); i.src = s.src; });
+/* preload sheets + hydrate json meta (frameW/H/count/fpsHint) */
+async function hydrateSheets() {
+  const jobs = [];
+  Object.values(SHEET).forEach(ch => {
+    Object.values(ch).forEach(s => {
+      const img = new Image();
+      img.src = s.src;
+      jobs.push(fetch(s.metaUrl).then(r => r.ok ? r.json() : null).then(j => {
+        if (!j) return;
+        if (j.frameW) s.frameW = j.frameW;
+        if (j.frameH) s.frameH = j.frameH;
+        if (j.count) s.count = j.count;
+        if (j.fpsHint) s.fps = j.fpsHint;
+      }).catch(() => {}));
+    });
+  });
+  await Promise.all(jobs);
+}
+hydrateSheets().then(() => {
+  reset();
+  raf = requestAnimationFrame(loop);
 });
-
-reset();
-raf = requestAnimationFrame(loop);
 </script>
 </body>
 </html>

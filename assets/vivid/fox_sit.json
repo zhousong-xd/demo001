@@ -1,1 +1,14 @@
-{"frameW":96,"frameH":112,"count":3,"fpsHint":8}
+{
+  "frameW": 96,
+  "frameH": 112,
+  "count": 3,
+  "fpsHint": 8,
+  "order": [
+    "stand",
+    "lowering",
+    "sit"
+  ],
+  "note": "坐下过渡",
+  "layout": "horizontal",
+  "source": "sheets/fox_sit.png"
+}

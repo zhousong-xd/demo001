@@ -1,0 +1,13 @@
+{
+  "frameW": 192,
+  "frameH": 224,
+  "count": 3,
+  "fpsHint": 8,
+  "order": [
+    "sit",
+    "rising",
+    "stand"
+  ],
+  "note": "起身过渡；髋/腿角变化",
+  "layout": "horizontal"
+}
