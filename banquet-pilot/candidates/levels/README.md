@@ -8,7 +8,8 @@
 **T-011:** machine-checkable candidate JSON drafts (`c04.json`–`c06.json`) + enum; briefs TBD→actual counts (multi-solution OK).  
 **T-012:** filled **C07–C09** design briefs from baseline §13 (item target choice / encourage undo / multiple legal solutions — **intent only**).  
 **T-013:** machine-checkable candidate JSON drafts (`c07.json`–`c09.json`) + enum; briefs TBD→actual counts (multi-solution OK).  
-**T-014 (this slice):** filled **C10–C12** design briefs from baseline §13 (pre-entry story rule change / multi-constraint few anchors / capstone exam — **intent only**). Solution counts remain **TBD**.
+**T-014:** filled **C10–C12** design briefs from baseline §13 (pre-entry story rule change / multi-constraint few anchors / capstone exam — **intent only**).  
+**T-015 (this slice):** machine-checkable candidate JSON drafts (`c10.json`–`c12.json`) + enum; briefs TBD→actual counts (multi-solution OK); short `SUMMARY.md` for c01–c12.
 
 **Not in scope:**
 
@@ -17,8 +18,6 @@
 - Touching `dist/` or gameplay `src/`
 - Claiming “12 finished levels” or playable backlog completion
 - Inventing new rule kinds / props / geometry
-- Inventing solution counts for C10–C12
-- Writing `c10.json`–`c12.json` or running enum for them in this slice
 - Art batch expansion / formal asset import (needs style lock)
 
 ## What “12 candidates” means
@@ -27,7 +26,7 @@ Twelve **design slots** (C01–C12).
 C01–C03 are **brief+enum shipped references** to L01–L03 (frozen product); JSON drafts live here only.  
 C04–C06 are **brief+enum** (baseline §13 #04–#06); JSON drafts + exact counts live here only — not formal levels.  
 C07–C09 are **brief+enum** (baseline §13 #07–#09); JSON drafts + exact counts live here only — not formal levels.  
-C10–C12 are **brief** (baseline §13 #10–#12); solution counts **TBD** — not formal levels.
+C10–C12 are **brief+enum** (baseline §13 #10–#12); JSON drafts + exact counts live here only — not formal levels.
 
 ## Layout
 
@@ -36,9 +35,10 @@ banquet-pilot/candidates/levels/
   README.md                  ← this file (scope / stop lines)
   CATALOG.md                 ← index of C01–C12
   c01.md … c12.md            ← per-slot design intent / briefs
-  c01.json … c09.json        ← machine-checkable candidate drafts (not formal levels/)
+  c01.json … c12.json        ← machine-checkable candidate drafts (not formal levels/)
   enumerate_candidates.py    ← enum against candidates/ only (adapted; no product edit)
   enumerate_candidates.mjs   ← JS twin
+  SUMMARY.md                 ← short c01–c12 brief+enum status table
 ```
 
 ## Rule vocabulary (existing kernel only)
@@ -53,6 +53,6 @@ No new rule kinds in this folder.
 ## Stop lines
 
 - Design docs ≠ playable levels.
-- C01–C09 solution counts filled by T-009 / T-011 / T-013 enum; C10–C12 remain **TBD**.
+- C01–C12 solution counts filled by T-009 / T-011 / T-013 / T-015 enum.
 - Do not copy these files into `levels/` without a separate, accepted engineering task.
 - Do not expand art or import assets from this task.

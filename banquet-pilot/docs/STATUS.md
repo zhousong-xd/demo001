@@ -16,11 +16,11 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: see latest `bot/banquet-pilot` commit after T-014 push — product SHA above stays frozen.
+Docs tip: see latest `bot/banquet-pilot` commit after T-015 push — product SHA above stays frozen.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
-## Closed tasks (#5–#19)
+## Closed tasks (#5–#20)
 
 | Issue | Task | Result |
 | --- | --- | --- |
@@ -37,11 +37,12 @@ Docs tip: see latest `bot/banquet-pilot` commit after T-014 push — product SHA
 | #16 | T-011 候选 JSON 草稿 + enum 解数（c04–c06） | done / closed · `c04.json`–`c06.json` + enum; counts filled; multi-OK; **not** formal `levels/` |
 | #17 | T-012 候选设计 brief（c07–c09） | done / closed · baseline §13 #07–#09; counts were TBD then filled by T-013 |
 | #18 | T-013 候选 JSON 草稿 + enum 解数（c07–c09） | done / closed · `c07.json`–`c09.json` + enum; counts filled; multi-OK; **not** formal `levels/` |
-| #19 | T-014 候选设计 brief（c10–c12） | done / closed · baseline §13 #10–#12; solution **TBD**; **not** formal `levels/` |
+| #19 | T-014 候选设计 brief（c10–c12） | done / closed · baseline §13 #10–#12; counts were TBD then filled by T-015 |
+| #20 | T-015 候选 JSON 草稿 + enum 解数（c10–c12）+ SUMMARY | done / closed · `c10.json`–`c12.json` + enum + `SUMMARY.md`; counts filled; multi-OK; **not** formal `levels/` |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
-Level candidates: `banquet-pilot/candidates/levels/` — C01–C09 **brief+enum**; C10–C12 **brief** (counts TBD). **Not** formal `levels/`.
+Level candidates: `banquet-pilot/candidates/levels/` — C01–C12 **brief+enum** (+ `SUMMARY.md`). **Not** formal `levels/`.
 
 ### T-009 enum results (candidates only)
 
@@ -88,9 +89,21 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c09.
 
 | Candidate | Baseline title | Design intent | Solution count |
 | --- | --- | --- | --- |
-| C10 | 一个小误会 | **pre-entry** story rule change (no mid-solve rewrite) | **TBD** |
-| C11 | 合作开席 | **multi-constraint / few anchors** (one-screen) | **TBD** |
-| C12 | 掌席考核 | **capstone** — all six kinds + calm_bell | **TBD** |
+| C10 | 一个小误会 | **pre-entry** story rule change (no mid-solve rewrite) | filled by T-015 |
+| C11 | 合作开席 | **multi-constraint / few anchors** (one-screen) | filled by T-015 |
+| C12 | 掌席考核 | **capstone** — all six kinds + calm_bell | filled by T-015 |
+
+### T-015 enum results (candidates only)
+
+| Candidate | Perms | Solutions |
+| --- | --- | --- |
+| C10 | 720 | **8** (multi-OK) |
+| C11 | 720 | **2** (multi-OK) |
+| C12 no calm | 720 | **0** |
+| C12 calm rabbit | 720 | **4** |
+| C12 calm other | 720 each | **0** |
+
+Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c12. Short table: `candidates/levels/SUMMARY.md`. Product SHA / HTML hash unchanged.
 
 ## Open risks
 
@@ -98,7 +111,7 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c09.
 2. **Style not final** — T-006 候选已 ACCEPT 为样板，**人类风格点头未做**；不得批量扩 art，不得擅自导入正式 assets。
 3. **PR #11 still draft / unmerged** — 工程与证据均在 `bot/banquet-pilot`；不自动 merge、不写 main、不强推、不公开部署。
 4. **C07–C09 enum filled** — JSON drafts + counts (T-013); still no formal `levels/` promotion without eng+QA.
-5. **C10–C12 solution counts TBD** — briefs filled (T-014); no invent counts; no formal `levels/` promotion without eng+QA.
+5. **C10–C12 enum filled** — JSON drafts + counts (T-015) + `SUMMARY.md`; still no formal `levels/` promotion without eng+QA.
 
 ## Next optional work
 
@@ -113,8 +126,8 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c09.
 | Done (candidates) | **#16 / T-011** C04–C06 JSON + enum | Counts: C04=8, C05=2, C06=4; still not formal `levels/` |
 | Done (docs) | **#17 / T-012** C07–C09 briefs | Baseline §13 #07–#09; counts filled by T-013 |
 | Done (candidates) | **#18 / T-013** C07–C09 JSON + enum | Counts: C07=0/4/4, C08=4, C09=8; still not formal `levels/` |
-| Done (docs) | **#19 / T-014** C10–C12 briefs | Baseline §13 #10–#12; solution TBD; still not formal `levels/` |
-| Optional next | C10–C12 JSON + enum | Separate task; still no formal `levels/` write without eng+QA |
+| Done (docs) | **#19 / T-014** C10–C12 briefs | Baseline §13 #10–#12; counts filled by T-015 |
+| Done (candidates) | **#20 / T-015** C10–C12 JSON + enum + SUMMARY | Counts: C10=8, C11=2, C12=0/4; `SUMMARY.md` c01–c12; still not formal `levels/` |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines
@@ -123,4 +136,4 @@ Runner: `candidates/levels/enumerate_candidates.py` (+ `.mjs`) covers c01–c09.
 - No art batch expansion beyond current T-006 candidates.
 - No token / PAT in remotes, comments, or committed files.
 - No formal `levels/` edits from candidate briefs/JSON alone.
-- No invented solution counts for C10–C12.
+- No inventing counts beyond enum; C01–C12 candidates filled — still not formal levels.
