@@ -1,0 +1,1 @@
+node --experimental-websocket tests/evidence/scripts/t037-playtest-ui-critical-regression.mjs

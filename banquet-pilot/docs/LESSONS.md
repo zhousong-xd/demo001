@@ -17,5 +17,6 @@
 | 11 | 有效 | playtest UI 冒烟 | 与 kernel `smoke.mjs` 分开；CDP mouse-sim；headless `<select>` 用 mouse focus + `change`。真机仍未测（T-031）。 |
 | 12 | 有效 | UI 交换/顶替 | 交换：点已入座角色再点对方座位；顶替：候客点已占座（T-033 mouse-sim）。 |
 | 13 | 有效 | UI 安心铃 | 点铃按钮再点目标；误投不扣库存（T-035）。 |
+| 14 | 有效 | UI 一键回归 | 关键 mouse-sim 路径收成单命令（T-037），避免多脚本漏跑。 |
 
 锚点：冻结产品 SHA `f28893f3c419d794c6ba102bac67038683cb462c`。规则全文见 `LOOP.md`。

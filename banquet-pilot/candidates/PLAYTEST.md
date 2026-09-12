@@ -43,7 +43,7 @@ python3 -m http.server 8761
 页内下拉框也可切换 C01–C12。操作：点选待入座客人 → 再点座位（点选入座；无产品拖拽手势）。
 
 无浏览器内核检查：`node candidates/playtest/smoke.mjs`（在 `banquet-pilot/` 下）。
-浏览器 mouse-sim（放置/撤销/切关，真机仍未测）：`node --experimental-websocket tests/evidence/scripts/t031-playtest-ui-smoke.mjs` → 证据 `evidence/t031-playtest-ui-smoke/`。
+浏览器 mouse-sim 关键路径一键回归（放/撤/切/换/顶/铃，真机仍未测）：`node --experimental-websocket tests/evidence/scripts/t037-playtest-ui-critical-regression.mjs` → `evidence/t037-playtest-ui-critical-regression/`。
 
 更细的工程说明见 `candidates/playtest/README.md`。
 
