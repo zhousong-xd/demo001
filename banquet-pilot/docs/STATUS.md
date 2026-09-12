@@ -16,7 +16,7 @@ Polling / Cindy 十分钟巡检：**paused**（人类交接后不自动恢复）
 | Branch (work) | `bot/banquet-pilot` |
 | Draft PR | [#11](https://github.com/zhousong-xd/demo001/pull/11) — **open/draft, do not merge** |
 
-Docs tip: after T-037 — product SHA frozen; UI critical one-command `evidence/t037-playtest-ui-critical-regression/`; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
+Docs tip: after T-039 — product SHA frozen; frozen-product UI short smoke `evidence/t039-frozen-product-ui-smoke/`; [`LESSONS.md`](./LESSONS.md) · [`CURRENT_PLAN.md`](./CURRENT_PLAN.md); PR #11 still draft.
 
 **Hard rule:** do not modify `banquet-pilot/dist/` or change accepted gameplay in `src/` unless a real P0/P1 is discovered and documented. Product SHA and report/evidence SHAs must stay distinct.
 
@@ -55,7 +55,8 @@ Docs tip: after T-037 — product SHA frozen; UI critical one-command `evidence/
 | #37 | T-031 playtest 浏览器 mouse-sim 冒烟 | done / ACCEPT · 放置/撤销/切关；evidence/t031；真机未测；不改 dist |
 | #39 | T-033 playtest UI mouse-sim 扩到交换+顶替 | done / ACCEPT · c02 swap + c01 displace；evidence/t033；真机未测；不改 dist |
 | #41 | T-035 playtest UI mouse-sim 安心铃（c03） | done / ACCEPT · 误投不扣 / 对兔有效；evidence/t035；真机未测；不改 dist |
-| #43 | T-037 playtest UI 关键路径一键回归 | done / awaiting ACCEPT · 放/撤/切/换/顶/铃；evidence/t037；真机未测；不改 dist |
+| #43 | T-037 playtest UI 关键路径一键回归 | done / ACCEPT · 放/撤/切/换/顶/铃；evidence/t037；真机未测；不改 dist |
+| #45 | T-039 冻结产品 L01–L03 浏览器 UI 短冒烟 | done / awaiting ACCEPT · 放/撤/切关/铃；evidence/t039；dist 只读；真机未测 |
 
 Art candidates live under `banquet-pilot/candidates/art/` (+ `meishu/` alternate). Preview: `candidates/art/preview.html`. **Not** imported into formal assets / dist / src.
 
@@ -266,6 +267,15 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Covers | place/undo/switch + swap + displace + calm_bell（单命令） |
 | Claim | **candidates UI mouse-sim**；真机/多指未测；不改 dist |
 
+### T-039 frozen product UI short smoke
+
+| Item | Value |
+| --- | --- |
+| Script | `tests/evidence/scripts/t039-frozen-product-ui-smoke.mjs` |
+| Evidence | `evidence/t039-frozen-product-ui-smoke/` |
+| Covers | L01 place+undo；L01→L02 tab 切关；L03 calm miss/hit |
+| Claim | **frozen dist read-only**；真机/多指未测；不改 dist |
+
 ## Open risks
 
 1. **真机未测** — mouse-sim / headless Chrome ≠ 真机触屏、多指、实体设备矩阵；门禁允许残留，不得伪称已测。
@@ -305,7 +315,8 @@ How to run: `cd banquet-pilot && python3 -m http.server 8761` then open `/candid
 | Done (candidates) | **#37 / T-031** playtest UI mouse-sim | evidence/t031; ACCEPT |
 | Done (candidates) | **#39 / T-033** UI swap+displace mouse-sim | evidence/t033; ACCEPT |
 | Done (candidates) | **#41 / T-035** UI calm_bell mouse-sim | evidence/t035; ACCEPT |
-| Done (candidates) | **#43 / T-037** UI critical one-command | evidence/t037; await ACCEPT |
+| Done (candidates) | **#43 / T-037** UI critical one-command | evidence/t037; ACCEPT |
+| Done (product) | **#45 / T-039** frozen product UI short smoke | evidence/t039; await ACCEPT |
 | Not started | Formal 12-level backlog implementation | No claim of 12 finished playable levels |
 
 ## Stop lines

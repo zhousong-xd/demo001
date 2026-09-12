@@ -1,0 +1,35 @@
+{
+  "task": "T-039",
+  "kind": "frozen-product-ui-short-smoke",
+  "productSha": "f28893f3c419d794c6ba102bac67038683cb462c",
+  "mouseSim": true,
+  "deviceUntested": true,
+  "open": "python3 -m http.server from banquet-pilot/; URL /dist/banquet-pilot.html?level=L01 (file:// also OK)",
+  "results": [
+    {
+      "step": "L01_place",
+      "pass": true
+    },
+    {
+      "step": "L01_undo",
+      "pass": true
+    },
+    {
+      "step": "switch_L02_place",
+      "pass": true
+    },
+    {
+      "step": "L03_calm_miss",
+      "pass": true
+    },
+    {
+      "step": "L03_calm_hit",
+      "pass": true
+    }
+  ],
+  "dist": {
+    "bytes": 73182,
+    "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "hasCR": false
+  }
+}

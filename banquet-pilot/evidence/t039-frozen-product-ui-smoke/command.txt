@@ -1,0 +1,1 @@
+cd banquet-pilot && node --experimental-websocket tests/evidence/scripts/t039-frozen-product-ui-smoke.mjs

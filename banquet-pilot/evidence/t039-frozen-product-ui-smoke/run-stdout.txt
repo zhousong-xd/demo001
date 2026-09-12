@@ -1,0 +1,18 @@
+[PASS] L01 mouse place fox→A1
+[PASS] L01 undo
+[PASS] switch L01→L02 + place
+[PASS] L03 calm miss fox
+[PASS] L03 calm hit rabbit
+[未测] 真机 / 多指
+open: http.server banquet-pilot/ → http://127.0.0.1:35577/dist/banquet-pilot.html (standalone HTML; file:// also valid offline)
+{
+  "ok": true,
+  "evid": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t039-frozen-product-ui-smoke",
+  "steps": [
+    "L01_place",
+    "L01_undo",
+    "switch_L02_place",
+    "L03_calm_miss",
+    "L03_calm_hit"
+  ]
+}
