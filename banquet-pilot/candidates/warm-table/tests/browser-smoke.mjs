@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 
 const root = new URL("../", import.meta.url);
 const evidence = fileURLToPath(new URL("evidence/", root));
@@ -152,6 +153,8 @@ try {
   assert.equal(errors.length, 0, JSON.stringify(errors)); assert.equal(requests.filter(url => /^https?:/.test(url)).length, 0);
   record("zero runtime exceptions and zero HTTP asset requests");
   const summary = { ok: true, testedAt: new Date().toISOString(), checks, runtimeErrors: errors, httpRequests: 0, realDevice: "NOT TESTED", audioListening: "NOT TESTED", input: "CDP mouse, touch (including second pointer), keyboard; rapid stress uses DOM clicks; blur is synthetic", viewports: [[390, 844], [360, 640], [1280, 900]] };
+  const artifact = readFileSync(new URL("index.html", root));
+  summary.artifact = { path: "banquet-pilot/candidates/warm-table/index.html", bytes: artifact.length, sha256: createHash("sha256").update(artifact).digest("hex") };
   writeFileSync(join(evidence, "summary.json"), JSON.stringify(summary, null, 2) + "\n");
 } catch (error) {
   writeFileSync(join(evidence, "summary.json"), JSON.stringify({ ok: false, checks, error: String(error), runtimeErrors: errors }, null, 2));

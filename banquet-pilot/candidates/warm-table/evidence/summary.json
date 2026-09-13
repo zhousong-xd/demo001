@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "testedAt": "2026-09-13T02:41:48.499Z",
+  "testedAt": "2026-09-13T02:46:40.995Z",
   "checks": [
     "390x844 no horizontal overflow; actual mouse select/seat/win/undo/invalid bell/valid bell/undo",
     "360x640 no horizontal overflow; actual mouse select/seat/win/undo/invalid bell/valid bell/undo",
@@ -35,5 +35,10 @@
       1280,
       900
     ]
-  ]
+  ],
+  "artifact": {
+    "path": "banquet-pilot/candidates/warm-table/index.html",
+    "bytes": 77090,
+    "sha256": "07fc64eb6dab499d8dfc209d325c01c94efee7626933b42f215fe065b41b08e0"
+  }
 }
