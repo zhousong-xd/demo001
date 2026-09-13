@@ -1,0 +1,1319 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4eddf">
+<title>这桌，刚刚好 · 狐兔饭局</title>
+<style>:root{color-scheme:light;--paper:#f4eddf;--ink:#514638;--muted:#92816b;--green:#657f6a;--red:#b36549;--line:#dfd2bc;--x:0%;--y:0%;font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 15% 0%,#e3e5d4 0,transparent 48%),radial-gradient(ellipse at 95% 90%,#e9d8ba 0,transparent 48%),var(--paper);min-height:100dvh}button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:3px solid #708e79;outline-offset:4px}button:disabled{opacity:.36;cursor:default}button,svg{user-select:none}svg{display:block}button{touch-action:manipulation}.icon-library{position:absolute;width:0;height:0;overflow:hidden}.icon{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.shell{max-width:480px;margin:0 auto;padding:22px 22px 24px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;gap:7px;align-items:center;font-size:12px;letter-spacing:2px;color:#6d7862}.brand .icon{width:20px;height:20px;fill:#c7d1b4;stroke:#71806b}.settings{display:flex;gap:6px}.icon-button{position:relative;width:34px;height:34px;border:1px solid #dcd3c0;border-radius:50%;display:grid;place-items:center;background:#f7f2e6}.icon-button .icon{width:17px;height:17px}.icon-button[aria-pressed="true"]{background:#dbe4d3;color:#4e7058;border-color:#b2c2a3}.mute-slash{position:absolute;width:21px;height:1px;background:currentColor;transform:rotate(-45deg)}#sound[aria-pressed="true"] .mute-slash{display:none}.heading{padding:26px 0 19px}.eyebrow{font-size:10px;letter-spacing:2px;color:#9b8466;display:flex;align-items:center;gap:7px}.eyebrow>span{width:5px;height:5px;background:#c1885c;border-radius:50%}h1{font-family:"Songti SC","STSong","SimSun",serif;font-weight:700;font-size:38px;letter-spacing:1px;margin:9px 0}h1 em{font-style:normal;color:#71856d}.heading p{font-size:12px;color:var(--muted);margin:0;letter-spacing:1px}.game{position:relative;border:1px solid #e1d6c2;border-radius:24px;background:#fbf7ed;box-shadow:0 15px 40px #755d3720,0 1px 0 #fff9 inset;overflow:hidden}.table-caption{display:flex;justify-content:space-between;padding:16px 18px 0;font-size:10px;color:#9b8c73;letter-spacing:1px}.table-caption span:first-child:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#94a586;margin-right:6px}.stage{position:relative;width:100%;aspect-ratio:420/440;isolation:isolate;touch-action:pan-y;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#faf4e1,transparent 70%)}.room,.relation-layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.room{z-index:0}.seat{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);width:24%;height:17%;border:0;border-radius:35%;background:transparent;z-index:2;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:0;transition:background .12s,box-shadow .12s}.seat-dot{font-size:19px;font-weight:400;color:#a68c6c;background:#f7e9d099;border:1px dashed #bca581;border-radius:50%;width:32px;height:26px;display:grid;place-items:center;line-height:1}.seat-label{position:absolute;bottom:-1px;font-size:8px;color:#977f61;letter-spacing:1px}.seat[data-occupied="true"] .seat-dot{opacity:0}.seat[data-preview]{background:#c1d6c342;box-shadow:inset 0 0 0 2px #849e89}.seat[data-preview="CONFLICT"]{background:#e5bc983b;box-shadow:inset 0 0 0 2px #b58b60}.seat[data-preview="PENDING"]{background:#e3d7b540;box-shadow:inset 0 0 0 2px #bbab86}.seat[data-preview] .seat-dot{background:#eff4df;color:#5f785f;opacity:1}.seat[data-preview="CONFLICT"] .seat-dot{background:#f5e5cb;color:#9b704f}.seat[data-origin]{background:#fff5;border:1px dashed #b9aa8a}.stage[data-selected="true"] .seat-label{color:#685b49}.waiting{position:absolute;left:20%;top:88%;width:60%;height:10%;background:none;border:0;border-radius:10px;z-index:2;color:#ab9c83;font-size:9px;letter-spacing:2px;display:flex;align-items:center;flex-direction:column;justify-content:center;gap:4px}.waiting-note{font-size:8px;letter-spacing:0;opacity:0}.stage[data-selected="true"] .waiting{border:1px dashed #b9aa8a;background:#e9e4d83b}.stage[data-selected="true"] .waiting-note{opacity:1}.waiting.target{background:#dce8d2!important;border:1px solid #839b7c!important}.guest{position:absolute;left:var(--x);top:var(--y);width:28%;aspect-ratio:140/160;transform:translate(-50%,-100%);background:none;border:0;padding:0;z-index:4;touch-action:none;overflow:visible;border-radius:40%}.guest>svg{width:100%;height:100%;overflow:visible;pointer-events:none;filter:drop-shadow(0 2px 1px #68472312)}.guest-name{position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:600;color:#685742;white-space:nowrap;letter-spacing:2px;pointer-events:none}.guest.selected>svg{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #749c73)}.guest.selected .guest-name{color:#54714e}.guest.selected .ground-shadow{opacity:.05}.guest.drag-source{opacity:.22}.guest.waiting-guest{width:20%;z-index:5}.guest.waiting-guest .guest-name{bottom:-2px}.guest.waiting-guest~.fx{}.guest .breath{transform-origin:70px 143px;animation:breathe 4.8s ease-in-out infinite}.rabbit .breath{animation-delay:-2.1s}.guest .head{transform-origin:70px 99px;transition:transform .23s ease-out}.guest .tail{transform-origin:96px 132px;animation:tail 6.2s ease-in-out infinite}.rabbit .tail{animation:none}.guest .ear{transform-box:fill-box;transform-origin:50% 95%;transition:transform .25s ease}.rabbit[data-mood="uneasy"] .ear-left{transform:rotate(-10deg)}.rabbit[data-mood="uneasy"] .ear-right{transform:rotate(12deg)}.rabbit[data-mood="calm"] .ear-left{transform:rotate(-16deg)}.rabbit[data-mood="calm"] .ear-right{transform:rotate(16deg)}.guest .eyes-open{transform-origin:70px 70px;animation:blink 6.5s infinite}.rabbit .eyes-open{animation-delay:-3s}.guest .eyes-happy{display:none}.guest[data-mood="calm"] .eyes-happy,.guest[data-mood="happy"] .eyes-happy{display:block}.guest[data-mood="calm"] .eyes-open,.guest[data-mood="happy"] .eyes-open{display:none}.guest .brows{transition:transform .15s;transform-origin:70px 58px}.guest[data-mood="uneasy"] .brows{transform:translateY(-3px) rotate(-4deg)}.fox[data-mood="uneasy"] .head{transform:rotate(5deg)}.guest[data-mood="expectant"] .head{transform:rotate(-4deg) translateY(-2px)}.guest[data-mood="happy"] .head{transform:rotate(-3deg)}.guest .paw{transform-box:fill-box;transform-origin:50% 0%;transition:transform .2s}.guest[data-mood="uneasy"] .paw-left{transform:rotate(-14deg)}.guest[data-mood="uneasy"] .paw-right{transform:rotate(14deg)}.calm-mark{display:none;position:absolute;right:-4px;top:39%;width:21px;height:21px;border-radius:50%;background:#e0e8ce;color:#6d875f;box-shadow:0 0 0 3px #f8f4dfb3;font-size:18px;line-height:21px;pointer-events:none}.guest.calm .calm-mark{display:block}.guest.hop .breath{animation:land .3s ease-out}.guest.react .head{animation:react .52s ease-in-out}.rabbit.react .ear-left{animation:ear-flick .6s ease-out}.steam{animation:steam 4s ease-in-out infinite}.relation-layer{z-index:3;opacity:.75}.relation-layer #relation-path{fill:none;stroke:#bd825e;stroke-width:1.6;stroke-dasharray:3 5}.relation-layer #relation-sign circle{fill:#fbefd9;stroke:#c39471;stroke-width:1}.relation-layer #relation-sign path{stroke:#aa6d4e;stroke-width:1.4;stroke-linecap:round;fill:none}#preview-path{fill:none;stroke:#708970;stroke-width:2;stroke-dasharray:3 5}.drag-ghost{position:fixed;left:0;top:0;z-index:30;pointer-events:none;opacity:1!important;margin:0;transform:translate(-50%,-88%) rotate(-4deg);filter:drop-shadow(0 12px 7px #58412530)}.drag-ghost .guest-name{display:none}.drag-ghost .breath,.drag-ghost .tail{animation:none}.speech{position:absolute;z-index:8;left:50%;top:6px;transform:translateX(-50%);max-width:83%;padding:7px 12px;border-radius:12px;background:#fffff1f2;box-shadow:0 2px 10px #7e654b15;border:1px solid #e9dcc4;font-size:10px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}.speech.visible{opacity:1}.status-strip{margin:1px 14px 0;min-height:39px;display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:11px;background:#f1e6d4;color:#956a4c;font-size:11px;line-height:1.5}.status-strip[data-state="SATISFIED"]{background:#e8eedf;color:#657b5d}.status-strip[data-state="PENDING"]{background:#eee9dc;color:#8b806a}#status-icon{display:grid;place-items:center;flex:none;border:1px solid currentColor;width:16px;height:16px;border-radius:50%;font-size:10px}.rules{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;font-size:9px;color:#9b8c76;margin:11px 10px 2px}.rule-symbol{display:inline-block;margin-right:3px;color:#b88c68}.rules [data-state="SATISFIED"] .rule-symbol{color:#72896b}.actions{padding:13px 14px 16px;display:flex;gap:13px;align-items:center}.tool{border:0;background:none;min-width:42px;min-height:48px;display:grid;place-items:center;gap:4px;color:#93826a;font-size:10px}.tool .icon{width:19px;height:19px}.bell-button{flex:1;background:#748b73;color:#fff8e7;border:1px solid #687e66;border-radius:15px;min-height:55px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 3px 0 #50674f;transition:background .15s,transform .1s;text-align:left}.bell-button:active{transform:translateY(2px);box-shadow:0 1px 0 #50674f}.bell-button[aria-pressed="true"]{background:#ae8651;border-color:#916c3f;box-shadow:0 3px 0 #81603b}.bell-button strong{display:block;font-size:13px;letter-spacing:1px}.bell-button small{display:block;font-size:9px;margin-top:3px;opacity:.78}.bell-button b{font-size:10px;display:inline-grid;place-items:center;background:#faf5dd30;border-radius:50%;min-width:17px;height:17px;font-weight:400;margin-left:3px}.bell-drawing .icon{width:27px;height:27px;fill:#ecda9c;stroke:#f7e8b5}.bell-button[data-empty="true"]{background:#aca38a;border-color:#9a907a;box-shadow:0 3px 0 #8e856e}.feast{margin:0 14px 14px;display:flex;align-items:center;gap:9px;background:#ede8c9;border:1px solid #dfd6a8;padding:12px;border-radius:12px}.feast[hidden]{display:none}.feast>span{font-size:28px;color:#ad9548}.feast strong{display:block;font-size:12px;color:#82713e}.feast small{display:block;font-size:9px;color:#9e906c;margin-top:4px}.feast button{margin-left:auto;border:0;background:none;font-size:22px;color:#a2936c;min-width:28px;min-height:32px}footer{font-size:10px;color:#a4957d;text-align:center;padding:16px 0 0;display:flex;flex-direction:column;gap:8px}.sample-tag{font-size:8px;letter-spacing:2px;color:#b1a48e}.fx{position:absolute;inset:0;pointer-events:none;z-index:9}.ripple{position:absolute;left:var(--x);top:var(--y);width:42px;height:42px;border:2px solid #d8b970;border-radius:50%;transform:translate(-50%,-100%);animation:ring-out .65s ease-out forwards}.ripple.second{animation-delay:.12s}.spark{position:absolute;left:var(--x);top:var(--y);font-size:28px;color:#c0a25b;animation:spark-out .8s ease-out forwards}dialog{border:1px solid #e1d4ba;border-radius:22px;max-width:380px;width:calc(100% - 36px);background:#fcf8ed;color:var(--ink);padding:30px 24px;box-shadow:0 20px 80px #3c34263d}dialog::backdrop{background:#4d44375e;backdrop-filter:blur(3px)}dialog h2{font-family:"SimSun",serif;font-size:24px;line-height:1.5}dialog p{font-size:12px;line-height:1.9;color:#80725f}.close-help{position:absolute;right:10px;top:8px;width:36px;height:36px;background:none;border:0;font-size:24px;color:#9c8b71}.fine-print{font-size:10px!important;color:#9b8a71!important}.primary{background:#768a6e;color:#fff9e8;border:0;border-radius:10px;padding:12px 20px;width:100%;margin-top:8px;font-size:13px}
+@keyframes breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.014)}}@keyframes tail{0%,45%,100%{transform:rotate(0)}60%{transform:rotate(-5deg)}75%{transform:rotate(2deg)}}@keyframes blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.1)}}@keyframes steam{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:.6;transform:translateY(-4px)}}@keyframes land{0%{transform:translateY(-7px) scaleY(1.025)}50%{transform:translateY(1px) scaleY(.965)}100%{transform:none}}@keyframes react{0%,100%{transform:rotate(0)}35%{transform:rotate(-7deg)}70%{transform:rotate(3deg)}}@keyframes ear-flick{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(-19deg)}}@keyframes ring-out{0%{opacity:.85;transform:translate(-50%,-100%) scale(.3)}100%{opacity:0;transform:translate(-50%,-100%) scale(2.4)}}@keyframes spark-out{0%{opacity:0;transform:translate(-50%,0) scale(.4)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-35px) scale(1.1)}}
+body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}body.reduce-motion .fx{display:none}
+@media(max-height:720px) and (max-width:600px){.shell{padding-top:8px!important}.heading{padding:8px 0 10px!important}.heading .eyebrow{font-size:8px}.heading h1{font-size:28px;margin:5px 0}.heading p{font-size:10px}.table-caption{padding-top:8px!important}.actions{padding-top:6px!important;padding-bottom:10px}.rules{margin-top:7px}.status-strip{min-height:33px;padding:6px 9px}footer{padding-top:9px;font-size:9px;gap:5px}.sample-tag{font-size:7px}}
+@media(max-width:390px){.shell{padding:13px 14px 18px}.heading{padding:18px 0 15px}h1{font-size:33px}.topbar{gap:6px}.brand{font-size:10px}.table-caption{padding-top:12px}.rules{gap:8px}.actions{gap:7px;padding-top:9px}.bell-button{min-height:50px}.status-strip{font-size:10px}.game{border-radius:20px}}
+@media(min-width:760px){.shell{padding-top:30px}body:before{content:"一顿饭的工夫，\a 把小心事慢慢放下。";white-space:pre;position:fixed;left:max(24px,calc(50% - 560px));top:42%;font-family:"SimSun",serif;line-height:2.4;color:#aa997b;font-size:18px;writing-mode:vertical-rl;letter-spacing:5px;pointer-events:none}.heading{padding-top:28px}.game{box-shadow:0 20px 70px #80694520}.shell:after{content:"FOX & RABBIT · A LITTLE SEAT OF PEACE";display:block;text-align:center;font-size:8px;letter-spacing:2px;color:#afa087;margin-top:18px}}
+</style>
+</head>
+<body>
+<svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M19 4C9 2 3 9 7 16s14 0 12-12Z"/><path d="m5 21 10-12"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M5 17h14l-2-4V9a5 5 0 0 0-10 0v4l-2 4Z"/><path d="M10 20h4M12 2v2"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="m9 5-5 5 5 5M4 10h9a6 6 0 0 1 0 12" transform="translate(0 -2)"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="m4 9 4 0 5-4v14l-5-4H4ZM17 8q5 4 0 8"/></symbol>
+<symbol id="i-motion" viewBox="0 0 24 24"><path d="M4 8h7M2 12h6M4 16h7M15 5a7 7 0 1 1 0 14"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1"/></symbol>
+</defs></svg>
+<main class="shell">
+<header class="topbar"><span class="brand"><svg class="icon"><use href="#i-leaf"/></svg> 妖怪小食堂</span><div class="settings"><button id="sound" class="icon-button" aria-label="开启声音" aria-pressed="false"><svg class="icon"><use href="#i-sound"/></svg><span class="mute-slash"></span></button><button id="motion" class="icon-button" aria-label="减少动画" aria-pressed="false"><svg class="icon"><use href="#i-motion"/></svg></button><button id="info" class="icon-button" aria-label="玩法与版本说明"><svg class="icon"><use href="#i-info"/></svg></button></div></header>
+<section class="heading"><div class="eyebrow"><span></span> 暖绘本 · 交互小样 01</div><h1>这桌，<em>刚刚好。</em></h1><p>换一个座位，让一顿饭舒服一点。</p></section>
+<section class="game" aria-label="狐兔换座表现小样">
+<div class="table-caption"><span>今日两位客人</span><span id="move-count">尚未换座</span></div>
+<div class="stage" id="stage">
+<svg class="room" viewBox="0 0 420 440" aria-hidden="true">
+<defs>
+<linearGradient id="wood" x2="0" y2="1"><stop stop-color="#dca879"/><stop offset="1" stop-color="#ca8f62"/></linearGradient>
+<linearGradient id="cloth" x2="0" y2="1"><stop stop-color="#f4e8ca"/><stop offset="1" stop-color="#e7d5ad"/></linearGradient>
+<pattern id="cloth-lines" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 1h12M1 0v12" stroke="#bfa679" stroke-width=".6" opacity=".16"/></pattern>
+<g id="chair"><path d="M-31-14v27M31-14v27" stroke="#b68764" stroke-width="7" stroke-linecap="round"/><rect x="-35" y="-55" width="70" height="58" rx="23" fill="#d9bea0" stroke="#c5a17b" stroke-width="2"/><path d="M-24-43q24-10 48 0" fill="none" stroke="#f7e8ce" stroke-width="3"/><ellipse cy="-5" rx="39" ry="13" fill="#bb906b"/><ellipse cy="-9" rx="35" ry="11" fill="#e9d3b4"/></g>
+</defs>
+<path d="M57 94V44q0-16 16-16h65q16 0 16 16v50" fill="#ede5ce" stroke="#d6ccb4" stroke-width="2"/>
+<path d="M68 87V45q0-7 7-7h61q7 0 7 7v42Z" fill="#d2ddd0"/>
+<path d="M106 38v48M68 66h75" stroke="#faf4e3" stroke-width="5"/><path d="M133 44 78 83" stroke="#f7f8e6" stroke-width="10" opacity=".5"/>
+<path d="M327 45v25m-13 0q13-24 26 0" stroke="#9aa184" fill="none" stroke-width="2"/><ellipse cx="327" cy="76" rx="24" ry="18" fill="#d9b888"/><path d="M307 78h40" stroke="#eee1bd" stroke-width="2"/><path d="M321 94h12" stroke="#b28d65" stroke-width="2"/>
+<path d="M37 138q173-8 346 0M34 346q176 8 352 0" fill="none" stroke="#ded3bf" stroke-width="1" stroke-dasharray="2 7"/>
+<g class="chair-art" data-chair="A1" transform="translate(112 141)"><use href="#chair"/></g><g class="chair-art" data-chair="A2" transform="translate(308 141)"><use href="#chair"/></g>
+<ellipse cx="210" cy="255" rx="164" ry="80" fill="#74533c" opacity=".09"/>
+<path d="M82 257v43M338 257v43" stroke="#ad794e" stroke-width="12" stroke-linecap="round"/>
+<rect x="43" y="161" width="334" height="127" rx="58" fill="#b88055"/>
+<rect x="43" y="150" width="334" height="127" rx="58" fill="url(#wood)" stroke="#c78b5d" stroke-width="2"/>
+<rect x="54" y="158" width="312" height="108" rx="50" fill="none" stroke="#edc49a" stroke-width="2"/>
+<path d="M74 184h272M68 238h284" stroke="#9a603e" stroke-width="1" opacity=".13"/>
+<path d="M155 150h110v126H155z" fill="url(#cloth)"/><path d="M155 150h110v126H155z" fill="url(#cloth-lines)"/>
+<path d="M163 155v116M257 155v116" stroke="#bd7760" stroke-width="1" stroke-dasharray="3 4" opacity=".5"/>
+<ellipse cx="207" cy="228" rx="45" ry="20" fill="#ab7e54" opacity=".2"/><ellipse cx="207" cy="223" rx="42" ry="18" fill="#f8f2df" stroke="#d6c6a1" stroke-width="2"/><ellipse cx="207" cy="222" rx="32" ry="12" fill="#e7d8b9"/>
+<g fill="#b7bc77" stroke="#8e9a5d" stroke-width="1"><ellipse cx="191" cy="221" rx="10" ry="6" transform="rotate(-20 191 221)"/><ellipse cx="212" cy="218" rx="11" ry="6" transform="rotate(12 212 218)"/><ellipse cx="222" cy="224" rx="10" ry="5"/></g>
+<g fill="#d7925a"><circle cx="201" cy="224" r="5"/><circle cx="214" cy="226" r="4"/></g><path d="m190 220 10 2m11-6 9 4" stroke="#e5edba" stroke-width="2"/>
+<g transform="translate(113 218)"><ellipse rx="18" ry="10" fill="#eed7b6"/><path d="M-12-6h24l-3 15q-9 6-18 0Z" fill="#f9eacc" stroke="#c8a681"/><ellipse cy="-6" rx="12" ry="5" fill="#a87c4a"/></g>
+<g transform="translate(308 218)"><ellipse rx="18" ry="10" fill="#eed7b6"/><path d="M-12-6h24l-3 15q-9 6-18 0Z" fill="#f9eacc" stroke="#c8a681"/><ellipse cy="-6" rx="12" ry="5" fill="#a87c4a"/></g>
+<g class="steam" stroke="#fff8e8" stroke-width="2" fill="none" stroke-linecap="round"><path d="M107 200q-5-7 1-13t0-12"/><path d="M311 200q5-7-1-13t0-12"/></g>
+<g transform="translate(208 169)"><path d="M-9 0h18l-3 19h-12Z" fill="#879782"/><path d="M0 1v-15m0 6-9-8m9 13 9-9" stroke="#748d64" stroke-width="2"/><ellipse cx="-9" cy="-15" rx="6" ry="3" fill="#9bab77" transform="rotate(30 -9 -15)"/><ellipse cx="9" cy="-10" rx="6" ry="3" fill="#97a672" transform="rotate(-30 9 -10)"/></g>
+<g class="chair-art" data-chair="B1" transform="translate(112 340)"><use href="#chair"/></g><g class="chair-art" data-chair="B2" transform="translate(308 340)"><use href="#chair"/></g>
+<path d="M67 388h286" stroke="#ded4bf" stroke-dasharray="3 5"/><path d="M106 425q104 9 208 0" fill="none" stroke="#decdb3" stroke-width="7" stroke-linecap="round"/>
+</svg>
+<button class="seat" data-seat="A1" style="--x:26.667%;--y:31.82%" aria-label="A1 窗边座"><span class="seat-dot">✦</span><span class="seat-label">A1 · 窗边</span></button>
+<button class="seat" data-seat="A2" style="--x:73.333%;--y:31.82%" aria-label="A2 座位"><span class="seat-dot">＋</span><span class="seat-label">A2</span></button>
+<button class="seat" data-seat="B1" style="--x:26.667%;--y:76.6%" aria-label="B1 座位，与 A1 对面"><span class="seat-dot">＋</span><span class="seat-label">B1</span></button>
+<button class="seat" data-seat="B2" style="--x:73.333%;--y:76.6%" aria-label="B2 座位，与 A2 对面"><span class="seat-dot">＋</span><span class="seat-label">B2</span></button>
+<svg class="relation-layer" viewBox="0 0 420 440" aria-hidden="true"><path id="relation-path" d="M112 147V280"/><g id="relation-sign" transform="translate(112 211)"><circle r="12"/><path d="m-4-4 8 8m0-8-8 8"/></g><path id="preview-path" d=""/></svg>
+<button id="waiting" class="waiting" aria-label="将选中角色请回候客区"><span>候客长凳</span><span class="waiting-note">选中客人后，可请回这里</span></button>
+<button id="fox" class="guest fox" data-character="fox" data-mood="neutral" aria-label="狐，窗边的客人" aria-pressed="false">
+<svg viewBox="0 0 140 160" role="img" aria-label="橘色狐狸，围着砖红小围巾">
+<defs><linearGradient id="fox-fur" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#efa76b"/><stop offset="1" stop-color="#cd733e"/></linearGradient><linearGradient id="fox-cream" x2="0" y2="1"><stop stop-color="#fff0cf"/><stop offset="1" stop-color="#edd3ad"/></linearGradient></defs>
+<ellipse class="ground-shadow" cx="70" cy="148" rx="35" ry="7" fill="#75452e" opacity=".16"/>
+<g class="breath">
+<g class="tail"><path d="M91 130q44 0 37-47c-8 3-10 11-15 15 4-10 3-16 0-20-9 7-8 28-27 33Z" fill="#cd7944" stroke="#b0643c" stroke-width="1.4"/><path d="M116 113q15-10 12-30c-8 3-10 11-15 15 4-10 3-16 0-20-6 6-7 17-11 26Z" fill="#f7e7c4"/></g>
+<ellipse cx="72" cy="118" rx="31" ry="29" fill="url(#fox-fur)" stroke="#c27a47" stroke-width="1.3"/>
+<path d="M53 104q16 7 36-2l-4 30q-13 13-27 0Z" fill="url(#fox-cream)"/>
+<path d="M47 143q-13-3-17 2-3 8 15 8h15l-2-10Z" fill="#654638"/><path d="M82 142q23-3 25 5 1 7-17 6H78Z" fill="#654638"/>
+<g class="head">
+<g class="ear ear-left"><path d="M28 56Q14 37 20 11q24 5 35 30Z" fill="#d9864c" stroke="#ae663e" stroke-width="1.6"/><path d="m27 23 20 20-18 4Z" fill="#724e43"/><path d="m25 15 3 7-7 4" fill="#805344"/></g>
+<g class="ear ear-right"><path d="M88 41q13-25 31-28 6 28-9 45Z" fill="#d9864c" stroke="#ae663e" stroke-width="1.6"/><path d="m112 25-19 21 17 2Z" fill="#724e43"/><path d="m119 14-3 9 7 4" fill="#805344"/></g>
+<path d="M29 50q13-25 42-22 31-2 40 24l14 12-10 7 8 7-21 17q-33 22-64-2L17 77l10-9-8-5Z" fill="url(#fox-fur)" stroke="#b87044" stroke-width="1.5"/>
+<path d="M26 72q21-3 44 18 23-20 47-18-9 21-31 29-15 8-31 0Q34 93 26 72Z" fill="url(#fox-cream)"/>
+<path d="m63 30 7-5 6 5" fill="#f2b17c"/>
+<g class="eyes-open"><ellipse cx="46" cy="63" rx="6" ry="7" fill="#3d342c"/><ellipse cx="94" cy="63" rx="6" ry="7" fill="#3d342c"/><circle cx="48" cy="60" r="1.7" fill="#fff4dc"/><circle cx="96" cy="60" r="1.7" fill="#fff4dc"/></g>
+<g class="eyes-happy" fill="none" stroke="#4e3c30" stroke-width="2.5" stroke-linecap="round"><path d="M40 65q6-7 12 0M88 65q6-7 12 0"/></g>
+<g class="brows" stroke="#754329" stroke-width="2.4" stroke-linecap="round"><path d="m39 52 14 1M88 53l13-2"/></g>
+<path d="M63 80q7-5 14 0-2 7-7 7t-7-7Z" fill="#483b31"/>
+<path class="mouth" d="M70 86v4q-5 6-10 0m10 0q5 6 10 0" fill="none" stroke="#6f4934" stroke-width="1.7" stroke-linecap="round"/>
+<g fill="#d87557" opacity=".3"><ellipse cx="37" cy="77" rx="8" ry="4"/><ellipse cx="104" cy="77" rx="8" ry="4"/></g>
+<path d="m28 85-8 1m91 0 9 2" stroke="#ae855a" stroke-width="1.5"/>
+</g>
+<path d="M45 98q28 12 54 0l-2 11q-27 9-50-1Z" fill="#a84e3b"/><path d="m85 107 11 1 3 21-14-4Z" fill="#bb6549"/><path d="m88 121 9 3" stroke="#d8956f" stroke-width="2"/>
+<g class="paw paw-left"><path d="M45 112q-13 13-4 21 10 5 16-10" fill="#db935b" stroke="#b87346" stroke-width="1.3"/><path d="m41 127 5 3" stroke="#f4c492" stroke-width="2"/></g>
+<g class="paw paw-right"><path d="M94 112q13 13 4 21-10 5-16-10" fill="#db935b" stroke="#b87346" stroke-width="1.3"/><path d="m98 127-5 3" stroke="#f4c492" stroke-width="2"/></g>
+</g>
+</svg><span class="guest-name">阿狐</span><span class="calm-mark" aria-hidden="true">✧</span>
+</button>
+<button id="rabbit" class="guest rabbit" data-character="rabbit" data-mood="uneasy" aria-label="兔，怕对视的客人" aria-pressed="false">
+<svg viewBox="0 0 140 160" role="img" aria-label="奶白色兔子，系着青绿小领巾">
+<defs><linearGradient id="rabbit-fur" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7e5"/><stop offset="1" stop-color="#e8d6b9"/></linearGradient><linearGradient id="rabbit-ear" x2="0" y2="1"><stop stop-color="#e1a295"/><stop offset="1" stop-color="#eac2b0"/></linearGradient></defs>
+<ellipse class="ground-shadow" cx="70" cy="148" rx="32" ry="7" fill="#75452e" opacity=".14"/>
+<g class="breath">
+<circle class="tail" cx="103" cy="126" r="14" fill="#f3e6cd" stroke="#d7c4a4" stroke-width="1.5"/>
+<path d="M42 106q28-15 53 0l4 24q-4 21-29 20-27 0-32-21Z" fill="url(#rabbit-fur)" stroke="#ceb995" stroke-width="1.5"/>
+<ellipse cx="53" cy="147" rx="17" ry="6" fill="#f7ead4" stroke="#d6c4a5"/><ellipse cx="87" cy="147" rx="17" ry="6" fill="#f7ead4" stroke="#d6c4a5"/>
+<g class="head">
+<g class="ear ear-left"><path d="M43 57C22 19 30-7 42 3c11 9 16 39 13 52Z" fill="url(#rabbit-fur)" stroke="#ceb995" stroke-width="1.5"/><path d="M43 46C33 24 32 5 39 11c6 6 11 27 10 35Z" fill="url(#rabbit-ear)"/></g>
+<g class="ear ear-right"><path d="M82 54C79 29 89-3 100 4c13 9 2 39-8 54Z" fill="url(#rabbit-fur)" stroke="#ceb995" stroke-width="1.5"/><path d="M87 47c0-20 9-42 12-30 1 9-4 22-8 32Z" fill="url(#rabbit-ear)"/></g>
+<path d="M33 61q9-20 37-20 29-1 39 21 10 9 7 24-1 23-44 25-43 0-46-22-3-18 7-28Z" fill="url(#rabbit-fur)" stroke="#ceb995" stroke-width="1.5"/>
+<path d="M59 45q6-7 11-2l4-5 7 7" fill="#fff8e7"/>
+<g class="eyes-open"><ellipse cx="47" cy="74" rx="6.3" ry="8" fill="#4c4338"/><ellipse cx="93" cy="74" rx="6.3" ry="8" fill="#4c4338"/><ellipse cx="49" cy="71" rx="2" ry="2.7" fill="#fffbed"/><ellipse cx="95" cy="71" rx="2" ry="2.7" fill="#fffbed"/></g>
+<g class="eyes-happy" fill="none" stroke="#655043" stroke-width="2.5" stroke-linecap="round"><path d="M41 77q6-7 12 0M87 77q6-7 12 0"/></g>
+<g class="brows" stroke="#a08a6c" stroke-width="2" stroke-linecap="round"><path d="m40 60 12-1M88 59l12 1"/></g>
+<path d="M65 88q5-4 10 0l-5 5Z" fill="#c38477"/>
+<path class="mouth" d="M70 93v3q-5 5-9-1m9 1q5 5 9-1" fill="none" stroke="#9e7c64" stroke-width="1.5" stroke-linecap="round"/>
+<g fill="#dc9a87" opacity=".44"><ellipse cx="36" cy="88" rx="9" ry="5"/><ellipse cx="104" cy="88" rx="9" ry="5"/></g>
+<path d="m34 83-4 1m77 0 4 1" stroke="#c7ad91" stroke-width="1.4"/>
+</g>
+<path d="M44 105q26 7 51-1l-4 11-18 15-26-16Z" fill="#809a83" stroke="#718775"/><path d="m67 113 6 13 7-15" fill="#a4b69a"/><circle cx="72" cy="114" r="3" fill="#e6ca84"/>
+<g class="paw paw-left"><path d="M43 116q-12 13-3 18 10 5 15-10" fill="#f5e7cf" stroke="#ceb995" stroke-width="1.5"/></g>
+<g class="paw paw-right"><path d="M94 116q12 13 3 18-10 5-15-10" fill="#f5e7cf" stroke="#ceb995" stroke-width="1.5"/></g>
+</g>
+</svg><span class="guest-name">小兔</span><span class="calm-mark" aria-hidden="true">✧</span>
+</button>
+
+<div id="fx" class="fx" aria-hidden="true"></div>
+<div class="speech" id="speech" aria-hidden="true"></div>
+</div>
+<div class="status-strip" id="status-strip" aria-live="polite" aria-atomic="true"><span id="status-icon">!</span><span id="status-text">兔有点紧张，不想和狐面对面。</span></div>
+<div class="rules"><div id="rule-window"><span class="rule-symbol">✓</span>狐坐窗边</div><div id="rule-eye-contact"><span class="rule-symbol">!</span>兔安心，或别坐狐对面</div></div>
+<div class="actions"><button id="undo" class="tool" disabled><svg class="icon"><use href="#i-back"/></svg><span>撤销</span></button><button id="bell" class="bell-button" aria-pressed="false"><span class="bell-drawing"><svg class="icon"><use href="#i-bell"/></svg></span><span><strong>安心铃 <b id="stock">1</b></strong><small>让兔放下戒心</small></span></button><button id="restart" class="tool"><svg class="icon"><use href="#i-reset"/></svg><span>重玩</span></button></div>
+<div class="feast" id="feast" hidden><span>✧</span><div><strong>这下，可以开席了。</strong><small>也可以继续换座，看看另一种解法。</small></div><button id="dismiss-feast" aria-label="收起开席提示">×</button></div>
+</section>
+<footer><span>点选再点座位，或直接拖动客人</span><span class="sample-tag">表现候选 · 非正式关卡</span></footer>
+</main>
+<dialog id="help"><button id="close-help" class="close-help" aria-label="关闭说明">×</button><span class="eyebrow">两位客人，一点小心事</span><h2>让这一桌舒服一点。</h2><p>狐喜欢窗边 A1。兔没安心时，不愿坐在狐的正对面。</p><p>可以给兔换座，也可以点<strong>安心铃</strong>，再点兔。误投不消耗；撤销会同时恢复座位、安心状态和库存。</p><p>点选客人后，点已占座位可交换；候客入座可顶替原客人。键盘也可用 Tab、Enter 操作，Esc 取消选择。</p><p class="fine-print">原创 SVG 分层角色 · 离线单文件 · 不保存进度，不请求网络。声音默认关闭；支持减少动画。本小样复用冻结版本的规则内核与道具逻辑，仅抽取双角色情境，不是新的正式关卡。</p><button id="help-play" class="primary">知道了，开桌</button></dialog>
+<script type="module">/** Seat geometry for Banquet Pilot (browser-reusable ESM).
+ *
+ * Rows A (top) and B (bottom); column index increases left → right.
+ * - adjacent: same row and |index| == 1 (never across the table; never diagonal)
+ * - faces: different row and same column index
+ * - end: leftmost or rightmost *available* seat in that row for the level
+ */
+
+/**
+ * @param {string} seat
+ * @returns {[string, number]}
+ */
+function parseSeat(seat) {
+  if (
+    typeof seat !== "string" ||
+    seat.length < 2 ||
+    (seat[0] !== "A" && seat[0] !== "B") ||
+    !/^\d+$/.test(seat.slice(1))
+  ) {
+    throw new Error(`illegal seat id: ${JSON.stringify(seat)}`);
+  }
+  return [seat[0], Number(seat.slice(1))];
+}
+
+/**
+ * @param {string} layout
+ * @returns {string[]}
+ */
+function seatsForLayout(layout) {
+  const key = String(layout).toLowerCase();
+  if (key === "4" || key === "l01" || key === "four") {
+    return ["A1", "A2", "B1", "B2"];
+  }
+  if (key === "6" || key === "l02" || key === "l03" || key === "six") {
+    return ["A1", "A2", "A3", "B1", "B2", "B3"];
+  }
+  throw new Error(`unknown layout: ${JSON.stringify(layout)}`);
+}
+
+/**
+ * @param {string} a
+ * @param {string} b
+ */
+function adjacent(a, b) {
+  const [ra, ia] = parseSeat(a);
+  const [rb, ib] = parseSeat(b);
+  return ra === rb && Math.abs(ia - ib) === 1;
+}
+
+/**
+ * @param {string} a
+ * @param {string} b
+ */
+function faces(a, b) {
+  const [ra, ia] = parseSeat(a);
+  const [rb, ib] = parseSeat(b);
+  return ra !== rb && ia === ib;
+}
+
+/**
+ * @param {string} seat
+ * @param {string[]} available
+ */
+function isEnd(seat, available) {
+  if (!available.includes(seat)) return false;
+  const [row] = parseSeat(seat);
+  const rowSeats = available
+    .filter((s) => parseSeat(s)[0] === row)
+    .slice()
+    .sort((x, y) => parseSeat(x)[1] - parseSeat(y)[1]);
+  if (rowSeats.length === 0) return false;
+  return seat === rowSeats[0] || seat === rowSeats[rowSeats.length - 1];
+}
+
+;
+/** Rule evaluation: PENDING / SATISFIED / CONFLICT + level/calm validation.
+ *
+ * Public evaluation entry: evaluateLevel / isWin / validatePlayable.
+ * evaluateRule is low-level and assumes already-validated inputs —
+ * UI must not bypass evaluateLevel.
+ */
+
+
+
+const PENDING = "PENDING";
+const SATISFIED = "SATISFIED";
+const CONFLICT = "CONFLICT";
+
+const KNOWN_KINDS = new Set([
+  "at",
+  "not_beside",
+  "faces",
+  "end",
+  "same_row",
+  "not_faces_unless",
+]);
+
+/** Kinds that require `other`. */
+const NEEDS_OTHER = new Set(["not_beside", "faces", "same_row", "not_faces_unless"]);
+
+/**
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {string} charId
+ * @returns {string|null}
+ */
+function seated(assignment, charId) {
+  const seat = assignment[charId];
+  if (seat === null || seat === undefined || seat === "") return null;
+  return seat;
+}
+
+/**
+ * Low-level rule evaluator. Assumes inputs already passed validatePlayable /
+ * validateLevel. UI must not call this to bypass the public evaluateLevel path.
+ *
+ * @param {object} rule
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {{ availableSeats: string[], calm?: Iterable<string> }} opts
+ */
+function evaluateRule(rule, assignment, { availableSeats, calm = [] } = {}) {
+  const calmSet = calm instanceof Set ? calm : new Set(calm);
+  const kind = rule.kind;
+  const subject = rule.subject;
+
+  if (kind === "at") {
+    const seat = seated(assignment, subject);
+    if (seat === null) return PENDING;
+    return seat === rule.seat ? SATISFIED : CONFLICT;
+  }
+
+  if (kind === "not_beside") {
+    const other = rule.other;
+    const a = seated(assignment, subject);
+    const b = seated(assignment, other);
+    if (a === null || b === null) return PENDING;
+    return adjacent(a, b) ? CONFLICT : SATISFIED;
+  }
+
+  if (kind === "faces") {
+    const other = rule.other;
+    const a = seated(assignment, subject);
+    const b = seated(assignment, other);
+    if (a === null || b === null) return PENDING;
+    return faces(a, b) ? SATISFIED : CONFLICT;
+  }
+
+  if (kind === "end") {
+    const seat = seated(assignment, subject);
+    if (seat === null) return PENDING;
+    return isEnd(seat, availableSeats) ? SATISFIED : CONFLICT;
+  }
+
+  if (kind === "same_row") {
+    const other = rule.other;
+    const a = seated(assignment, subject);
+    const b = seated(assignment, other);
+    if (a === null || b === null) return PENDING;
+    return parseSeat(a)[0] === parseSeat(b)[0] ? SATISFIED : CONFLICT;
+  }
+
+  if (kind === "not_faces_unless") {
+    const other = rule.other;
+    const required = rule.unless_state ?? "calm";
+    const a = seated(assignment, subject);
+    const b = seated(assignment, other);
+    if (a === null || b === null) return PENDING;
+    if (required === "calm" && calmSet.has(subject)) return SATISFIED;
+    if (faces(a, b)) return CONFLICT;
+    return SATISFIED;
+  }
+
+  throw new Error(`unknown rule kind: ${JSON.stringify(kind)}`);
+}
+
+/**
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {{ characters: string[], availableSeats: string[], calm?: Iterable<string> }} opts
+ * @returns {string[]}
+ */
+function validateAssignment(
+  assignment,
+  { characters, availableSeats, calm = [] } = {},
+) {
+  const errors = [];
+  const calmSet = calm instanceof Set ? calm : new Set(calm);
+  const charSet = new Set(characters);
+  const seatSet = new Set(availableSeats);
+
+  for (const cid of Object.keys(assignment)) {
+    if (!charSet.has(cid)) errors.push(`illegal character id: ${cid}`);
+  }
+
+  /** @type {Record<string, string>} */
+  const occupied = {};
+  for (const [cid, seat] of Object.entries(assignment)) {
+    if (seat === null || seat === undefined || seat === "") continue;
+    try {
+      parseSeat(seat);
+    } catch (e) {
+      errors.push(e instanceof Error ? e.message : String(e));
+      continue;
+    }
+    if (!seatSet.has(seat)) {
+      errors.push(`seat ${seat} not available in this level`);
+      continue;
+    }
+    if (Object.prototype.hasOwnProperty.call(occupied, seat)) {
+      errors.push(`duplicate seat ${seat}: ${occupied[seat]} and ${cid}`);
+    } else {
+      occupied[seat] = cid;
+    }
+  }
+
+  for (const cid of calmSet) {
+    if (!charSet.has(cid)) errors.push(`calm on unknown character: ${cid}`);
+  }
+
+  return errors;
+}
+
+/**
+ * True iff stock is a finite non-negative integer (no Number() coercion of strings).
+ * @param {unknown} stock
+ */
+function isValidStock(stock) {
+  return (
+    typeof stock === "number" &&
+    Number.isFinite(stock) &&
+    Number.isInteger(stock) &&
+    stock >= 0
+  );
+}
+
+/**
+ * Effective calm = explicit calm ∪ initial_calm, with prop/stock/target checks.
+ * Does not Number()-coerce bad stock; invalid stock pushes an error and is
+ * excluded from the calm-stock sum.
+ * @param {object} level
+ * @param {Iterable<string>|null|undefined} calm
+ * @returns {{ effective: Set<string>, errors: string[] }}
+ */
+function resolveEffectiveCalm(level, calm = null) {
+  const errors = [];
+  const characters = level.characters || [];
+  const charSet = new Set(characters);
+  const props = Array.isArray(level.props) ? level.props : [];
+  const initial = level.initial_calm || [];
+  const explicit = calm == null ? [] : calm;
+  const effective = new Set([...initial, ...explicit]);
+
+  for (const cid of effective) {
+    if (!charSet.has(cid)) {
+      errors.push(`calm on unknown character: ${cid}`);
+    }
+  }
+
+  if (props.length === 0) {
+    if (effective.size > 0) {
+      errors.push("calm illegal: level has no props that can grant calm");
+    }
+    return { effective, errors };
+  }
+
+  /** @type {Set<string>} */
+  const validTargets = new Set();
+  let calmStock = 0;
+  for (const prop of props) {
+    const targets = prop.valid_targets || [];
+    for (const t of targets) validTargets.add(t);
+    if (targets.length > 0) {
+      if (!isValidStock(prop.stock)) {
+        errors.push(
+          `prop ${prop.id ?? "(missing id)"} stock must be a finite non-negative integer, got ${JSON.stringify(prop.stock)}`,
+        );
+      } else {
+        calmStock += prop.stock;
+      }
+    }
+  }
+
+  for (const cid of effective) {
+    if (charSet.has(cid) && !validTargets.has(cid)) {
+      errors.push(`calm target not in any prop.valid_targets: ${cid}`);
+    }
+  }
+
+  if (effective.size > calmStock) {
+    errors.push(
+      `calm effects ${effective.size} exceed available calm stock ${calmStock}`,
+    );
+  }
+
+  return { effective, errors };
+}
+
+/**
+ * Structural validation of a level definition.
+ * @param {object} level
+ * @returns {string[]}
+ */
+function validateLevel(level) {
+  const errors = [];
+  const characters = level.characters || [];
+  const available = level.seats || seatsForLayout(level.layout);
+  const rules = level.rules || [];
+  const props = Array.isArray(level.props) ? level.props : [];
+  const initial = level.initial_calm || [];
+
+  const seenChars = new Set();
+  for (const c of characters) {
+    if (seenChars.has(c)) errors.push(`duplicate character id: ${c}`);
+    else seenChars.add(c);
+  }
+
+  const seenSeats = new Set();
+  for (const s of available) {
+    if (seenSeats.has(s)) errors.push(`duplicate seat id: ${s}`);
+    else {
+      try {
+        parseSeat(s);
+        seenSeats.add(s);
+      } catch (e) {
+        errors.push(e instanceof Error ? e.message : String(e));
+      }
+    }
+  }
+
+  const seenRuleIds = new Set();
+  for (const rule of rules) {
+    const rid = rule.id;
+    if (rid == null || rid === "") {
+      errors.push("rule missing required field: id");
+    } else if (seenRuleIds.has(rid)) {
+      errors.push(`duplicate rule id: ${rid}`);
+    } else {
+      seenRuleIds.add(rid);
+    }
+
+    if (rule.kind == null || rule.kind === "") {
+      errors.push(`rule ${rid ?? "(no id)"} missing required field: kind`);
+    } else if (!KNOWN_KINDS.has(rule.kind)) {
+      errors.push(`unknown rule kind: ${JSON.stringify(rule.kind)}`);
+    }
+
+    if (rule.subject == null || rule.subject === "") {
+      errors.push(`rule ${rid ?? "(no id)"} missing required field: subject`);
+    } else if (!seenChars.has(rule.subject)) {
+      errors.push(`rule subject not in characters: ${rule.subject}`);
+    }
+
+    if (rule.kind === "at") {
+      if (rule.seat == null || rule.seat === "") {
+        errors.push(`rule ${rid ?? "(no id)"} kind at missing required field: seat`);
+      } else if (!seenSeats.has(rule.seat)) {
+        errors.push(`rule seat not available: ${rule.seat}`);
+      }
+    }
+
+    if (NEEDS_OTHER.has(rule.kind)) {
+      if (rule.other == null || rule.other === "") {
+        errors.push(
+          `rule ${rid ?? "(no id)"} kind ${rule.kind} missing required field: other`,
+        );
+      } else if (!seenChars.has(rule.other)) {
+        errors.push(`rule other not in characters: ${rule.other}`);
+      }
+    }
+
+    // not_faces_unless: missing unless_state OK (default calm);
+    // explicit null/''/unknown REJECT; only 'calm' allowed when present.
+    if (rule.kind === "not_faces_unless" && Object.prototype.hasOwnProperty.call(rule, "unless_state")) {
+      if (rule.unless_state !== "calm") {
+        errors.push(
+          `rule ${rid ?? "(no id)"} unless_state must be 'calm' when present, got ${JSON.stringify(rule.unless_state)}`,
+        );
+      }
+    }
+  }
+
+  const seenPropIds = new Set();
+  for (const prop of props) {
+    const pid = prop.id;
+    if (pid == null || pid === "") {
+      errors.push("prop missing required field: id");
+    } else if (seenPropIds.has(pid)) {
+      errors.push(`duplicate prop id: ${pid}`);
+    } else {
+      seenPropIds.add(pid);
+    }
+
+    if (!isValidStock(prop.stock)) {
+      errors.push(
+        `prop ${pid ?? "(missing id)"} stock must be a finite non-negative integer, got ${JSON.stringify(prop.stock)}`,
+      );
+    }
+
+    const targets = prop.valid_targets || [];
+    for (const t of targets) {
+      if (!seenChars.has(t)) {
+        errors.push(`prop ${pid ?? "(missing id)"} valid_targets includes unknown character: ${t}`);
+      }
+    }
+  }
+
+  for (const cid of initial) {
+    if (!seenChars.has(cid)) {
+      errors.push(`initial_calm unknown character: ${cid}`);
+    }
+  }
+
+  // calm grantability (stock/targets/no-props) via resolveEffectiveCalm
+  const { errors: calmErrs } = resolveEffectiveCalm(level, null);
+  for (const e of calmErrs) {
+    // avoid duplicating stock errors already reported above
+    if (e.includes("stock must be a finite")) continue;
+    errors.push(e);
+  }
+
+  return errors;
+}
+
+/**
+ * Unified playable-state validation entry.
+ * 1) validateLevel — stop on config errors
+ * 2) resolveEffectiveCalm — collect errors
+ * 3) validateAssignment with effectiveCalm
+ * @param {object} level
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {{ calm?: Iterable<string>|null }} opts
+ * @returns {{ ok: boolean, errors: string[], effectiveCalm: Set<string> }}
+ */
+function validatePlayable(level, assignment, { calm = null } = {}) {
+  const levelErrors = validateLevel(level);
+  if (levelErrors.length > 0) {
+    return { ok: false, errors: levelErrors, effectiveCalm: new Set() };
+  }
+
+  const available = level.seats || seatsForLayout(level.layout);
+  const { effective, errors: calmErrors } = resolveEffectiveCalm(level, calm);
+  const errors = [...calmErrors];
+
+  const asgErrors = validateAssignment(assignment, {
+    characters: level.characters,
+    availableSeats: available,
+    calm: effective,
+  });
+  for (const e of asgErrors) errors.push(e);
+
+  return {
+    ok: errors.length === 0,
+    errors,
+    effectiveCalm: effective,
+  };
+}
+
+/**
+ * Evaluate every rule. ALWAYS returns structured result:
+ *   legal:   { ok:true,  errors:[], rules:[{id,status}, ...] }
+ *   illegal: { ok:false, errors:[...], rules:[] }
+ * Never returns SATISFIED for illegal configs.
+ *
+ * @param {object} level
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {{ calm?: Iterable<string>|null }} opts
+ * @returns {{ ok: boolean, errors: string[], rules: {id:string,status:string}[] }}
+ */
+function evaluateLevel(level, assignment, { calm = null } = {}) {
+  const playable = validatePlayable(level, assignment, { calm });
+  if (!playable.ok) {
+    return { ok: false, errors: playable.errors, rules: [] };
+  }
+
+  const available = level.seats || seatsForLayout(level.layout);
+  const results = [];
+  for (const rule of level.rules) {
+    results.push({
+      id: rule.id,
+      status: evaluateRule(rule, assignment, {
+        availableSeats: available,
+        calm: playable.effectiveCalm,
+      }),
+    });
+  }
+  return { ok: true, errors: [], rules: results };
+}
+
+/**
+ * Win iff evaluateLevel ok, every character seated, and all rules SATISFIED.
+ * Reuses the same validation path as evaluateLevel (no second checker).
+ *
+ * @param {object} level
+ * @param {Record<string, string|null|undefined>} assignment
+ * @param {{ calm?: Iterable<string>|null }} opts
+ */
+function isWin(level, assignment, { calm = null } = {}) {
+  const result = evaluateLevel(level, assignment, { calm });
+  if (!result.ok) return false;
+
+  const characters = level.characters;
+  for (const c of characters) {
+    if (seated(assignment, c) === null) return false;
+  }
+
+  return result.rules.every((r) => r.status === SATISFIED);
+}
+
+;
+/** Pure board / game state for Banquet Pilot graybox (T-003/T-004).
+ * No DOM. Assignment: charId -> seatId | null (null = waiting).
+ * T-004: calm Set + prop inventory + full snapshots for undo.
+ */
+
+/**
+ * @param {object} level
+ * @returns {Record<string, string|null>}
+ */
+function createInitialAssignment(level) {
+  /** @type {Record<string, string|null>} */
+  const asg = {};
+  for (const c of level.characters) asg[c] = null;
+  return asg;
+}
+
+/**
+ * Initial prop stocks from level definition (cannot farm via restart).
+ * @param {object} level
+ * @returns {Record<string, number>}
+ */
+function createInitialInventory(level) {
+  /** @type {Record<string, number>} */
+  const inv = {};
+  for (const p of level.props || []) {
+    if (p && typeof p.id === "string") {
+      inv[p.id] = typeof p.stock === "number" ? p.stock : 0;
+    }
+  }
+  return inv;
+}
+
+/**
+ * @param {Record<string, string|null>} assignment
+ * @returns {Record<string, string|null>}
+ */
+function cloneAssignment(assignment) {
+  return { ...assignment };
+}
+
+/**
+ * @param {Iterable<string>} calm
+ * @returns {Set<string>}
+ */
+function cloneCalm(calm) {
+  return new Set(calm);
+}
+
+/**
+ * @param {Record<string, number>} inventory
+ * @returns {Record<string, number>}
+ */
+function cloneInventory(inventory) {
+  return { ...inventory };
+}
+
+/**
+ * Full undoable snapshot (assignment + calm + inventory).
+ * @param {{ assignment: Record<string, string|null>, calm: Iterable<string>, inventory: Record<string, number> }} state
+ */
+function snapshotPlay(state) {
+  return {
+    assignment: cloneAssignment(state.assignment),
+    calm: [...state.calm],
+    inventory: cloneInventory(state.inventory),
+  };
+}
+
+/**
+ * @param {{ assignment: Record<string, string|null>, calm: string[], inventory: Record<string, number> }} snap
+ */
+function restorePlay(snap) {
+  if (!snap || typeof snap !== "object") {
+    return { assignment: {}, calm: new Set(), inventory: {} };
+  }
+  const calmSrc = snap.calm;
+  let calm;
+  if (calmSrc == null) {
+    calm = new Set();
+  } else if (typeof calmSrc[Symbol.iterator] === "function") {
+    calm = new Set(calmSrc);
+  } else {
+    // Non-iterable calm (e.g. plain object) would throw in Set — treat as empty.
+    // Primary gate is validateSavePayload; this is defensive only.
+    calm = new Set();
+  }
+  return {
+    assignment: cloneAssignment(snap.assignment || {}),
+    calm,
+    inventory: cloneInventory(snap.inventory || {}),
+  };
+}
+
+/**
+ * Who sits on seat, or null.
+ * @param {Record<string, string|null>} assignment
+ * @param {string} seat
+ */
+function occupantOf(assignment, seat) {
+  for (const [charId, s] of Object.entries(assignment)) {
+    if (s === seat) return charId;
+  }
+  return null;
+}
+
+/**
+ * Apply place/move/swap/displace. Returns null if no-op (same seat / invalid).
+ * Never mutates input. Calm is character-scoped and follows moves automatically.
+ *
+ * @param {Record<string, string|null>} assignment
+ * @param {string} charId
+ * @param {string} seat
+ * @param {string[]} availableSeats
+ * @returns {{ next: Record<string, string|null>, kind: 'move'|'swap'|'displace' } | null}
+ */
+function applySeatAction(assignment, charId, seat, availableSeats) {
+  if (!Object.prototype.hasOwnProperty.call(assignment, charId)) return null;
+  if (!availableSeats.includes(seat)) return null;
+
+  const from = assignment[charId] ?? null;
+  if (from === seat) return null; // same-seat click / drop
+
+  const other = occupantOf(assignment, seat);
+  const next = cloneAssignment(assignment);
+
+  if (other === null) {
+    next[charId] = seat;
+    return { next, kind: "move" };
+  }
+
+  if (other === charId) return null;
+
+  if (from !== null) {
+    // atomic swap of two seated characters
+    next[charId] = seat;
+    next[other] = from;
+    return { next, kind: "swap" };
+  }
+
+  // waiting guest onto occupied seat → displace occupant to waiting
+  next[charId] = seat;
+  next[other] = null;
+  return { next, kind: "displace" };
+}
+
+/**
+ * Apply a prop that grants calm (e.g. calm_bell).
+ * - Invalid target → no consume
+ * - Already calm on valid target → no extra consume (idempotent)
+ * - Fresh valid target with stock → consume 1, add to calm
+ * Never mutates input when returning a next state; caller pushes history.
+ *
+ * @param {{ assignment: Record<string, string|null>, calm: Set<string>, inventory: Record<string, number> }} state
+ * @param {string} propId
+ * @param {string} targetChar
+ * @param {object} level
+ * @returns {{
+ *   ok: boolean,
+ *   consumed: boolean,
+ *   reason: string,
+ *   next: { assignment: Record<string, string|null>, calm: Set<string>, inventory: Record<string, number> } | null
+ * }}
+ */
+function applyCalmProp(state, propId, targetChar, level) {
+  const props = Array.isArray(level.props) ? level.props : [];
+  const prop = props.find((p) => p && p.id === propId);
+  if (!prop) {
+    return { ok: false, consumed: false, reason: "no-prop", next: null };
+  }
+  if (!Object.prototype.hasOwnProperty.call(state.assignment, targetChar)) {
+    return { ok: false, consumed: false, reason: "unknown-char", next: null };
+  }
+  const targets = prop.valid_targets || [];
+  if (!targets.includes(targetChar)) {
+    return { ok: false, consumed: false, reason: "invalid-target", next: null };
+  }
+  if (state.calm.has(targetChar)) {
+    // Repeat on already-calm: success semantics, no extra consume, no state change
+    return { ok: true, consumed: false, reason: "already-calm", next: null };
+  }
+  const stock = state.inventory[propId] ?? 0;
+  if (stock < 1) {
+    return { ok: false, consumed: false, reason: "no-stock", next: null };
+  }
+  const next = {
+    assignment: cloneAssignment(state.assignment),
+    calm: cloneCalm(state.calm),
+    inventory: cloneInventory(state.inventory),
+  };
+  next.calm.add(targetChar);
+  next.inventory[propId] = stock - 1;
+  return { ok: true, consumed: true, reason: "applied", next };
+}
+
+/**
+ * Undo stack stores full play snapshots (T-004) OR legacy assignment-only
+ * (kept for older pushHistory callers). Prefer pushPlayHistory / popPlayHistory.
+ */
+function createHistory() {
+  return /** @type {any[]} */ ([]);
+}
+
+/**
+ * @param {any[]} history
+ * @param {Record<string, string|null>} assignmentBefore
+ */
+function pushHistory(history, assignmentBefore) {
+  history.push(cloneAssignment(assignmentBefore));
+}
+
+/**
+ * @param {any[]} history
+ * @returns {Record<string, string|null> | null}
+ */
+function popHistory(history) {
+  if (history.length === 0) return null;
+  return history.pop() ?? null;
+}
+
+/**
+ * @param {any[]} history
+ * @param {{ assignment: Record<string, string|null>, calm: Iterable<string>, inventory: Record<string, number> }} stateBefore
+ */
+function pushPlayHistory(history, stateBefore) {
+  history.push(snapshotPlay(stateBefore));
+}
+
+/**
+ * @param {any[]} history
+ * @returns {{ assignment: Record<string, string|null>, calm: Set<string>, inventory: Record<string, number> } | null}
+ */
+function popPlayHistory(history) {
+  if (history.length === 0) return null;
+  const snap = history.pop();
+  if (!snap) return null;
+  // Legacy: plain assignment object (no calm/inventory keys as arrays)
+  if (
+    snap.assignment === undefined &&
+    snap.calm === undefined &&
+    snap.inventory === undefined
+  ) {
+    return {
+      assignment: cloneAssignment(snap),
+      calm: new Set(),
+      inventory: {},
+    };
+  }
+  // Invalid play snapshot (e.g. calm not iterable) → treat as no-op undo
+  if (
+    snap.calm != null &&
+    typeof snap.calm[Symbol.iterator] !== "function"
+  ) {
+    return null;
+  }
+  return restorePlay(snap);
+}
+
+/**
+ * Integrity: no duplicate seats, only known chars, seats in available or null.
+ * @param {Record<string, string|null>} assignment
+ * @param {string[]} characters
+ * @param {string[]} availableSeats
+ */
+function assertBoardIntegrity(assignment, characters, availableSeats) {
+  const seen = new Set();
+  for (const c of characters) {
+    if (!Object.prototype.hasOwnProperty.call(assignment, c)) {
+      throw new Error(`missing char ${c}`);
+    }
+    const s = assignment[c];
+    if (s === null || s === undefined || s === "") continue;
+    if (!availableSeats.includes(s)) throw new Error(`illegal seat ${s}`);
+    if (seen.has(s)) throw new Error(`double occupy ${s}`);
+    seen.add(s);
+  }
+  for (const k of Object.keys(assignment)) {
+    if (!characters.includes(k)) throw new Error(`unknown char ${k}`);
+  }
+  return true;
+}
+
+;
+
+
+
+const WARM_LEVEL = {
+  id: "warm-table-sample", layout: "4", seats: ["A1", "A2", "B1", "B2"],
+  characters: ["fox", "rabbit"],
+  props: [{ id: "calm_bell", stock: 1, valid_targets: ["rabbit"] }],
+  rules: [
+    { id: "window", kind: "at", subject: "fox", seat: "A1" },
+    { id: "eye-contact", kind: "not_faces_unless", subject: "rabbit", other: "fox", unless_state: "calm" }
+  ]
+};
+
+function createWarmTable() {
+  let play;
+  let playHistory = [];
+  let moves = 0;
+  const initial = () => ({ assignment: { fox: "A1", rabbit: "B1" }, calm: new Set(), inventory: { calm_bell: 1 } });
+  play = initial();
+  function read() {
+    const result = evaluateLevel(WARM_LEVEL, play.assignment, { calm: play.calm });
+    return { ...snapshotPlay(play), result, won: isWin(WARM_LEVEL, play.assignment, { calm: play.calm }), moves, historyLength: playHistory.length };
+  }
+  function commit(next) {
+    assertBoardIntegrity(next.assignment, WARM_LEVEL.characters, WARM_LEVEL.seats);
+    playHistory.push({ play: snapshotPlay(play), moves });
+    if (playHistory.length > 100) playHistory.shift();
+    play = next;
+    moves += 1;
+    return read();
+  }
+  function move(character, seat) {
+    const action = applySeatAction(play.assignment, character, seat, WARM_LEVEL.seats);
+    if (!action) return { changed: false, reason: "noop" };
+    commit({ ...play, assignment: action.next });
+    return { changed: true, kind: action.kind };
+  }
+  function preview(character, seat) {
+    const action = applySeatAction(play.assignment, character, seat, WARM_LEVEL.seats);
+    if (!action) return null;
+    const result = evaluateLevel(WARM_LEVEL, action.next, { calm: play.calm });
+    return { kind: action.kind, result, won: isWin(WARM_LEVEL, action.next, { calm: play.calm }), assignment: action.next };
+  }
+  function wait(character) {
+    if (!WARM_LEVEL.characters.includes(character) || play.assignment[character] === null) return { changed: false };
+    commit({ ...play, assignment: { ...play.assignment, [character]: null } });
+    return { changed: true, kind: "waiting" };
+  }
+  function bell(character) {
+    const action = applyCalmProp(play, "calm_bell", character, WARM_LEVEL);
+    if (action.next) commit(action.next);
+    return { changed: !!action.next, reason: action.reason };
+  }
+  function undo() {
+    const previous = playHistory.pop();
+    if (!previous) return false;
+    play = restorePlay(previous.play);
+    moves = previous.moves;
+    return true;
+  }
+  function reset() { play = initial(); playHistory = []; moves = 0; return read(); }
+  return Object.freeze({ read, move, preview, wait, bell, undo, reset });
+}
+
+;
+
+
+const warmStore = createWarmTable();
+const stage = document.getElementById("stage");
+const guests = Object.fromEntries(WARM_LEVEL.characters.map(character => [character, document.getElementById(character)]));
+const seatButtons = [...document.querySelectorAll(".seat")];
+const warmCoordinates = { A1: [112, 142], A2: [308, 142], B1: [112, 341], B2: [308, 341] };
+const waitingCoordinates = { fox: [155, 429], rabbit: [265, 429] };
+const guestNames = { fox: "阿狐", rabbit: "小兔" };
+const warmTimers = new Set();
+const warmAnimations = new Set();
+const reducedQuery = matchMedia("(prefers-reduced-motion: reduce)");
+let reducedMotion = reducedQuery.matches;
+let manualMotion = false;
+let selectedGuest = null;
+let bellMode = false;
+let pointerGesture = null;
+let suppressClickUntil = 0;
+let previewSeat = null;
+let hoverTimer = null;
+let soundOn = false;
+let audioContext = null;
+let dismissedFeast = false;
+
+function later(action, delay) {
+  const timer = setTimeout(() => { warmTimers.delete(timer); action(); }, delay);
+  warmTimers.add(timer);
+  return timer;
+}
+function cleanPresentation() {
+  warmTimers.forEach(clearTimeout);
+  warmTimers.clear();
+  warmAnimations.forEach(animation => animation.cancel());
+  warmAnimations.clear();
+  Object.values(guests).forEach(guest => guest.classList.remove("hop", "react"));
+  document.getElementById("fx").replaceChildren();
+  document.getElementById("speech").classList.remove("visible");
+}
+function sound(kind) {
+  if (!soundOn) return;
+  try {
+    audioContext ??= new (window.AudioContext || window.webkitAudioContext)();
+    audioContext.resume().catch(() => {});
+    const pitches = kind === "bell" ? [880, 1320] : kind === "win" ? [523.25, 659.25, 783.99] : kind === "reject" ? [180] : [330];
+    for (const [index, pitch] of pitches.entries()) {
+      const oscillator = audioContext.createOscillator();
+      const volume = audioContext.createGain();
+      const start = audioContext.currentTime + index * .065;
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(pitch, start);
+      volume.gain.setValueAtTime(.0001, start);
+      volume.gain.exponentialRampToValueAtTime(.055, start + .012);
+      volume.gain.exponentialRampToValueAtTime(.0001, start + .3);
+      oscillator.connect(volume).connect(audioContext.destination);
+      oscillator.start(start);
+      oscillator.stop(start + .32);
+      oscillator.onended = () => { oscillator.disconnect(); volume.disconnect(); };
+    }
+  } catch { soundOn = false; updateSettings(); }
+}
+function currentPosition(character) {
+  return warmCoordinates[warmStore.read().assignment[character]] || waitingCoordinates[character];
+}
+function setStatus(text, state = "PENDING") {
+  document.getElementById("status-text").textContent = text;
+  document.getElementById("status-strip").dataset.state = state;
+  document.getElementById("status-icon").textContent = state === "SATISFIED" ? "✓" : state === "CONFLICT" ? "!" : "·";
+}
+function say(text) {
+  const speech = document.getElementById("speech");
+  speech.textContent = text;
+  speech.classList.add("visible");
+  later(() => speech.classList.remove("visible"), 1700);
+}
+function ruleStatus(state, id) { return state.result.rules.find(rule => rule.id === id)?.status || "PENDING"; }
+function render() {
+  const state = warmStore.read();
+  const relationStatus = ruleStatus(state, "eye-contact");
+  stage.dataset.selected = String(!!selectedGuest);
+  for (const [character, element] of Object.entries(guests)) {
+    const point = currentPosition(character);
+    element.style.setProperty("--x", point[0] / 420 * 100 + "%");
+    element.style.setProperty("--y", point[1] / 440 * 100 + "%");
+    element.classList.toggle("waiting-guest", state.assignment[character] === null);
+    element.classList.toggle("selected", selectedGuest === character);
+    element.classList.toggle("calm", state.calm.includes(character));
+    element.setAttribute("aria-pressed", String(selectedGuest === character));
+    element.setAttribute("aria-label", guestNames[character] + "，" + (state.assignment[character] || "候客区") + (state.calm.includes(character) ? "，已安心" : "") + "，点选或拖动");
+    element.dataset.mood = state.calm.includes(character) ? "calm" : selectedGuest === character ? "expectant" : relationStatus === "CONFLICT" ? "uneasy" : state.won ? "happy" : "neutral";
+  }
+  for (const seat of seatButtons) {
+    const occupant = WARM_LEVEL.characters.find(character => state.assignment[character] === seat.dataset.seat);
+    seat.dataset.occupied = String(!!occupant);
+    seat.setAttribute("aria-label", seat.dataset.seat + (seat.dataset.seat === "A1" ? " 窗边座" : " 座位") + (occupant ? "，" + guestNames[occupant] + "已入座" : "，空座") + (selectedGuest ? "，放置选中客人" : ""));
+    if (selectedGuest && state.assignment[selectedGuest] === seat.dataset.seat) seat.dataset.origin = "true";
+    else delete seat.dataset.origin;
+  }
+  for (const rule of state.result.rules) {
+    const element = document.getElementById("rule-" + rule.id);
+    element.dataset.state = rule.status;
+    element.querySelector(".rule-symbol").textContent = rule.status === "SATISFIED" ? "✓" : rule.status === "CONFLICT" ? "!" : "·";
+  }
+  const foxPoint = currentPosition("fox");
+  const rabbitPoint = currentPosition("rabbit");
+  const line = document.getElementById("relation-path");
+  const sign = document.getElementById("relation-sign");
+  const showRelation = relationStatus === "CONFLICT";
+  line.style.display = sign.style.display = showRelation ? "" : "none";
+  line.setAttribute("d", "M" + foxPoint[0] + " " + (foxPoint[1] - 10) + "L" + rabbitPoint[0] + " " + (rabbitPoint[1] - 65));
+  sign.setAttribute("transform", "translate(" + (foxPoint[0] + rabbitPoint[0]) / 2 + " " + ((foxPoint[1] + rabbitPoint[1]) / 2 - 32) + ")");
+  document.getElementById("undo").disabled = state.historyLength === 0;
+  document.getElementById("stock").textContent = state.inventory.calm_bell;
+  const bell = document.getElementById("bell");
+  bell.setAttribute("aria-pressed", String(bellMode));
+  bell.dataset.empty = String(state.inventory.calm_bell === 0);
+  bell.querySelector("small").textContent = bellMode ? "现在点一下小兔" : state.inventory.calm_bell === 0 ? "已使用 · 撤销可恢复" : "让兔放下戒心";
+  document.getElementById("move-count").textContent = state.moves ? state.moves + " 次小安排" : "尚未换座";
+  document.getElementById("feast").hidden = !state.won || dismissedFeast;
+  if (bellMode) setStatus("铃准备好了。点小兔；点狐狸不会消耗。", "PENDING");
+  else if (selectedGuest) setStatus("已选" + guestNames[selectedGuest] + "：点座位可放下，点另一位可交换。", "PENDING");
+  else if (state.won) setStatus(state.calm.includes("rabbit") ? "安心了，对坐也没关系。可以开席。" : "避开了对视，这一桌刚刚好。", "SATISFIED");
+  else if (ruleStatus(state, "window") === "CONFLICT") setStatus("阿狐想坐窗边 A1，给它留个好位置吧。", "CONFLICT");
+  else if (relationStatus === "CONFLICT") setStatus("小兔有点紧张，不想和阿狐面对面。", "CONFLICT");
+  else setStatus("还有客人在候客区，请它入座吧。", "PENDING");
+}
+function clearPreview() {
+  if (hoverTimer) { clearTimeout(hoverTimer); warmTimers.delete(hoverTimer); hoverTimer = null; }
+  previewSeat = null;
+  seatButtons.forEach(seat => { delete seat.dataset.preview; seat.querySelector(".seat-dot").textContent = seat.dataset.seat === "A1" ? "✦" : "＋"; });
+  document.getElementById("preview-path").setAttribute("d", "");
+  document.getElementById("waiting").classList.remove("target");
+}
+function previewAt(seatId) {
+  if (previewSeat === seatId) return;
+  clearPreview();
+  if (!selectedGuest) return;
+  previewSeat = seatId;
+  if (seatId === "waiting") {
+    document.getElementById("waiting").classList.add("target");
+    setStatus("放下后回到候客长凳，不会丢失安心状态。");
+    return;
+  }
+  const preview = warmStore.preview(selectedGuest, seatId);
+  if (!preview) return;
+  const status = preview.result.rules.some(rule => rule.status === "CONFLICT") ? "CONFLICT" : preview.won ? "SATISFIED" : "PENDING";
+  const seat = seatButtons.find(button => button.dataset.seat === seatId);
+  seat.dataset.preview = status;
+  seat.querySelector(".seat-dot").textContent = preview.kind === "swap" ? "⇄" : preview.kind === "displace" ? "↗" : "↓";
+  const origin = currentPosition(selectedGuest);
+  const target = warmCoordinates[seatId];
+  document.getElementById("preview-path").setAttribute("d", "M" + origin[0] + " " + origin[1] + "Q210 217 " + target[0] + " " + target[1]);
+  const action = preview.kind === "swap" ? "交换座位" : preview.kind === "displace" ? "原客人回候客区" : "可以放下";
+  setStatus(action + (status === "CONFLICT" ? " · 可放，但仍有规则未满足" : preview.won ? " · 这样就能开席" : " · 还有客人没入座"), status === "SATISFIED" ? status : "PENDING");
+  hoverTimer = later(() => { guests[selectedGuest].dataset.mood = status === "CONFLICT" ? "uneasy" : "expectant"; }, 150);
+}
+function animatePlacement(before) {
+  if (reducedMotion) return;
+  for (const [character, element] of Object.entries(guests)) {
+    const after = element.getBoundingClientRect();
+    const deltaX = before[character].left - after.left;
+    const deltaY = before[character].top - after.top;
+    if (Math.abs(deltaX) + Math.abs(deltaY) < 1) continue;
+    const animation = element.animate([
+      { transform: "translate(calc(-50% + " + deltaX + "px), calc(-100% + " + deltaY + "px))" },
+      { transform: "translate(calc(-50% + " + deltaX * .45 + "px), calc(-100% + " + (deltaY * .45 - 12) + "px))", offset: .55 },
+      { transform: "translate(-50%, -100%)" }
+    ], { duration: 310, easing: "cubic-bezier(.22,.65,.3,1)" });
+    warmAnimations.add(animation);
+    animation.onfinish = () => { warmAnimations.delete(animation); };
+    element.classList.add("hop");
+  }
+}
+function effect(character, kind) {
+  if (reducedMotion) return;
+  const point = currentPosition(character);
+  const container = document.getElementById("fx");
+  for (let index = 0; index < (kind === "bell" ? 2 : 1); index++) {
+    const element = document.createElement("span");
+    element.className = kind === "bell" ? "ripple" + (index ? " second" : "") : "spark";
+    element.style.setProperty("--x", point[0] / 420 * 100 + "%");
+    element.style.setProperty("--y", (point[1] - 75) / 440 * 100 + "%");
+    if (kind !== "bell") element.textContent = "✧";
+    container.appendChild(element);
+    later(() => element.remove(), 1000);
+  }
+}
+function act(kind, character, seat) {
+  cancelGesture(false);
+  clearPreview();
+  cleanPresentation();
+  const beforeState = warmStore.read();
+  const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()]));
+  const result = kind === "bell" ? warmStore.bell(character) : kind === "waiting" ? warmStore.wait(character) : warmStore.move(character, seat);
+  selectedGuest = null;
+  bellMode = false;
+  const afterState = warmStore.read();
+  if (!afterState.won || !beforeState.won) dismissedFeast = false;
+  render();
+  if (result.changed) {
+    animatePlacement(before);
+    if (kind === "bell") { effect(character, "bell"); say("小兔：呼……好像没那么紧张了。"); sound("bell"); }
+    else {
+      const reaction = afterState.result.rules.some(rule => rule.status === "CONFLICT") ? "阿狐：先坐下，慢慢商量。" : "这样坐，舒服多了。";
+      say(result.kind === "swap" ? "借过一下，我们换个座。" : result.kind === "displace" ? "被换下的客人回长凳等一等。" : result.kind === "waiting" ? "先在长凳歇一会儿。" : reaction);
+      guests[character].classList.add("react");
+      sound("seat");
+    }
+    if (!beforeState.won && afterState.won) { effect("rabbit", "win"); later(() => sound("win"), 180); }
+  } else if (kind === "bell") {
+    const text = result.reason === "invalid-target" ? "铃只对小兔有效，这次没有消耗。" : result.reason === "already-calm" ? "小兔已经安心，不会重复消耗。" : "安心铃已用完，可以撤销或重玩。";
+    setStatus(text, "PENDING"); say(text); sound("reject");
+  }
+}
+function selectGuest(character) {
+  if (performance.now() < suppressClickUntil) return;
+  if (bellMode) { act("bell", character); return; }
+  const state = warmStore.read();
+  if (selectedGuest && selectedGuest !== character && state.assignment[character]) { act("move", selectedGuest, state.assignment[character]); return; }
+  clearPreview(); cleanPresentation();
+  selectedGuest = selectedGuest === character ? null : character;
+  render();
+  if (selectedGuest) sound("pick");
+}
+function pointerTarget(clientX, clientY) {
+  const bounds = stage.getBoundingClientRect();
+  const stageX = (clientX - bounds.left) / bounds.width * 420;
+  const stageY = (clientY - bounds.top) / bounds.height * 440;
+  if (stageX < 0 || stageX > 420 || stageY < 0 || stageY > 440) return null;
+  if (stageY >= 386 && stageX >= 65 && stageX <= 355) return "waiting";
+  let nearest = null;
+  let best = 76;
+  for (const [seatId, point] of Object.entries(warmCoordinates)) {
+    const distance = Math.hypot(stageX - point[0], (stageY - (point[1] - 20)) * .8);
+    if (distance < best) { best = distance; nearest = seatId; }
+  }
+  return nearest;
+}
+function cancelGesture(suppress = true) {
+  const active = pointerGesture;
+  pointerGesture = null;
+  if (!active) return;
+  active.ghost?.remove();
+  active.element.classList.remove("drag-source");
+  if (active.element.hasPointerCapture?.(active.pointerId)) active.element.releasePointerCapture(active.pointerId);
+  if (suppress) suppressClickUntil = performance.now() + 400;
+}
+function cancelInteraction() { cancelGesture(); clearPreview(); cleanPresentation(); selectedGuest = null; bellMode = false; render(); }
+for (const [character, element] of Object.entries(guests)) {
+  element.addEventListener("click", () => selectGuest(character));
+  element.addEventListener("pointerdown", event => {
+    if (!event.isPrimary || event.button !== 0 || bellMode || pointerGesture) return;
+    pointerGesture = { pointerId: event.pointerId, character, element, startX: event.clientX, startY: event.clientY, moved: false, ghost: null };
+    element.setPointerCapture(event.pointerId);
+  });
+  element.addEventListener("lostpointercapture", event => { if (pointerGesture?.pointerId === event.pointerId) cancelInteraction(); });
+}
+document.addEventListener("pointerdown", event => { if (pointerGesture && event.pointerId !== pointerGesture.pointerId) cancelInteraction(); }, true);
+window.addEventListener("pointermove", event => {
+  const active = pointerGesture;
+  if (!active || active.pointerId !== event.pointerId) return;
+  if (!active.moved && Math.hypot(event.clientX - active.startX, event.clientY - active.startY) < 7) return;
+  event.preventDefault();
+  if (!active.moved) {
+    active.moved = true;
+    cleanPresentation(); selectedGuest = active.character; clearPreview(); render();
+    const ghost = document.createElement("div");
+    ghost.className = active.element.className + " drag-ghost";
+    ghost.dataset.mood = "expectant";
+    const illustration = active.element.querySelector("svg").cloneNode(true);
+    illustration.querySelector("defs")?.remove();
+    ghost.appendChild(illustration);
+    ghost.style.width = active.element.getBoundingClientRect().width + "px";
+    document.body.appendChild(ghost);
+    active.ghost = ghost;
+    active.element.classList.add("drag-source");
+  }
+  active.ghost.style.left = event.clientX + "px";
+  active.ghost.style.top = event.clientY + "px";
+  const target = pointerTarget(event.clientX, event.clientY);
+  if (target) previewAt(target);
+  else { clearPreview(); setStatus("拖回座位或候客区；松在桌外则取消。"); }
+}, { passive: false });
+window.addEventListener("pointerup", event => {
+  const active = pointerGesture;
+  if (!active || active.pointerId !== event.pointerId) return;
+  const target = active.moved ? pointerTarget(event.clientX, event.clientY) : null;
+  const moved = active.moved;
+  cancelGesture(moved);
+  if (!moved) return;
+  clearPreview();
+  if (target) act(target === "waiting" ? "waiting" : "move", active.character, target);
+  else { selectedGuest = null; render(); say("没放到座位上，回到原位。 "); }
+});
+window.addEventListener("pointercancel", event => { if (pointerGesture?.pointerId === event.pointerId) cancelInteraction(); });
+for (const seat of seatButtons) {
+  seat.addEventListener("click", () => { if (selectedGuest && performance.now() >= suppressClickUntil) act("move", selectedGuest, seat.dataset.seat); });
+  seat.addEventListener("pointerenter", () => { if (selectedGuest && !pointerGesture && !bellMode) previewAt(seat.dataset.seat); });
+  seat.addEventListener("pointerleave", () => { if (!pointerGesture) { clearPreview(); render(); } });
+  seat.addEventListener("focus", () => { if (selectedGuest) previewAt(seat.dataset.seat); });
+  seat.addEventListener("blur", () => { if (!pointerGesture) { clearPreview(); render(); } });
+}
+document.getElementById("waiting").addEventListener("click", () => { if (selectedGuest && performance.now() >= suppressClickUntil) act("waiting", selectedGuest); });
+document.getElementById("bell").addEventListener("click", () => { cancelGesture(); clearPreview(); cleanPresentation(); selectedGuest = null; bellMode = !bellMode; render(); });
+document.getElementById("undo").addEventListener("click", () => { cancelInteraction(); const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()])); warmStore.undo(); dismissedFeast = false; render(); animatePlacement(before); say("刚才的安排，已经一起撤回。"); });
+document.getElementById("restart").addEventListener("click", () => { cancelInteraction(); warmStore.reset(); dismissedFeast = false; render(); say("重新开桌，安心铃也回来了。"); });
+document.getElementById("dismiss-feast").addEventListener("click", () => { dismissedFeast = true; render(); });
+function updateSettings() {
+  document.body.classList.toggle("reduce-motion", reducedMotion);
+  document.getElementById("motion").setAttribute("aria-pressed", String(reducedMotion));
+  document.getElementById("motion").setAttribute("aria-label", reducedMotion ? "恢复动画" : "减少动画");
+  document.getElementById("sound").setAttribute("aria-pressed", String(soundOn));
+  document.getElementById("sound").setAttribute("aria-label", soundOn ? "关闭声音" : "开启声音");
+}
+document.getElementById("motion").addEventListener("click", () => { manualMotion = true; reducedMotion = !reducedMotion; cancelInteraction(); updateSettings(); });
+reducedQuery.addEventListener("change", event => { if (!manualMotion) { reducedMotion = event.matches; cancelInteraction(); updateSettings(); } });
+document.getElementById("sound").addEventListener("click", () => { soundOn = !soundOn; if (!soundOn) audioContext?.suspend().catch(() => {}); updateSettings(); sound("bell"); });
+const help = document.getElementById("help");
+document.getElementById("info").addEventListener("click", () => { cancelInteraction(); help.showModal(); });
+for (const id of ["close-help", "help-play"]) document.getElementById(id).addEventListener("click", () => help.close());
+window.addEventListener("keydown", event => { if (event.key === "Escape") cancelInteraction(); });
+window.addEventListener("blur", cancelInteraction);
+window.addEventListener("resize", cancelInteraction);
+window.addEventListener("pagehide", () => { cancelInteraction(); audioContext?.suspend().catch(() => {}); });
+document.addEventListener("visibilitychange", () => { if (document.hidden) { cancelInteraction(); audioContext?.suspend().catch(() => {}); } });
+Object.defineProperty(window, "__WARM_TABLE__", { value: Object.freeze({ snapshot: () => ({ ...warmStore.read(), selected: selectedGuest, bellMode, reducedMotion, soundOn, gestureActive: !!pointerGesture, ghostCount: document.querySelectorAll(".drag-ghost").length, activeAnimations: warmAnimations.size }) }), writable: false });
+updateSettings(); render();
+</script>
+</body></html>

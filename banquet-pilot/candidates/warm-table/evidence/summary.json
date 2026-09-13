@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "testedAt": "2026-09-13T02:41:48.499Z",
+  "checks": [
+    "390x844 no horizontal overflow; actual mouse select/seat/win/undo/invalid bell/valid bell/undo",
+    "360x640 no horizontal overflow; actual mouse select/seat/win/undo/invalid bell/valid bell/undo",
+    "1280x900 no horizontal overflow; actual mouse select/seat/win/undo/invalid bell/valid bell/undo",
+    "occupied guest click swaps atomically",
+    "waiting entry displaces old occupant",
+    "reduced-motion retains gameplay",
+    "keyboard Enter selection and placement",
+    "mouse drag preview does not commit until drop",
+    "CDP single-touch drag, not real device",
+    "touch cancellation restores visual state with no commit",
+    "CDP second pointer cancels rather than double-committing; not real multi-touch",
+    "synthetic blur during drag clears capture/ghost without committing",
+    "rapid DOM-action stress cannot revive old victory or inventory effects",
+    "zero runtime exceptions and zero HTTP asset requests"
+  ],
+  "runtimeErrors": [],
+  "httpRequests": 0,
+  "realDevice": "NOT TESTED",
+  "audioListening": "NOT TESTED",
+  "input": "CDP mouse, touch (including second pointer), keyboard; rapid stress uses DOM clicks; blur is synthetic",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      360,
+      640
+    ],
+    [
+      1280,
+      900
+    ]
+  ]
+}

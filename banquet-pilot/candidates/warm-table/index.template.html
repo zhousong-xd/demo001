@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4eddf">
+<title>这桌，刚刚好 · 狐兔饭局</title>
+<!--WARM_STYLE-->
+</head>
+<body>
+<svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M19 4C9 2 3 9 7 16s14 0 12-12Z"/><path d="m5 21 10-12"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M5 17h14l-2-4V9a5 5 0 0 0-10 0v4l-2 4Z"/><path d="M10 20h4M12 2v2"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="m9 5-5 5 5 5M4 10h9a6 6 0 0 1 0 12" transform="translate(0 -2)"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="m4 9 4 0 5-4v14l-5-4H4ZM17 8q5 4 0 8"/></symbol>
+<symbol id="i-motion" viewBox="0 0 24 24"><path d="M4 8h7M2 12h6M4 16h7M15 5a7 7 0 1 1 0 14"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1"/></symbol>
+</defs></svg>
+<main class="shell">
+<header class="topbar"><span class="brand"><svg class="icon"><use href="#i-leaf"/></svg> 妖怪小食堂</span><div class="settings"><button id="sound" class="icon-button" aria-label="开启声音" aria-pressed="false"><svg class="icon"><use href="#i-sound"/></svg><span class="mute-slash"></span></button><button id="motion" class="icon-button" aria-label="减少动画" aria-pressed="false"><svg class="icon"><use href="#i-motion"/></svg></button><button id="info" class="icon-button" aria-label="玩法与版本说明"><svg class="icon"><use href="#i-info"/></svg></button></div></header>
+<section class="heading"><div class="eyebrow"><span></span> 暖绘本 · 交互小样 01</div><h1>这桌，<em>刚刚好。</em></h1><p>换一个座位，让一顿饭舒服一点。</p></section>
+<section class="game" aria-label="狐兔换座表现小样">
+<div class="table-caption"><span>今日两位客人</span><span id="move-count">尚未换座</span></div>
+<div class="stage" id="stage">
+<svg class="room" viewBox="0 0 420 440" aria-hidden="true">
+<defs>
+<linearGradient id="wood" x2="0" y2="1"><stop stop-color="#dca879"/><stop offset="1" stop-color="#ca8f62"/></linearGradient>
+<linearGradient id="cloth" x2="0" y2="1"><stop stop-color="#f4e8ca"/><stop offset="1" stop-color="#e7d5ad"/></linearGradient>
+<pattern id="cloth-lines" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 1h12M1 0v12" stroke="#bfa679" stroke-width=".6" opacity=".16"/></pattern>
+<g id="chair"><path d="M-31-14v27M31-14v27" stroke="#b68764" stroke-width="7" stroke-linecap="round"/><rect x="-35" y="-55" width="70" height="58" rx="23" fill="#d9bea0" stroke="#c5a17b" stroke-width="2"/><path d="M-24-43q24-10 48 0" fill="none" stroke="#f7e8ce" stroke-width="3"/><ellipse cy="-5" rx="39" ry="13" fill="#bb906b"/><ellipse cy="-9" rx="35" ry="11" fill="#e9d3b4"/></g>
+</defs>
+<path d="M57 94V44q0-16 16-16h65q16 0 16 16v50" fill="#ede5ce" stroke="#d6ccb4" stroke-width="2"/>
+<path d="M68 87V45q0-7 7-7h61q7 0 7 7v42Z" fill="#d2ddd0"/>
+<path d="M106 38v48M68 66h75" stroke="#faf4e3" stroke-width="5"/><path d="M133 44 78 83" stroke="#f7f8e6" stroke-width="10" opacity=".5"/>
+<path d="M327 45v25m-13 0q13-24 26 0" stroke="#9aa184" fill="none" stroke-width="2"/><ellipse cx="327" cy="76" rx="24" ry="18" fill="#d9b888"/><path d="M307 78h40" stroke="#eee1bd" stroke-width="2"/><path d="M321 94h12" stroke="#b28d65" stroke-width="2"/>
+<path d="M37 138q173-8 346 0M34 346q176 8 352 0" fill="none" stroke="#ded3bf" stroke-width="1" stroke-dasharray="2 7"/>
+<g class="chair-art" data-chair="A1" transform="translate(112 141)"><use href="#chair"/></g><g class="chair-art" data-chair="A2" transform="translate(308 141)"><use href="#chair"/></g>
+<ellipse cx="210" cy="255" rx="164" ry="80" fill="#74533c" opacity=".09"/>
+<path d="M82 257v43M338 257v43" stroke="#ad794e" stroke-width="12" stroke-linecap="round"/>
+<rect x="43" y="161" width="334" height="127" rx="58" fill="#b88055"/>
+<rect x="43" y="150" width="334" height="127" rx="58" fill="url(#wood)" stroke="#c78b5d" stroke-width="2"/>
+<rect x="54" y="158" width="312" height="108" rx="50" fill="none" stroke="#edc49a" stroke-width="2"/>
+<path d="M74 184h272M68 238h284" stroke="#9a603e" stroke-width="1" opacity=".13"/>
+<path d="M155 150h110v126H155z" fill="url(#cloth)"/><path d="M155 150h110v126H155z" fill="url(#cloth-lines)"/>
+<path d="M163 155v116M257 155v116" stroke="#bd7760" stroke-width="1" stroke-dasharray="3 4" opacity=".5"/>
+<ellipse cx="207" cy="228" rx="45" ry="20" fill="#ab7e54" opacity=".2"/><ellipse cx="207" cy="223" rx="42" ry="18" fill="#f8f2df" stroke="#d6c6a1" stroke-width="2"/><ellipse cx="207" cy="222" rx="32" ry="12" fill="#e7d8b9"/>
+<g fill="#b7bc77" stroke="#8e9a5d" stroke-width="1"><ellipse cx="191" cy="221" rx="10" ry="6" transform="rotate(-20 191 221)"/><ellipse cx="212" cy="218" rx="11" ry="6" transform="rotate(12 212 218)"/><ellipse cx="222" cy="224" rx="10" ry="5"/></g>
+<g fill="#d7925a"><circle cx="201" cy="224" r="5"/><circle cx="214" cy="226" r="4"/></g><path d="m190 220 10 2m11-6 9 4" stroke="#e5edba" stroke-width="2"/>
+<g transform="translate(113 218)"><ellipse rx="18" ry="10" fill="#eed7b6"/><path d="M-12-6h24l-3 15q-9 6-18 0Z" fill="#f9eacc" stroke="#c8a681"/><ellipse cy="-6" rx="12" ry="5" fill="#a87c4a"/></g>
+<g transform="translate(308 218)"><ellipse rx="18" ry="10" fill="#eed7b6"/><path d="M-12-6h24l-3 15q-9 6-18 0Z" fill="#f9eacc" stroke="#c8a681"/><ellipse cy="-6" rx="12" ry="5" fill="#a87c4a"/></g>
+<g class="steam" stroke="#fff8e8" stroke-width="2" fill="none" stroke-linecap="round"><path d="M107 200q-5-7 1-13t0-12"/><path d="M311 200q5-7-1-13t0-12"/></g>
+<g transform="translate(208 169)"><path d="M-9 0h18l-3 19h-12Z" fill="#879782"/><path d="M0 1v-15m0 6-9-8m9 13 9-9" stroke="#748d64" stroke-width="2"/><ellipse cx="-9" cy="-15" rx="6" ry="3" fill="#9bab77" transform="rotate(30 -9 -15)"/><ellipse cx="9" cy="-10" rx="6" ry="3" fill="#97a672" transform="rotate(-30 9 -10)"/></g>
+<g class="chair-art" data-chair="B1" transform="translate(112 340)"><use href="#chair"/></g><g class="chair-art" data-chair="B2" transform="translate(308 340)"><use href="#chair"/></g>
+<path d="M67 388h286" stroke="#ded4bf" stroke-dasharray="3 5"/><path d="M106 425q104 9 208 0" fill="none" stroke="#decdb3" stroke-width="7" stroke-linecap="round"/>
+</svg>
+<button class="seat" data-seat="A1" style="--x:26.667%;--y:31.82%" aria-label="A1 窗边座"><span class="seat-dot">✦</span><span class="seat-label">A1 · 窗边</span></button>
+<button class="seat" data-seat="A2" style="--x:73.333%;--y:31.82%" aria-label="A2 座位"><span class="seat-dot">＋</span><span class="seat-label">A2</span></button>
+<button class="seat" data-seat="B1" style="--x:26.667%;--y:76.6%" aria-label="B1 座位，与 A1 对面"><span class="seat-dot">＋</span><span class="seat-label">B1</span></button>
+<button class="seat" data-seat="B2" style="--x:73.333%;--y:76.6%" aria-label="B2 座位，与 A2 对面"><span class="seat-dot">＋</span><span class="seat-label">B2</span></button>
+<svg class="relation-layer" viewBox="0 0 420 440" aria-hidden="true"><path id="relation-path" d="M112 147V280"/><g id="relation-sign" transform="translate(112 211)"><circle r="12"/><path d="m-4-4 8 8m0-8-8 8"/></g><path id="preview-path" d=""/></svg>
+<button id="waiting" class="waiting" aria-label="将选中角色请回候客区"><span>候客长凳</span><span class="waiting-note">选中客人后，可请回这里</span></button>
+<!--WARM_GUESTS-->
+<div id="fx" class="fx" aria-hidden="true"></div>
+<div class="speech" id="speech" aria-hidden="true"></div>
+</div>
+<div class="status-strip" id="status-strip" aria-live="polite" aria-atomic="true"><span id="status-icon">!</span><span id="status-text">兔有点紧张，不想和狐面对面。</span></div>
+<div class="rules"><div id="rule-window"><span class="rule-symbol">✓</span>狐坐窗边</div><div id="rule-eye-contact"><span class="rule-symbol">!</span>兔安心，或别坐狐对面</div></div>
+<div class="actions"><button id="undo" class="tool" disabled><svg class="icon"><use href="#i-back"/></svg><span>撤销</span></button><button id="bell" class="bell-button" aria-pressed="false"><span class="bell-drawing"><svg class="icon"><use href="#i-bell"/></svg></span><span><strong>安心铃 <b id="stock">1</b></strong><small>让兔放下戒心</small></span></button><button id="restart" class="tool"><svg class="icon"><use href="#i-reset"/></svg><span>重玩</span></button></div>
+<div class="feast" id="feast" hidden><span>✧</span><div><strong>这下，可以开席了。</strong><small>也可以继续换座，看看另一种解法。</small></div><button id="dismiss-feast" aria-label="收起开席提示">×</button></div>
+</section>
+<footer><span>点选再点座位，或直接拖动客人</span><span class="sample-tag">表现候选 · 非正式关卡</span></footer>
+</main>
+<dialog id="help"><button id="close-help" class="close-help" aria-label="关闭说明">×</button><span class="eyebrow">两位客人，一点小心事</span><h2>让这一桌舒服一点。</h2><p>狐喜欢窗边 A1。兔没安心时，不愿坐在狐的正对面。</p><p>可以给兔换座，也可以点<strong>安心铃</strong>，再点兔。误投不消耗；撤销会同时恢复座位、安心状态和库存。</p><p>点选客人后，点已占座位可交换；候客入座可顶替原客人。键盘也可用 Tab、Enter 操作，Esc 取消选择。</p><p class="fine-print">原创 SVG 分层角色 · 离线单文件 · 不保存进度，不请求网络。声音默认关闭；支持减少动画。本小样复用冻结版本的规则内核与道具逻辑，仅抽取双角色情境，不是新的正式关卡。</p><button id="help-play" class="primary">知道了，开桌</button></dialog>
+<!--WARM_SCRIPT-->
+</body></html>
