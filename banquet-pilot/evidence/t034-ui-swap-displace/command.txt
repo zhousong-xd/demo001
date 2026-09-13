@@ -1,0 +1,6 @@
+# T-034 independent rerun of the same T-033 script
+# Reviewed first, then executed unchanged from tip 639368b18c4d1d33fea288e8fdfdb725d92e2df0
+cd banquet-pilot
+node --experimental-websocket tests/evidence/scripts/t033-playtest-ui-swap-displace.mjs
+# exit_code=0  started=2026-09-12T07:08:16Z  ended=2026-09-12T07:08:39Z
+# Independent evidence copied here; author T-033 evidence restored from backup (not overwritten in git).

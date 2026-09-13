@@ -1,0 +1,49 @@
+{
+  "task": "T-048",
+  "kind": "candidates-playtest-ui-sample-c05-c08-c11",
+  "shippedClaim": false,
+  "input": "mouse-sim (CDP Input.dispatchMouseEvent)",
+  "deviceUntested": true,
+  "samples": [
+    "c05",
+    "c08",
+    "c11"
+  ],
+  "results": [
+    {
+      "step": "c05_place",
+      "pass": true,
+      "levelId": "C05"
+    },
+    {
+      "step": "c05_undo",
+      "pass": true
+    },
+    {
+      "step": "c08_place",
+      "pass": true,
+      "levelId": "C08"
+    },
+    {
+      "step": "c08_undo",
+      "pass": true
+    },
+    {
+      "step": "c11_place",
+      "pass": true,
+      "levelId": "C11"
+    },
+    {
+      "step": "c11_undo",
+      "pass": true
+    }
+  ],
+  "pageErrors": [],
+  "dist": {
+    "bytes": 73182,
+    "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "hasCR": false
+  },
+  "expectedProductSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "baselineTipMin": "57896e748d38c24c9d900026d5b66e6e8df36864"
+}

@@ -1,0 +1,108 @@
+{
+  "task": "T-020",
+  "issue": 26,
+  "kind": "SHORT SMOKE",
+  "verdict": "PASS",
+  "agent": "宴席·质检",
+  "role": "BOT",
+  "work": "qa",
+  "timestampUtc": "2026-09-12T05:39:37Z",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "/workspace/demo001-t002/repo/banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "blob": "c17208faa0548c34cb8cc150a5dc4bce96a61b9c",
+    "lfOnly": true,
+    "rebuilt": false,
+    "modified": false,
+    "verifiedBeforeAfter": true,
+    "anchorMatch": true
+  },
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "chrome": "google-chrome 151.0.7922.169 headless=new",
+    "realDevice": "真机未测",
+    "multitouch": "未测",
+    "mouseSim": true,
+    "touchSim": false,
+    "branch": "bot/banquet-pilot"
+  },
+  "matrix": [
+    {
+      "id": "L01_click_win",
+      "name": "L01 通关路径",
+      "status": "PASS",
+      "input": "mouse-sim",
+      "won": true,
+      "showFeast": true,
+      "assignment": {
+        "fox": "A1",
+        "otter": "A2",
+        "crane": "B1",
+        "rabbit": "B2"
+      }
+    },
+    {
+      "id": "L03_calm_invalid_no_consume",
+      "name": "L03 安心铃误投不扣",
+      "status": "PASS",
+      "input": "mouse-sim",
+      "inventory": { "calm_bell": 1 },
+      "msg": "安心铃只能对兔使用（无效目标，未消耗）"
+    },
+    {
+      "id": "L03_calm_apply_rabbit",
+      "name": "L03 安心铃对兔有效",
+      "status": "PASS",
+      "input": "mouse-sim",
+      "calm": ["rabbit"],
+      "inventory": { "calm_bell": 0 }
+    },
+    {
+      "id": "real_device_multitouch",
+      "name": "真机/多指",
+      "status": "未测",
+      "input": "真机",
+      "note": "无实体机；CDP mouse-sim ≠ 真机/多指。不得 PASS。"
+    }
+  ],
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "tested": [
+    "冻结 HTML 锚点（SHA / bytes / sha256 / LF）",
+    "L01 standalone 启动 + mouse-sim 通关路径",
+    "L03 安心铃误投不扣 + 对兔生效"
+  ],
+  "untested": [
+    "真机",
+    "多指 / physical multitouch",
+    "touch-sim",
+    "L02 全路径、撤销、提示、损坏存档、视口矩阵、离线 file://"
+  ],
+  "paths": {
+    "matrix": "/workspace/demo001-t002/repo/banquet-pilot/reports/qa/T-020-short-smoke-20260912.md",
+    "summary": "/workspace/demo001-t002/repo/banquet-pilot/reports/qa/T-020-short-smoke-summary.json",
+    "evidence": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t020-short-smoke/",
+    "script": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t020-short-smoke/scripts/t020-short-smoke.mjs",
+    "shots": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t020-short-smoke/shots/"
+  },
+  "push": {
+    "pushed": false,
+    "reason": "默认不推；无 GH_TOKEN / GITHUB_TOKEN",
+    "tip": "本地未推",
+    "branch": "bot/banquet-pilot",
+    "head": "edfe385dc33d8129b3b9607be7c2c1c75a456ce4",
+    "note": "报告与证据仅在工作区未提交；HEAD 为既有 docs commit，不含本环文件"
+  },
+  "gate": {
+    "verdict": "PASS",
+    "acceptReservedForLead": true
+  }
+}

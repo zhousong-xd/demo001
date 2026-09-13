@@ -1,0 +1,35 @@
+{
+  "id": "C07",
+  "title": "一枚铃够不够",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [{"id": "calm_bell", "stock": 1, "valid_targets": ["rabbit", "tanuki"]}],
+  "rules": [
+    {"id": "C07-r1", "kind": "at", "subject": "fox", "seat": "A2"},
+    {"id": "C07-r2", "kind": "faces", "subject": "otter", "other": "crane"},
+    {"id": "C07-r3", "kind": "end", "subject": "hedgehog"},
+    {"id": "C07-r4", "kind": "same_row", "subject": "hedgehog", "other": "fox"},
+    {
+      "id": "C07-r5",
+      "kind": "not_faces_unless",
+      "subject": "rabbit",
+      "other": "fox",
+      "unless_state": "calm"
+    },
+    {
+      "id": "C07-r6",
+      "kind": "not_faces_unless",
+      "subject": "tanuki",
+      "other": "fox",
+      "unless_state": "calm"
+    }
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": null,
+    "calm_bell": "L03-style stock 1; valid_targets rabbit+tanuki (item target choice)",
+    "note": "Design candidate draft under candidates/levels only; not formal levels/. Forced B2 needs calm on whoever sits there."
+  }
+}

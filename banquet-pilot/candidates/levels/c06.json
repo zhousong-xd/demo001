@@ -1,0 +1,21 @@
+{
+  "id": "C06",
+  "title": "隔桌传话",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [],
+  "rules": [
+    {"id": "C06-r1", "kind": "at", "subject": "fox", "seat": "A1"},
+    {"id": "C06-r2", "kind": "faces", "subject": "rabbit", "other": "fox"},
+    {"id": "C06-r3", "kind": "faces", "subject": "otter", "other": "crane"},
+    {"id": "C06-r4", "kind": "end", "subject": "hedgehog"},
+    {"id": "C06-r5", "kind": "not_beside", "subject": "tanuki", "other": "hedgehog"}
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": null,
+    "note": "Design candidate draft under candidates/levels only; not formal levels/. Two disjoint faces pairs."
+  }
+}

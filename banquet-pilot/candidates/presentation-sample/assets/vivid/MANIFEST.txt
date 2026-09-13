@@ -1,0 +1,4 @@
+T-067 hard-gate sprite strips (切帧，禁止单图 bob)
+HD: sheets/{who}_{walk|idle|rise|sit|refuse}.png + .json
+Compat 96x112: {who}_{anim}.png + .json (fpsHint/order in json)
+Preview: sheets/catalog.html

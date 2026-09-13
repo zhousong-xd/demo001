@@ -1,0 +1,10 @@
+{
+  "assignment": {
+    "fox": "A2",
+    "rabbit": "A1",
+    "crane": null,
+    "otter": null
+  },
+  "historyLen": 3,
+  "label": "mouse-sim center of occupied seat"
+}

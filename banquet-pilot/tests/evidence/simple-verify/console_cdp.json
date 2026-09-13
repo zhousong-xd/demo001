@@ -1,0 +1,123 @@
+{
+  "console_events_count": 3,
+  "console_events": [
+    {
+      "method": "Runtime.consoleAPICalled",
+      "params": {
+        "type": "log",
+        "args": [
+          {
+            "type": "string",
+            "value": "[banquet]"
+          },
+          {
+            "type": "string",
+            "value": "level"
+          },
+          {
+            "type": "string",
+            "value": "L01"
+          },
+          {
+            "type": "string",
+            "value": "先让大家坐下"
+          }
+        ],
+        "executionContextId": 2,
+        "timestamp": 1789177501446.575,
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "log",
+              "scriptId": "6",
+              "url": "http://127.0.0.1:8760/src/ui/app.js",
+              "lineNumber": 79,
+              "columnNumber": 10
+            },
+            {
+              "functionName": "switchLevel",
+              "scriptId": "6",
+              "url": "http://127.0.0.1:8760/src/ui/app.js",
+              "lineNumber": 105,
+              "columnNumber": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "Log.entryAdded",
+      "params": {
+        "entry": {
+          "source": "network",
+          "level": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (File not found)",
+          "timestamp": 1789177501446.744,
+          "url": "http://127.0.0.1:8760/favicon.ico",
+          "networkRequestId": "635732.13"
+        }
+      }
+    },
+    {
+      "method": "Runtime.consoleAPICalled",
+      "params": {
+        "type": "log",
+        "args": [
+          {
+            "type": "string",
+            "value": "[banquet]"
+          },
+          {
+            "type": "string",
+            "value": "level"
+          },
+          {
+            "type": "string",
+            "value": "L02"
+          },
+          {
+            "type": "string",
+            "value": "隔桌也算陪伴"
+          }
+        ],
+        "executionContextId": 3,
+        "timestamp": 1789177503872.883,
+        "stackTrace": {
+          "callFrames": [
+            {
+              "functionName": "log",
+              "scriptId": "6",
+              "url": "http://127.0.0.1:8760/src/ui/app.js",
+              "lineNumber": 79,
+              "columnNumber": 10
+            },
+            {
+              "functionName": "switchLevel",
+              "scriptId": "6",
+              "url": "http://127.0.0.1:8760/src/ui/app.js",
+              "lineNumber": 105,
+              "columnNumber": 2
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "evals": {
+    "L01": {
+      "level": "L01",
+      "title": "宴席灰盒 · Banquet Pilot",
+      "ready": "complete",
+      "pageErrors": [],
+      "bodySnippet": "宴席灰盒 · L01 先让大家坐下 L01 L02 撤销 重置 已入座 0/4 · 历史 0 · 点选或拖拽入座 A1 A2 B1 B2 候客区（初始全员在此） 狐 兔 鹤 獭 规则状态（符号+文本，非仅靠颜色） ○ 狐 坐 A1（指定座位） L01-r1 · ○ 待定（PENDING） ○ 鹤 坐 B1（指定座位） L01-r2 · ○ 待定（PENDING） ○ 兔 与 狐 不可紧挨 L01-r3 · ○ 待定（PENDING） 操作：拖拽角色到座位；或先点角色再点座位。"
+    },
+    "L02": {
+      "level": "L02",
+      "title": "宴席灰盒 · Banquet Pilot",
+      "ready": "complete",
+      "pageErrors": [],
+      "bodySnippet": "宴席灰盒 · L02 隔桌也算陪伴 L01 L02 撤销 重置 已入座 0/6 · 历史 0 · 点选或拖拽入座 A1 A2 A3 B1 B2 B3 候客区（初始全员在此） 狐 兔 鹤 獭 狸 猬 规则状态（符号+文本，非仅靠颜色） ○ 狐 坐 A1（指定座位） L02-r1 · ○ 待定（PENDING） ○ 鹤 坐 B3（指定座位） L02-r2 · ○ 待定（PENDING） ○ 兔 与 狐 必须对面 L02-r3 · ○ 待定（PENDING） ○ 猬 必须端位 L0"
+    }
+  },
+  "note": "CDP Runtime/Log page console; chrome host dbus stderr ignored; 真机未测"
+}

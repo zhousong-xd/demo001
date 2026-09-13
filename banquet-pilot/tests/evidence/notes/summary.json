@@ -1,0 +1,95 @@
+{
+  "inputLabels": {
+    "mouseSim": "native-sim CDP Input.dispatchMouseEvent",
+    "touchSimNative": "native-sim CDP Input.dispatchTouchEvent",
+    "touchSimJs": "JS-synthesized PointerEvent (handler semantics only)"
+  },
+  "touchSim": true,
+  "realDevice": "未测",
+  "viewports": {
+    "360x640": {
+      "innerWidth": 360,
+      "innerHeight": 640,
+      "dpr": 1
+    },
+    "390x844": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "dpr": 1
+    }
+  },
+  "consoleErrors": [],
+  "paths": {
+    "l01_click": "ok",
+    "l01_drag": "ok",
+    "swap_undo": "ok",
+    "displace": "ok",
+    "invalid_drop": "ok",
+    "same_seat": "ok",
+    "pointercancel_native": "ok",
+    "pointercancel_js": "ok",
+    "interrupt": "ok",
+    "listener_teardown": "ok",
+    "visibility_cancel": "ok",
+    "center_click_swap": "ok",
+    "center_click_displace": "ok",
+    "multitouch_gate": "ok-cancel-safe",
+    "gesture_gate_seat": "ok",
+    "touch_tap_drag": "ok",
+    "l02_drag": "ok",
+    "l02_click": "ok",
+    "after_cancel_ops": "ok"
+  },
+  "isolation": {
+    "chromeProfile": "temp clean",
+    "authEnvStripped": true,
+    "origin": "https://github.com/zhousong-xd/demo001.git (no embedded creds)",
+    "status": "historical-weak-pre-staged-A"
+  },
+  "supplementalProofs": {
+    "blur_teardown": {
+      "ok": true,
+      "listenerStats": {
+        "register": 3,
+        "unregister": 3,
+        "activeWindow": 0,
+        "commits": 0,
+        "cancels": 1
+      }
+    },
+    "one_commit": {
+      "ok": true,
+      "listenerStats": {
+        "register": 6,
+        "unregister": 6,
+        "activeWindow": 0,
+        "commits": 1,
+        "cancels": 1
+      },
+      "assignment": {
+        "fox": "A1",
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      }
+    },
+    "seat_gate": {
+      "ok": true
+    },
+    "multitouch": {
+      "ok": true,
+      "assignment": {
+        "fox": null,
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      },
+      "historyLen": 0,
+      "mode": "cancel-safe"
+    },
+    "after_cancel_ops": {
+      "ok": true
+    }
+  },
+  "isolationHistoricalNote": "WEAK: pre staged-A; --no-sandbox + env-spread delete; not isolation-valid. See notes/isolation-staged-A.md"
+}

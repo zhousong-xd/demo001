@@ -1,0 +1,166 @@
+{
+  "task": "T-005",
+  "kind": "LEAD INDEPENDENT RECHECK",
+  "role": "GPT",
+  "agent": "GROKBOT01",
+  "productSha": "f28893f3c419d794c6ba102bac67038683cb462c",
+  "mouseSim": true,
+  "touchSim": false,
+  "realDevice": "真机未测",
+  "dist": {
+    "path": "banquet-pilot/dist/banquet-pilot.html",
+    "bytes": 73182,
+    "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "lfOnly": true
+  },
+  "steps": [
+    {
+      "id": "offline_file_load",
+      "ok": true,
+      "levelId": "L01",
+      "embedded": true,
+      "seatKeys": [
+        "fox",
+        "rabbit",
+        "crane",
+        "otter"
+      ],
+      "input": "n/a (boot)",
+      "url": "file://…/dist/banquet-pilot.html?level=L01",
+      "note": "standalone file:// boots L01 embedded"
+    },
+    {
+      "id": "viewport_360x640",
+      "ok": true,
+      "geo": {
+        "innerWidth": 360,
+        "innerHeight": 640,
+        "scrollWidth": 360,
+        "scrollHeight": 640,
+        "scrollWidthOk": true,
+        "seatCount": 4,
+        "overlaps": []
+      },
+      "input": "n/a (layout)",
+      "viewport": "360x640",
+      "note": "no seat overlap; scrollWidth ok"
+    },
+    {
+      "id": "viewport_390x844",
+      "ok": true,
+      "geo": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "scrollWidth": 390,
+        "scrollHeight": 844,
+        "scrollWidthOk": true,
+        "seatCount": 4,
+        "overlaps": []
+      },
+      "input": "n/a (layout)",
+      "viewport": "390x844",
+      "note": "no seat overlap; scrollWidth ok"
+    },
+    {
+      "id": "viewport_1280x800",
+      "ok": true,
+      "geo": {
+        "innerWidth": 1280,
+        "innerHeight": 800,
+        "scrollWidth": 1280,
+        "scrollHeight": 800,
+        "scrollWidthOk": true,
+        "seatCount": 4,
+        "overlaps": []
+      },
+      "input": "n/a (layout)",
+      "viewport": "1280x800",
+      "note": "no seat overlap; scrollWidth ok"
+    },
+    {
+      "id": "empty_seat_place",
+      "ok": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      },
+      "input": "mouse-sim",
+      "viewport": "390x844"
+    },
+    {
+      "id": "swap_two_seated",
+      "ok": true,
+      "assignment": {
+        "fox": "B2",
+        "rabbit": "A1",
+        "crane": null,
+        "otter": null
+      },
+      "input": "mouse-sim",
+      "viewport": "390x844"
+    },
+    {
+      "id": "undo_after_swap",
+      "ok": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": "B2",
+        "crane": null,
+        "otter": null
+      },
+      "input": "mouse-sim"
+    },
+    {
+      "id": "L01_click_win",
+      "ok": true,
+      "won": true,
+      "showFeast": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": "B2",
+        "crane": "B1",
+        "otter": "A2"
+      },
+      "input": "mouse-sim"
+    },
+    {
+      "id": "L03_calm_invalid_target",
+      "ok": true,
+      "inventory": {
+        "calm_bell": 1
+      },
+      "msg": "安心铃只能对兔使用（无效目标，未消耗）",
+      "input": "mouse-sim"
+    },
+    {
+      "id": "L03_calm_apply",
+      "ok": true,
+      "calm": [
+        "rabbit"
+      ],
+      "inventory": {
+        "calm_bell": 0
+      },
+      "input": "mouse-sim"
+    },
+    {
+      "id": "corrupt_save_recover",
+      "ok": true,
+      "levelId": "L01",
+      "msg": "存档损坏（JSON 无效） — 已恢复到开局。",
+      "allWaiting": true,
+      "input": "n/a (reload after inject)"
+    },
+    {
+      "id": "console_exceptions",
+      "ok": true,
+      "exceptionCount": 0,
+      "note": "no Runtime.exceptionThrown"
+    }
+  ],
+  "failures": [],
+  "ok": true,
+  "exceptionCount": 0
+}

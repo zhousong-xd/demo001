@@ -1,0 +1,11 @@
+product_sha=f28893f3c419d794c6ba102bac67038683cb462c
+html_path=banquet-pilot/dist/banquet-pilot.html
+lf_bytes=73182
+sha256=19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5
+has_CR=false
+blob_worktree=c17208faa0548c34cb8cc150a5dc4bce96a61b9c
+blob_at_product=c17208faa0548c34cb8cc150a5dc4bce96a61b9c
+dist_src_diff_since_product=none
+verified_before_and_after_smoke=yes
+modified=no
+rebuilt=no

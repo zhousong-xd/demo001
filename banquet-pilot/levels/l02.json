@@ -1,0 +1,23 @@
+{
+  "id": "L02",
+  "title": "隔桌也算陪伴",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [],
+  "rules": [
+    {"id": "L02-r1", "kind": "at", "subject": "fox", "seat": "A1"},
+    {"id": "L02-r2", "kind": "at", "subject": "crane", "seat": "B3"},
+    {"id": "L02-r3", "kind": "faces", "subject": "rabbit", "other": "fox"},
+    {"id": "L02-r4", "kind": "end", "subject": "hedgehog"},
+    {"id": "L02-r5", "kind": "same_row", "subject": "tanuki", "other": "crane"}
+  ],
+  "known_solution": {
+    "fox": "A1",
+    "otter": "A2",
+    "hedgehog": "A3",
+    "rabbit": "B1",
+    "tanuki": "B2",
+    "crane": "B3"
+  }
+}

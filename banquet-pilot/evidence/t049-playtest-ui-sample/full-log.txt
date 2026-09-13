@@ -1,0 +1,7 @@
+[PASS] c05 place fox→A1
+[PASS] c05 undo
+[PASS] c08 place fox→A1
+[PASS] c08 undo
+[PASS] c11 place fox→A1
+[PASS] c11 undo
+[未测] 真机 / 多指（CDP mouse-sim ≠ 真机）

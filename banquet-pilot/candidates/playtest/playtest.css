@@ -1,0 +1,35 @@
+/* T-016 candidates-only chrome. Does not rewrite product app.css. */
+.candidate-banner {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  margin: 0 auto;
+  max-width: 520px;
+  padding: 8px 12px;
+  background: #f0c14b;
+  color: #1b1e24;
+  font-size: 12px;
+  line-height: 1.4;
+  border-bottom: 2px solid #c9a227;
+}
+.candidate-banner code { font-size: 11px; }
+.cand-pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+.cand-pick select {
+  min-height: 36px;
+  border-radius: 8px;
+  border: 1px solid #4a5568;
+  background: #252a33;
+  color: #e8eaed;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+.cand-note {
+  font-size: 11px;
+  color: #c9a227;
+  line-height: 1.35;
+}

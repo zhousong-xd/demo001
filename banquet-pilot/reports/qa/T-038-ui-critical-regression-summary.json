@@ -1,0 +1,145 @@
+{
+  "task": "T-038",
+  "issue": 44,
+  "kind": "CANDIDATES PLAYTEST UI ONE-COMMAND CRITICAL REGRESSION",
+  "verdict": "PASS",
+  "agent": "宴席·质检",
+  "role": "BOT",
+  "work": "qa",
+  "timestampUtc": "2026-09-12T08:13:06Z",
+  "engineeringTip": "b3dd7cee7f0f0610a6bdee42eaed243593454b22",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "blob": "c17208faa0548c34cb8cc150a5dc4bce96a61b9c",
+    "lfOnly": true,
+    "rebuilt": false,
+    "modified": false,
+    "verifiedBeforeAfter": true,
+    "anchorMatch": true,
+    "note": "本环测 candidates/playtest UI 一键关键回归，非正式包"
+  },
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "chrome": "151.0.7922.169 headless=new CDP",
+    "command": "cd banquet-pilot && node --experimental-websocket tests/evidence/scripts/t037-playtest-ui-critical-regression.mjs",
+    "startedUtc": "2026-09-12T08:12:41Z",
+    "endedUtc": "2026-09-12T08:13:06Z",
+    "exitCode": 0,
+    "browser": "headless Chrome CDP mouse-sim",
+    "realDevice": "真机未测",
+    "multitouch": "未测",
+    "branch": "bot/banquet-pilot",
+    "scriptBlob": "acb47d098e3ae471f17885c66661cba205bc0598"
+  },
+  "matrix": [
+    {
+      "id": "UI-PLACE",
+      "name": "放 c01 fox→A1",
+      "status": "PASS",
+      "detail": "assignment.fox=A1; shot 02"
+    },
+    {
+      "id": "UI-UNDO",
+      "name": "撤 撤销空桌",
+      "status": "PASS",
+      "detail": "seated=0 historyLen=0; shot 03"
+    },
+    {
+      "id": "UI-SWITCH",
+      "name": "切 c01→c02",
+      "status": "PASS",
+      "detail": "fileId=c02 levelId=C02; shot 04"
+    },
+    {
+      "id": "UI-SWAP",
+      "name": "换 c02 fox/rabbit",
+      "status": "PASS",
+      "detail": "fox=A2 rabbit=A1; shot 05"
+    },
+    {
+      "id": "UI-DISPLACE",
+      "name": "顶 c01 rabbit→A1",
+      "status": "PASS",
+      "detail": "rabbit=A1 fox=null; shot 06"
+    },
+    {
+      "id": "UI-BELL-MISS",
+      "name": "铃误投 fox 不扣库存",
+      "status": "PASS",
+      "detail": "stock unchanged; shot 07"
+    },
+    {
+      "id": "UI-BELL-HIT",
+      "name": "铃命中 rabbit",
+      "status": "PASS",
+      "detail": "stock-1 calm=[rabbit]; shot 08"
+    },
+    {
+      "id": "DEV",
+      "name": "真机/多指",
+      "status": "未测",
+      "detail": "无实体机；CDP mouse-sim ≠ 真机"
+    }
+  ],
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "tested": [
+    "冻结 dist 锚点复跑前后一致",
+    "先审后复跑同一 T-037 脚本 exit 0",
+    "放/撤/切/换/顶/铃七步",
+    "抽检 shots 01–08 + script summary"
+  ],
+  "untested": [
+    "真机",
+    "多指",
+    "正式关宣称 / 合 PR"
+  ],
+  "smoke": {
+    "exitCode": 0,
+    "banner": "[PASS] place; undo; switch; swap; displace; calm miss; calm hit",
+    "kind": "candidates-playtest-ui-critical-regression",
+    "steps": [
+      "place_c01",
+      "undo_c01",
+      "switch_c02",
+      "swap_c02",
+      "displace_c01",
+      "calm_miss_fox",
+      "calm_hit_rabbit"
+    ],
+    "consolidates": [
+      "T-031",
+      "T-033",
+      "T-035"
+    ],
+    "pageErrors": []
+  },
+  "paths": {
+    "reportMd": "banquet-pilot/reports/qa/T-038-ui-critical-regression-20260912.md",
+    "reportJson": "banquet-pilot/reports/qa/T-038-ui-critical-regression-summary.json",
+    "evidence": "banquet-pilot/evidence/t038-ui-critical-regression/",
+    "script": "banquet-pilot/tests/evidence/scripts/t037-playtest-ui-critical-regression.mjs"
+  },
+  "push": {
+    "branch": "bot/banquet-pilot",
+    "scope": "reports/qa + evidence/t038 only",
+    "tip": "efba6df2d74f619604fb2cc70ac3627387ab5293",
+    "comment": "https://github.com/zhousong-xd/demo001/issues/44#issuecomment-5644665449"
+  },
+  "experience": "试玩页关键操作一键回归顺——放撤切换顶铃七步全绿；真机触屏仍未测，正式包仍冻结。",
+  "gate": {
+    "authorSelfTestEqualsIndependent": false,
+    "distReadOnly": true,
+    "acceptByLead": true,
+    "shippedClaim": false
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "task": "T-005",
+  "issue": 9,
+  "kind": "AUTHOR REGRESSION / NOT independent QA",
+  "banner": "AUTHOR REGRESSION — NOT independent QA",
+  "decide": "5643375947",
+  "scheme": 3,
+  "agent": "GROKBOT01",
+  "role": "BOT",
+  "work": "qa",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "verifiedBefore": true,
+    "verifiedAfter": true,
+    "rebuilt": false,
+    "modified": false
+  },
+  "deliverySha": "ff71a7aa1d642bb5439aae90307176413cc49938",
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "chrome": "/usr/bin/google-chrome headless=new sandbox=ON",
+    "realDevice": "真机未测",
+    "branch": "bot/banquet-pilot"
+  },
+  "reuse": {
+    "units58": {
+      "status": "REUSED",
+      "sameProductSha": true,
+      "optionalReconfirm": "58/58 pass",
+      "command": "node --test banquet-pilot/tests/test_rules.mjs banquet-pilot/tests/test_board.mjs banquet-pilot/tests/test_t004.mjs"
+    },
+    "priorT004StandaloneL03": {
+      "status": "REUSED_CITED_AND_RERUN_INTO_T005_DIR",
+      "priorPath": "banquet-pilot/tests/evidence/t004-three-level/",
+      "thisRunPath": "banquet-pilot/evidence/t005-author-regression/t004-three-level/"
+    }
+  },
+  "counts": {
+    "PASS": 36,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "未测": 1,
+    "total": 37
+  },
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "items": [
+    {
+      "id": "A01",
+      "result": "PASS",
+      "note": "REUSED units six rule classes"
+    },
+    {
+      "id": "A02",
+      "result": "PASS",
+      "note": "REUSED unseated PENDING"
+    },
+    {
+      "id": "A03",
+      "result": "PASS",
+      "note": "REUSED illegal state"
+    },
+    {
+      "id": "A04",
+      "result": "PASS",
+      "note": "REUSED three-level static"
+    },
+    {
+      "id": "A05",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/extra/empty_seat_place.png"
+    },
+    {
+      "id": "B01",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/L01_click_win.png"
+    },
+    {
+      "id": "B02",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/L02_click_win.png"
+    },
+    {
+      "id": "B03",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/L01_drag_win.png"
+    },
+    {
+      "id": "B04",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/after_drag_cancel.png"
+    },
+    {
+      "id": "B05",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/after_swap.png"
+    },
+    {
+      "id": "B06",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/gap1_occupant_displace.png"
+    },
+    {
+      "id": "B07",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/after_undo.png"
+    },
+    {
+      "id": "B08",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/extra/after_restart.png"
+    },
+    {
+      "id": "B09",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/extra/after_background_cancel.png"
+    },
+    {
+      "id": "B10",
+      "result": "PASS",
+      "input": "touch-sim",
+      "evidence": "evidence/t005-author-regression/simple-interactive/gap2_touch_place.png"
+    },
+    {
+      "id": "B11",
+      "result": "PASS",
+      "input": "touch-sim",
+      "note": "CDP multitouch cancel-safe; NOT 真机",
+      "evidence": "evidence/t005-author-regression/simple-interactive/gap2_multitouch.png"
+    },
+    {
+      "id": "B12",
+      "result": "未测",
+      "input": "真机",
+      "note": "no physical phone; CDP is not 真机"
+    },
+    {
+      "id": "C01",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/L03_invalid_target.png"
+    },
+    {
+      "id": "C02",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/L03_calm.png"
+    },
+    {
+      "id": "C03",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/summary.json#L03_undo"
+    },
+    {
+      "id": "C04",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/summary.json#L03_replay"
+    },
+    {
+      "id": "C05",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "note": "replay/重玩 restores initial calm_bell stock"
+    },
+    {
+      "id": "C06",
+      "result": "PASS",
+      "note": "REUSED unit calm anti-cases"
+    },
+    {
+      "id": "D01",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/L01_feast.png"
+    },
+    {
+      "id": "D02",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/L02_feast.png"
+    },
+    {
+      "id": "D03",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/L03_feast.png"
+    },
+    {
+      "id": "D04",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "viewport": "360x640",
+      "evidence": "evidence/t005-author-regression/simple-interactive/viewport_360x640.png"
+    },
+    {
+      "id": "D05",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "viewport": "390x844",
+      "evidence": "evidence/t005-author-regression/simple-interactive/viewport_390x844.png"
+    },
+    {
+      "id": "D06",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "viewport": "1280x800",
+      "evidence": "evidence/t005-author-regression/extra/viewport_desktop_1280x800.png"
+    },
+    {
+      "id": "D07",
+      "result": "PASS",
+      "note": "consoleErrorCount=0"
+    },
+    {
+      "id": "D08",
+      "result": "PASS",
+      "note": "file:// offline load",
+      "evidence": "evidence/t005-author-regression/extra/offline_file_load.png"
+    },
+    {
+      "id": "D09",
+      "result": "PASS",
+      "input": "mouse-sim",
+      "evidence": "evidence/t005-author-regression/t004-three-level/corrupt_save_recover.png"
+    },
+    {
+      "id": "D10",
+      "result": "PASS",
+      "evidence": "evidence/t005-author-regression/t004-three-level/standalone_L03.png"
+    },
+    {
+      "id": "E01",
+      "result": "PASS",
+      "note": "no P0-P3 defects found in executed scope"
+    }
+  ],
+  "paths": {
+    "matrix": "banquet-pilot/reports/qa/T-005-author-regression-matrix.md",
+    "summary": "banquet-pilot/reports/qa/T-005-summary.json",
+    "evidence": "banquet-pilot/evidence/t005-author-regression/",
+    "scripts": [
+      "banquet-pilot/tests/evidence/scripts/t005-simple-interactive-smoke.mjs",
+      "banquet-pilot/tests/evidence/scripts/t005-t004-three-level-smoke.mjs",
+      "banquet-pilot/tests/evidence/scripts/t005-extra-matrix-smoke.mjs"
+    ]
+  },
+  "claimsIndependentQa": false,
+  "okForAuthorRegressionPackage": true,
+  "deliveryNote": "deliverySha is the docs(T-005) evidence package commit (parent of any stamp). Product remains f28893f3…."
+}

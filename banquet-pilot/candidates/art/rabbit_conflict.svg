@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="160" viewBox="0 0 128 160">
+  <title>团团 rabbit conflict</title>
+  <ellipse cx="64" cy="80" rx="36" ry="72" fill="none" stroke="#be5046" stroke-width="3"/>
+  <!-- ears -->
+  <polygon points="46,52 36,12 56,48" fill="#d4a0c8" stroke="#483024" stroke-width="2"/>
+  <polygon points="44,50 38,22 52,48" fill="#ecd2e6"/>
+  <polygon points="74,48 86,10 84,52" fill="#d4a0c8" stroke="#483024" stroke-width="2"/>
+  <polygon points="76,48 84,20 82,50" fill="#ecd2e6"/>
+  <!-- body -->
+  <ellipse cx="64" cy="118" rx="28" ry="28" fill="#d4a0c8" stroke="#483024" stroke-width="2"/>
+  <!-- head -->
+  <ellipse cx="64" cy="72" rx="24" ry="24" fill="#d4a0c8" stroke="#483024" stroke-width="2"/>
+  <ellipse cx="48" cy="78" rx="6" ry="5" fill="#ecd2e6"/>
+  <ellipse cx="80" cy="78" rx="6" ry="5" fill="#ecd2e6"/>
+  <ellipse cx="64" cy="80" rx="3" ry="2.5" fill="#a06496"/>
+  
+        <path d="M44 62 L56 74 M56 62 L44 74" stroke="#483024" stroke-width="2"/>
+        <path d="M72 62 L84 74 M84 62 L72 74" stroke="#483024" stroke-width="2"/>
+        <path d="M54 92 Q64 82 74 92" stroke="#483024" fill="none" stroke-width="2"/>
+        
+  <!-- feet -->
+  <ellipse cx="50" cy="142" rx="8" ry="6" fill="#ecd2e6" stroke="#483024"/>
+  <ellipse cx="78" cy="142" rx="8" ry="6" fill="#ecd2e6" stroke="#483024"/>
+  <circle cx="100" cy="28" r="12" fill="#be5046" stroke="#483024"/><path d="M94 22 L106 34 M106 22 L94 34" stroke="#fff" stroke-width="2"/>
+</svg>

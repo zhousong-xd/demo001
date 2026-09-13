@@ -1,0 +1,29 @@
+{
+  "id": "C12",
+  "title": "掌席考核",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [{"id": "calm_bell", "stock": 1, "valid_targets": ["rabbit"]}],
+  "rules": [
+    {"id": "C12-r1", "kind": "at", "subject": "fox", "seat": "A2"},
+    {"id": "C12-r2", "kind": "not_beside", "subject": "otter", "other": "hedgehog"},
+    {"id": "C12-r3", "kind": "faces", "subject": "crane", "other": "tanuki"},
+    {"id": "C12-r4", "kind": "end", "subject": "hedgehog"},
+    {"id": "C12-r5", "kind": "same_row", "subject": "otter", "other": "fox"},
+    {
+      "id": "C12-r6",
+      "kind": "not_faces_unless",
+      "subject": "rabbit",
+      "other": "fox",
+      "unless_state": "calm"
+    }
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": null,
+    "calm_bell": "L03-style stock 1; valid_targets rabbit only (capstone when-to-calm)",
+    "note": "Design candidate draft under candidates/levels only; not formal levels/. Capstone: all six kinds + calm_bell. Anchor locked to A2 for calm-required honesty (brief sketch A1)."
+  }
+}

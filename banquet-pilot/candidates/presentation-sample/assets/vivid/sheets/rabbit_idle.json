@@ -1,0 +1,16 @@
+{
+  "frameW": 192,
+  "frameH": 224,
+  "count": 6,
+  "fpsHint": 6,
+  "order": [
+    "open",
+    "open",
+    "half",
+    "closed",
+    "half",
+    "open"
+  ],
+  "note": "坐姿眨眼",
+  "layout": "horizontal"
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="80" viewBox="0 0 96 80">
+  <title>seat</title>
+  <rect x="22" y="44" width="6" height="22" fill="#a8764e" stroke="#483024"/>
+  <rect x="68" y="44" width="6" height="22" fill="#a8764e" stroke="#483024"/>
+  <ellipse cx="48" cy="48" rx="34" ry="14" fill="#a8764e" stroke="#483024" stroke-width="2"/>
+  <ellipse cx="48" cy="36" rx="28" ry="14" fill="#e8c8a0" stroke="#483024" stroke-width="2"/>
+  <ellipse cx="48" cy="36" rx="18" ry="8" fill="none" stroke="#785a46" stroke-width="1"/>
+  <text x="48" y="40" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#483024">A1</text>
+</svg>

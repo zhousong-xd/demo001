@@ -1,0 +1,135 @@
+{
+  "task": "T-032",
+  "issue": 38,
+  "kind": "CANDIDATES PLAYTEST UI MOUSE-SIM",
+  "verdict": "PASS",
+  "agent": "宴席·质检",
+  "role": "BOT",
+  "work": "qa",
+  "timestampUtc": "2026-09-12T06:45:30Z",
+  "engineeringTip": "1d7d2860fecfdeb1b866653149a0ef6be85cb9a3",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "blob": "c17208faa0548c34cb8cc150a5dc4bce96a61b9c",
+    "lfOnly": true,
+    "rebuilt": false,
+    "modified": false,
+    "verifiedBeforeAfter": true,
+    "anchorMatch": true,
+    "note": "本环测 candidates/playtest UI mouse-sim，非正式包"
+  },
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "chrome": "151.0.7922.169 headless=new CDP",
+    "command": "cd banquet-pilot && node --experimental-websocket tests/evidence/scripts/t031-playtest-ui-smoke.mjs",
+    "startedUtc": "2026-09-12T06:44:39Z",
+    "endedUtc": "2026-09-12T06:45:01Z",
+    "exitCode": 0,
+    "browser": "headless Chrome CDP mouse-sim",
+    "realDevice": "真机未测",
+    "multitouch": "未测",
+    "branch": "bot/banquet-pilot",
+    "scriptBlob": "9813ccc216aa222ec7a667589a296af8594ed1b9"
+  },
+  "matrix": [
+    {
+      "id": "UI-PLACE",
+      "name": "c01 候客 fox 鼠标放置 A1",
+      "status": "PASS",
+      "detail": "fox=A1 seated=1 historyLen=1; shot 02"
+    },
+    {
+      "id": "UI-UNDO",
+      "name": "鼠标点撤销恢复空桌",
+      "status": "PASS",
+      "detail": "seated=0 historyLen=0; shot 03"
+    },
+    {
+      "id": "UI-SWITCH",
+      "name": "切到 c02 不空白",
+      "status": "PASS",
+      "detail": "fileId=c02 levelId=C02 url=?c=c02 0/6; mouse-focus+change; shot 04"
+    },
+    {
+      "id": "DEV",
+      "name": "真机/多指",
+      "status": "未测",
+      "detail": "无实体机；CDP mouse-sim ≠ 真机"
+    }
+  ],
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "tested": [
+    "冻结 dist 锚点复跑前后一致",
+    "先审后复跑同一 T-031 脚本 exit 0",
+    "c01 fox 鼠标放置 A1",
+    "鼠标撤销恢复空桌",
+    "切 c02 不空白 URL ?c=c02",
+    "抽检 shots 01–04 + snap"
+  ],
+  "untested": [
+    "真机",
+    "多指",
+    "原生 select 下拉点选",
+    "正式关宣称 / 合 PR"
+  ],
+  "smoke": {
+    "exitCode": 0,
+    "banner": "[PASS] mouse place / undo / switch c01→c02",
+    "kind": "candidates-playtest-ui-mouse-sim",
+    "shippedClaim": false,
+    "input": "CDP Input.dispatchMouseEvent; switch = mouse-focus select + change Event",
+    "deviceUntested": true,
+    "multitouchUntested": true,
+    "pageErrors": [],
+    "steps": [
+      {
+        "step": "place_c01",
+        "pass": true,
+        "fox": "A1",
+        "seated": 1,
+        "historyLen": 1
+      },
+      {
+        "step": "undo_c01",
+        "pass": true,
+        "seated": 0,
+        "historyLen": 0
+      },
+      {
+        "step": "switch_c02",
+        "pass": true,
+        "fileId": "c02",
+        "levelId": "C02",
+        "url": "?c=c02"
+      }
+    ]
+  },
+  "paths": {
+    "matrix": "banquet-pilot/reports/qa/T-032-ui-mouse-sim-20260912.md",
+    "summary": "banquet-pilot/reports/qa/T-032-ui-mouse-sim-summary.json",
+    "evidence": "banquet-pilot/evidence/t032-ui-mouse-sim/"
+  },
+  "push": {
+    "pushed": true,
+    "reason": null,
+    "tip": "5c037ea9415cf9a5805293fef9bdb4a35aa22062",
+    "branch": "bot/banquet-pilot",
+    "note": "reports/evidence only; dist/src untouched"
+  },
+  "experience": "候选试玩页用鼠标点放置/撤销/切关，在 headless CDP 下可独立复验且顺；真机触屏仍未测，正式包仍冻结。",
+  "gate": {
+    "verdict": "PASS",
+    "acceptReservedForLead": true,
+    "authorSelfTestNotAcceptance": true
+  }
+}

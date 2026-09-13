@@ -1,0 +1,61 @@
+{
+  "label": "supplemental touch-native proofs",
+  "results": {
+    "blur_teardown": {
+      "ok": true,
+      "listenerStats": {
+        "register": 3,
+        "unregister": 3,
+        "activeWindow": 0,
+        "commits": 0,
+        "cancels": 1
+      }
+    },
+    "one_commit": {
+      "ok": true,
+      "listenerStats": {
+        "register": 6,
+        "unregister": 6,
+        "activeWindow": 0,
+        "commits": 1,
+        "cancels": 1
+      },
+      "assignment": {
+        "fox": "A1",
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      }
+    },
+    "seat_gate": {
+      "ok": true
+    },
+    "multitouch": {
+      "ok": true,
+      "assignment": {
+        "fox": null,
+        "rabbit": null,
+        "crane": null,
+        "otter": null
+      },
+      "historyLen": 0,
+      "mode": "cancel-safe"
+    },
+    "after_cancel_ops": {
+      "ok": true
+    }
+  },
+  "notes": [
+    "A after touchStart: gesture=true active=3 reg=3",
+    "A mid-drag: ghost=true gesture=true",
+    "A after blur: active=0 reg=3 unreg=3 fox=null hist=0 match=true ok=true",
+    "B mid: gesture=true active=3 ghost=true",
+    "B after drop: fox=A1 commits=1 active=0 reg/unreg=6/6 ok=true",
+    "C selected=crane",
+    "C gesture active=true selected=crane hist=0",
+    "C seat gate ok (no commit while gesture active)",
+    "D after 2nd finger: hist=0 (was 0) fox=null gesture=false active=0",
+    "D cancelled by stack: fox=null active=0",
+    "E after cancel then drag: fox=A1 active=0"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "C11",
+  "title": "合作开席",
+  "layout": "6",
+  "seats": ["A1", "A2", "A3", "B1", "B2", "B3"],
+  "characters": ["fox", "rabbit", "crane", "otter", "tanuki", "hedgehog"],
+  "props": [],
+  "rules": [
+    {"id": "C11-r1", "kind": "at", "subject": "fox", "seat": "A2"},
+    {"id": "C11-r2", "kind": "faces", "subject": "rabbit", "other": "otter"},
+    {"id": "C11-r3", "kind": "same_row", "subject": "crane", "other": "tanuki"},
+    {"id": "C11-r4", "kind": "not_beside", "subject": "rabbit", "other": "fox"},
+    {"id": "C11-r5", "kind": "end", "subject": "hedgehog"},
+    {"id": "C11-r6", "kind": "faces", "subject": "tanuki", "other": "hedgehog"},
+    {"id": "C11-r7", "kind": "not_beside", "subject": "otter", "other": "crane"}
+  ],
+  "candidate_meta": {
+    "ruleVersion": "0.1",
+    "playable_claim": false,
+    "formal_level_ref": null,
+    "note": "Design candidate draft under candidates/levels only; not formal levels/. Multi-constraint / few anchors (one at); no calm."
+  }
+}

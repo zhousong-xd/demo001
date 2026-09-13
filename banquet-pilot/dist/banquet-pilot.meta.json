@@ -1,0 +1,21 @@
+{
+  "path": "banquet-pilot/dist/banquet-pilot.html",
+  "bytes": 73182,
+  "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "levels": [
+    "L01",
+    "L02",
+    "L03"
+  ],
+  "modules": [
+    "src/core/geometry.js",
+    "src/core/rules.js",
+    "src/core/solver.js",
+    "src/core/index.js",
+    "src/ui/board.js",
+    "src/ui/labels.js",
+    "src/ui/hints.js",
+    "src/ui/save.js",
+    "src/ui/app.js"
+  ]
+}

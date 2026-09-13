@@ -1,0 +1,14 @@
+{
+  "when": "before",
+  "timestampUtc": "2026-09-12T06:44:37Z",
+  "path": "banquet-pilot/dist/banquet-pilot.html",
+  "bytes": 73182,
+  "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "hasCR": false,
+  "lfOnly": true,
+  "gitHashObject": "c17208faa0548c34cb8cc150a5dc4bce96a61b9c",
+  "productSha": "f28893f3c419d794c6ba102bac67038683cb462c",
+  "expectedBytes": 73182,
+  "expectedSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "engineeringTip": "1d7d2860fecfdeb1b866653149a0ef6be85cb9a3"
+}

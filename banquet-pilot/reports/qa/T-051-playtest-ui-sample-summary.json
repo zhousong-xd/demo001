@@ -1,0 +1,138 @@
+{
+  "task": "T-051",
+  "issue": 57,
+  "kind": "CANDIDATES PLAYTEST UI SAMPLE c06/c09/c12 PLACE+UNDO",
+  "verdict": "PASS",
+  "agent": "宴席·质检",
+  "role": "BOT",
+  "work": "qa",
+  "timestampUtc": "2026-09-12T09:15:56Z",
+  "engineeringTip": "49b8c93fd5ee7b5b31b2adf25a8cbe43e41c6f21",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "blob": "c17208faa0548c34cb8cc150a5dc4bce96a61b9c",
+    "lfOnly": true,
+    "rebuilt": false,
+    "modified": false,
+    "verifiedBeforeAfter": true,
+    "anchorMatch": true,
+    "note": "本环测 candidates/playtest UI 末批抽样放撤，非正式包"
+  },
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "chrome": "151.0.7922.169 headless=new CDP",
+    "command": "cd banquet-pilot && node --experimental-websocket tests/evidence/scripts/t050-playtest-ui-sample-c06-c09-c12.mjs",
+    "startedUtc": "2026-09-12T09:15:29Z",
+    "endedUtc": "2026-09-12T09:15:56Z",
+    "exitCode": 0,
+    "browser": "headless Chrome CDP mouse-sim",
+    "realDevice": "真机未测",
+    "multitouch": "未测",
+    "branch": "bot/banquet-pilot",
+    "scriptBlob": "d5247124fd1fb51a231419f474a1190f159c7155"
+  },
+  "matrix": [
+    {
+      "id": "UI-C06-PLACE",
+      "name": "c06 放 fox→A1",
+      "status": "PASS",
+      "detail": "assignment.fox=A1; shot c06_placed"
+    },
+    {
+      "id": "UI-C06-UNDO",
+      "name": "c06 撤 空桌",
+      "status": "PASS",
+      "detail": "seated=0 historyLen=0; shot c06_undo"
+    },
+    {
+      "id": "UI-C09-PLACE",
+      "name": "c09 放 fox→A1",
+      "status": "PASS",
+      "detail": "assignment.fox=A1; shot c09_placed"
+    },
+    {
+      "id": "UI-C09-UNDO",
+      "name": "c09 撤 空桌",
+      "status": "PASS",
+      "detail": "seated=0 historyLen=0; shot c09_undo"
+    },
+    {
+      "id": "UI-C12-PLACE",
+      "name": "c12 放 fox→A1",
+      "status": "PASS",
+      "detail": "assignment.fox=A1; shot c12_placed"
+    },
+    {
+      "id": "UI-C12-UNDO",
+      "name": "c12 撤 空桌",
+      "status": "PASS",
+      "detail": "seated=0 historyLen=0; shot c12_undo"
+    },
+    {
+      "id": "DEV",
+      "name": "真机/多指",
+      "status": "未测",
+      "detail": "无实体机；CDP mouse-sim ≠ 真机"
+    }
+  ],
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "tested": [
+    "冻结 dist 锚点复跑前后一致",
+    "先审后复跑同一 T-050 脚本 exit 0",
+    "c06/c09/c12 各 place+undo 六步",
+    "抽检 shots boot/placed/undo ×3 + script summary"
+  ],
+  "untested": [
+    "真机",
+    "多指",
+    "正式关宣称 / 合 PR"
+  ],
+  "smoke": {
+    "exitCode": 0,
+    "banner": "[PASS] c06/c09/c12 place+undo; 真机/多指 未测",
+    "kind": "candidates-playtest-ui-sample-c06-c09-c12",
+    "samples": [
+      "c06",
+      "c09",
+      "c12"
+    ],
+    "steps": [
+      "c06_place",
+      "c06_undo",
+      "c09_place",
+      "c09_undo",
+      "c12_place",
+      "c12_undo"
+    ],
+    "pageErrors": []
+  },
+  "paths": {
+    "reportMd": "banquet-pilot/reports/qa/T-051-playtest-ui-sample-20260912.md",
+    "reportJson": "banquet-pilot/reports/qa/T-051-playtest-ui-sample-summary.json",
+    "evidence": "banquet-pilot/evidence/t051-playtest-ui-sample/",
+    "script": "banquet-pilot/tests/evidence/scripts/t050-playtest-ui-sample-c06-c09-c12.mjs"
+  },
+  "push": {
+    "branch": "bot/banquet-pilot",
+    "scope": "reports/qa + evidence/t051 only",
+    "tip": "34964e2353d4422cfa7ef9e4ce805521d9264daa",
+    "comment": "https://github.com/zhousong-xd/demo001/issues/57#issuecomment-5644964150"
+  },
+  "experience": "候选末批抽样关界面放撤顺——c06/c09/c12 六步全绿；真机触屏仍未测，正式包仍冻结。",
+  "gate": {
+    "authorSelfTestEqualsIndependent": false,
+    "distReadOnly": true,
+    "acceptByLead": true,
+    "shippedClaim": false
+  }
+}

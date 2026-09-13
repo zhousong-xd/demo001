@@ -1,0 +1,226 @@
+{
+  "task": "T-005",
+  "issue": 9,
+  "kind": "LEAD INDEPENDENT RECHECK",
+  "verdict": "ACCEPT",
+  "agent": "GROKBOT01",
+  "role": "GPT",
+  "work": "qa-lead-recheck",
+  "timestampUtc": "2026-09-12T04:30:01Z",
+  "product": {
+    "sha": "f28893f3c419d794c6ba102bac67038683cb462c",
+    "htmlPath": "banquet-pilot/dist/banquet-pilot.html",
+    "htmlBytesLF": 73182,
+    "htmlSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "rebuilt": false,
+    "modified": false,
+    "verifiedBeforeAfter": true
+  },
+  "authorPackage": {
+    "tip": "780373a26862c54e72bfbcba5c198cc4cd070128",
+    "evidenceSha": "ff71a7aa1d642bb5439aae90307176413cc49938",
+    "doneComment": 5643426367,
+    "claimsIndependentQa": false
+  },
+  "environment": {
+    "host": "Grok Bot box Linux",
+    "node": "v20.19.2",
+    "chrome": "google-chrome 151.0.7922.169 headless=new",
+    "realDevice": "真机未测",
+    "branch": "bot/banquet-pilot"
+  },
+  "units58": {
+    "pass": 58,
+    "fail": 0,
+    "command": "node --test banquet-pilot/tests/test_rules.mjs banquet-pilot/tests/test_board.mjs banquet-pilot/tests/test_t004.mjs"
+  },
+  "independentGapChecks": {
+    "pass": 12,
+    "fail": 0,
+    "未测": 1,
+    "未测Items": [
+      "真机/physical multitouch"
+    ],
+    "steps": [
+      {
+        "id": "offline_file_load",
+        "ok": true,
+        "levelId": "L01",
+        "embedded": true,
+        "seatKeys": [
+          "fox",
+          "rabbit",
+          "crane",
+          "otter"
+        ],
+        "input": "n/a (boot)",
+        "url": "file://…/dist/banquet-pilot.html?level=L01",
+        "note": "standalone file:// boots L01 embedded"
+      },
+      {
+        "id": "viewport_360x640",
+        "ok": true,
+        "geo": {
+          "innerWidth": 360,
+          "innerHeight": 640,
+          "scrollWidth": 360,
+          "scrollHeight": 640,
+          "scrollWidthOk": true,
+          "seatCount": 4,
+          "overlaps": []
+        },
+        "input": "n/a (layout)",
+        "viewport": "360x640",
+        "note": "no seat overlap; scrollWidth ok"
+      },
+      {
+        "id": "viewport_390x844",
+        "ok": true,
+        "geo": {
+          "innerWidth": 390,
+          "innerHeight": 844,
+          "scrollWidth": 390,
+          "scrollHeight": 844,
+          "scrollWidthOk": true,
+          "seatCount": 4,
+          "overlaps": []
+        },
+        "input": "n/a (layout)",
+        "viewport": "390x844",
+        "note": "no seat overlap; scrollWidth ok"
+      },
+      {
+        "id": "viewport_1280x800",
+        "ok": true,
+        "geo": {
+          "innerWidth": 1280,
+          "innerHeight": 800,
+          "scrollWidth": 1280,
+          "scrollHeight": 800,
+          "scrollWidthOk": true,
+          "seatCount": 4,
+          "overlaps": []
+        },
+        "input": "n/a (layout)",
+        "viewport": "1280x800",
+        "note": "no seat overlap; scrollWidth ok"
+      },
+      {
+        "id": "empty_seat_place",
+        "ok": true,
+        "assignment": {
+          "fox": "A1",
+          "rabbit": null,
+          "crane": null,
+          "otter": null
+        },
+        "input": "mouse-sim",
+        "viewport": "390x844"
+      },
+      {
+        "id": "swap_two_seated",
+        "ok": true,
+        "assignment": {
+          "fox": "B2",
+          "rabbit": "A1",
+          "crane": null,
+          "otter": null
+        },
+        "input": "mouse-sim",
+        "viewport": "390x844"
+      },
+      {
+        "id": "undo_after_swap",
+        "ok": true,
+        "assignment": {
+          "fox": "A1",
+          "rabbit": "B2",
+          "crane": null,
+          "otter": null
+        },
+        "input": "mouse-sim"
+      },
+      {
+        "id": "L01_click_win",
+        "ok": true,
+        "won": true,
+        "showFeast": true,
+        "assignment": {
+          "fox": "A1",
+          "rabbit": "B2",
+          "crane": "B1",
+          "otter": "A2"
+        },
+        "input": "mouse-sim"
+      },
+      {
+        "id": "L03_calm_invalid_target",
+        "ok": true,
+        "inventory": {
+          "calm_bell": 1
+        },
+        "msg": "安心铃只能对兔使用（无效目标，未消耗）",
+        "input": "mouse-sim"
+      },
+      {
+        "id": "L03_calm_apply",
+        "ok": true,
+        "calm": [
+          "rabbit"
+        ],
+        "inventory": {
+          "calm_bell": 0
+        },
+        "input": "mouse-sim"
+      },
+      {
+        "id": "corrupt_save_recover",
+        "ok": true,
+        "levelId": "L01",
+        "msg": "存档损坏（JSON 无效） — 已恢复到开局。",
+        "allWaiting": true,
+        "input": "n/a (reload after inject)"
+      },
+      {
+        "id": "console_exceptions",
+        "ok": true,
+        "exceptionCount": 0,
+        "note": "no Runtime.exceptionThrown"
+      }
+    ],
+    "script": "banquet-pilot/evidence/t005-lead-recheck/scripts/lead-recheck-smoke.mjs"
+  },
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": [],
+    "noneFound": true
+  },
+  "scopeFinding": {
+    "severity": true,
+    "detail": "Author package added t005-*.mjs under banquet-pilot/tests/evidence/scripts/ (outside strict reports/qa + evidence/). Documented; not deleted. Product/HTML unchanged.",
+    "paths": [
+      "banquet-pilot/tests/evidence/scripts/t005-simple-interactive-smoke.mjs",
+      "banquet-pilot/tests/evidence/scripts/t005-t004-three-level-smoke.mjs",
+      "banquet-pilot/tests/evidence/scripts/t005-extra-matrix-smoke.mjs"
+    ]
+  },
+  "gate": {
+    "noP0P1": true,
+    "understandingTouchP2ResolvedOrHumanAccepted": true,
+    "真机未测Ok": true,
+    "verdict": "ACCEPT"
+  },
+  "paths": {
+    "matrix": "banquet-pilot/reports/qa/T-005-lead-recheck-20260912.md",
+    "summary": "banquet-pilot/reports/qa/T-005-lead-recheck-summary.json",
+    "evidence": "banquet-pilot/evidence/t005-lead-recheck/"
+  },
+  "guidance": {
+    "status": "done",
+    "doNotMergeFromThisAlone": false,
+    "doNotStart10": true,
+    "pr": 11
+  }
+}

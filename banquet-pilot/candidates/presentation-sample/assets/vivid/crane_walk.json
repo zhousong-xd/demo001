@@ -1,0 +1,15 @@
+{
+  "frameW": 96,
+  "frameH": 112,
+  "count": 4,
+  "fpsHint": 8,
+  "order": [
+    "contact_L",
+    "pass_A",
+    "contact_R",
+    "pass_B"
+  ],
+  "note": "走循环；肢位每帧对侧交换，勿 CSS bob",
+  "layout": "horizontal",
+  "source": "sheets/crane_walk.png"
+}

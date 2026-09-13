@@ -1,0 +1,131 @@
+{
+  "task": "T-004",
+  "mouseSim": true,
+  "touchSim": false,
+  "realDevice": "真机未测",
+  "dist": {
+    "path": "banquet-pilot/dist/banquet-pilot.html",
+    "bytes": 73182,
+    "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5"
+  },
+  "steps": [
+    {
+      "id": "L01_win",
+      "levelId": "L01",
+      "won": true,
+      "showFeast": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": "B2",
+        "crane": "B1",
+        "otter": "A2"
+      },
+      "calm": [],
+      "inventory": {},
+      "hintTier": 0,
+      "historyLen": 4,
+      "propMode": null,
+      "storageMsg": "",
+      "embedded": false
+    },
+    {
+      "id": "to_L02",
+      "levelId": "L02"
+    },
+    {
+      "id": "L02_hints",
+      "hintTier": 2
+    },
+    {
+      "id": "L02_win",
+      "levelId": "L02",
+      "won": true,
+      "showFeast": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": "B1",
+        "crane": "B3",
+        "otter": "A2",
+        "tanuki": "B2",
+        "hedgehog": "A3"
+      },
+      "calm": [],
+      "inventory": {},
+      "hintTier": 2,
+      "historyLen": 6,
+      "propMode": null,
+      "storageMsg": "",
+      "embedded": false
+    },
+    {
+      "id": "L03_invalid",
+      "inventory": {
+        "calm_bell": 1
+      },
+      "msg": "安心铃只能对兔使用（无效目标，未消耗）"
+    },
+    {
+      "id": "L03_calm",
+      "calm": [
+        "rabbit"
+      ],
+      "inventory": {
+        "calm_bell": 0
+      }
+    },
+    {
+      "id": "L03_undo",
+      "calm": [],
+      "inventory": {
+        "calm_bell": 1
+      }
+    },
+    {
+      "id": "L03_win",
+      "levelId": "L03",
+      "won": true,
+      "showFeast": true,
+      "assignment": {
+        "fox": "A1",
+        "rabbit": "B1",
+        "crane": "B2",
+        "otter": "A2",
+        "tanuki": "B3",
+        "hedgehog": "A3"
+      },
+      "calm": [
+        "rabbit"
+      ],
+      "inventory": {
+        "calm_bell": 0
+      },
+      "hintTier": 0,
+      "historyLen": 7,
+      "propMode": null,
+      "storageMsg": "已对 兔 使用安心铃",
+      "embedded": false
+    },
+    {
+      "id": "L03_replay",
+      "inventory": {
+        "calm_bell": 1
+      },
+      "won": false
+    },
+    {
+      "id": "corrupt_save",
+      "levelId": "L01",
+      "msg": "存档损坏（JSON 无效） — 已恢复到开局。",
+      "allWaiting": true
+    },
+    {
+      "id": "standalone",
+      "embedded": true,
+      "levelId": "L03",
+      "inventory": {
+        "calm_bell": 1
+      }
+    }
+  ],
+  "ok": true
+}

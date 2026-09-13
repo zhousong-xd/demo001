@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>这桌不能坐 · 生动改版 T-069</title>
+<style>
+:root {
+  --bg0: #1a100c; --bg1: #2a1810;
+  --wood1: #8b5a2b; --wood2: #5c3a1e; --wood3: #3d2414;
+  --gold: #d4a84b; --cream: #f3e6d4; --muted: #b8a28a;
+  --ok: #5ecf8a; --bad: #ff6b6b; --ink: #2a1a14;
+  --fw: 96px; --fh: 112px;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; min-height: 100%;
+  background: #0e0907; color: var(--cream);
+  font-family: "PingFang SC", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+}
+.stage-outer {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px 8px 20px;
+}
+.banner {
+  width: 390px; max-width: 100%;
+  margin-bottom: 8px; padding: 8px 10px;
+  background: #f3e0d6; border: 2px solid #8b3a2a; border-radius: 10px;
+  color: #8b3a2a; font-size: 12px; font-weight: 650; text-align: center;
+}
+.banner a { color: #6b2a1a; }
+.banner small { display: block; margin-top: 3px; font-weight: 500; color: #7a6a58; font-size: 11px; }
+.phone {
+  width: 390px; max-width: 100%;
+  height: 844px; max-height: calc(100vh - 70px);
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 18%, rgba(212,168,75,.18), transparent 55%),
+    radial-gradient(ellipse 70% 40% at 20% 90%, rgba(180,80,30,.15), transparent 50%),
+    linear-gradient(180deg, #3a2218 0%, var(--bg1) 40%, var(--bg0) 100%);
+  border-radius: 28px;
+  border: 2px solid #4a3020;
+  box-shadow: 0 16px 48px rgba(0,0,0,.6), inset 0 0 0 1px rgba(212,168,75,.15);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.top {
+  position: relative; z-index: 4;
+  padding: 14px 14px 6px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.mark {
+  font-size: 13px; color: var(--gold); letter-spacing: .04em; font-weight: 650;
+  display: flex; align-items: center; gap: 6px;
+}
+.mark .crest {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0d080, var(--gold) 55%, #8a6020);
+  box-shadow: 0 0 0 2px #6a4818;
+}
+.beat {
+  font-size: 11px; color: var(--cream);
+  background: rgba(60,36,24,.75);
+  border: 1px solid rgba(212,168,75,.4);
+  border-radius: 999px; padding: 4px 12px;
+  min-width: 72px; text-align: center;
+}
+.beat.ok { color: var(--ok); border-color: rgba(94,207,138,.5); }
+.beat.bad { color: var(--bad); border-color: rgba(255,107,107,.55); }
+.beat.warn { color: #ffb060; border-color: rgba(255,176,96,.5); }
+
+.stage {
+  flex: 1; position: relative; z-index: 2;
+  margin: 4px 10px 0;
+  border-radius: 18px;
+  overflow: hidden;
+  perspective: 900px;
+}
+/* Pseudo-3D world: camera sway/push lives here — NOT character bob */
+.world {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: 50% 60%;
+  will-change: transform;
+}
+.world.cam-idle {
+  animation: camSway 5.5s ease-in-out infinite;
+}
+.world.cam-push {
+  animation: camPush .55s ease-out forwards;
+}
+@keyframes camSway {
+  0%,100% { transform: rotateX(6deg) rotateZ(0deg) translate3d(0,0,0) scale(1); }
+  40% { transform: rotateX(7deg) rotateZ(.4deg) translate3d(2px,-1px,8px) scale(1.01); }
+  70% { transform: rotateX(5.5deg) rotateZ(-.35deg) translate3d(-2px,1px,0) scale(1); }
+}
+@keyframes camPush {
+  0% { transform: rotateX(6deg) scale(1); }
+  100% { transform: rotateX(8deg) translate3d(0,4px,18px) scale(1.04); }
+}
+
+.layer-floor {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 55%, #3a2418 0%, #241610 70%, #160e0a 100%);
+  transform: translateZ(-40px);
+}
+.layer-floor::after {
+  content: "";
+  position: absolute; left: 8%; right: 8%; top: 12%; bottom: 8%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle at 50% 50%, transparent 0 14px, rgba(90,60,40,.18) 14px 16px);
+  opacity: .55;
+  border: 2px solid rgba(90,60,40,.35);
+}
+
+.layer-table {
+  position: absolute; left: 50%; top: 48%;
+  width: 220px; height: 168px;
+  margin: -84px 0 0 -110px;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 45% 38%, #a07040 0%, var(--wood1) 35%, var(--wood2) 68%, var(--wood3) 100%);
+  box-shadow:
+    0 0 0 8px #4a3018,
+    0 0 0 12px #2a180c,
+    0 22px 28px rgba(0,0,0,.5),
+    inset 0 0 24px rgba(0,0,0,.25);
+  z-index: 1;
+  transform: rotateX(55deg) translateZ(0);
+  transform-style: preserve-3d;
+}
+.table-top {
+  position: absolute; inset: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,168,75,.2);
+  pointer-events: none;
+}
+.dishes, .centerpiece { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.centerpiece { left: 50%; top: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; inset: auto; }
+
+.layer-chairs {
+  position: absolute; left: 50%; top: 48%;
+  width: 0; height: 0; z-index: 3;
+}
+.seat-slot {
+  position: absolute;
+  width: 96px; height: 110px;
+  margin: -55px 0 0 -48px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  cursor: pointer; touch-action: none;
+  border: none; background: transparent; padding: 0;
+}
+.seat-slot:focus { outline: none; }
+.seat-slot .chair-wrap {
+  width: 88px; height: 78px;
+  pointer-events: none;
+  transition: filter .2s;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,.45));
+}
+.seat-slot .chair-wrap .chair-img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+}
+.seat-slot.hot .chair-wrap { filter: drop-shadow(0 0 8px rgba(212,168,75,.55)); }
+.seat-slot.hot-friend .chair-wrap { filter: drop-shadow(0 0 10px rgba(94,207,138,.65)); }
+.seat-slot.hot-rival .chair-wrap { filter: drop-shadow(0 0 10px rgba(255,107,107,.7)); }
+
+/* Actors: position + z only. Motion = sprite frame cuts, never CSS bob on .sprite */
+.layer-actors {
+  position: absolute; left: 50%; top: 48%;
+  width: 0; height: 0; z-index: 5;
+  pointer-events: none;
+}
+.actor {
+  position: absolute;
+  width: var(--fw); height: calc(var(--fh) + 10px);
+  margin: calc(var(--fh) * -0.85) 0 0 calc(var(--fw) / -2);
+  pointer-events: none;
+  transform-origin: 50% 100%;
+}
+.actor .shadow {
+  position: absolute; left: 50%; bottom: 2px;
+  width: 48px; height: 14px; margin-left: -24px;
+  background: radial-gradient(ellipse, rgba(0,0,0,.45) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.actor .sprite {
+  position: relative; z-index: 1;
+  width: var(--fw); height: var(--fh);
+  background-repeat: no-repeat;
+  background-size: auto var(--fh);
+  background-position: 0 0;
+  image-rendering: auto;
+  /* NO transform animation on sprite — frame cuts only */
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
+}
+.actor.held .shadow { width: 36px; margin-left: -18px; opacity: .55; }
+.actor.held .sprite { filter: drop-shadow(0 12px 14px rgba(0,0,0,.5)); }
+
+.bubble {
+  position: absolute; left: 50%; top: 2px;
+  transform: translate(-50%, -100%) scale(.7);
+  font-size: 13px; line-height: 1.1; font-weight: 700;
+  padding: 4px 8px;
+  background: #fffaf3; color: var(--ink);
+  border-radius: 12px;
+  border: 1.5px solid #e8d4b8;
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  opacity: 0; pointer-events: none;
+  white-space: nowrap;
+  transition: opacity .18s, transform .18s;
+  z-index: 3;
+}
+.bubble::after {
+  content: "";
+  position: absolute; left: 50%; bottom: -6px; margin-left: -5px;
+  border: 5px solid transparent; border-top-color: #fffaf3;
+}
+.bubble.on { opacity: 1; transform: translate(-50%, -112%) scale(1); }
+.bubble.bad { background: #ffe8e4; border-color: #ffb0a8; color: #a02828; }
+.bubble.bad::after { border-top-color: #ffe8e4; }
+.bubble.ok { background: #e8fff0; border-color: #a8e8c0; color: #1a6a3a; }
+.bubble.ok::after { border-top-color: #e8fff0; }
+
+.fx-layer {
+  position: absolute; left: 50%; top: 48%;
+  width: 0; height: 0; z-index: 8;
+  pointer-events: none;
+}
+.fx-pop {
+  position: absolute; font-size: 18px;
+  animation: popFade .7s ease-out forwards;
+}
+@keyframes popFade {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(.6); }
+  100% { opacity: 0; transform: translate(-50%, -90%) scale(1.2); }
+}
+.fx-clash {
+  position: absolute; width: 96px; height: auto;
+  transform: translate(-50%, -50%);
+  animation: popFade .65s ease-out forwards;
+}
+
+.dock {
+  position: relative; z-index: 4;
+  padding: 8px 14px 16px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.45));
+}
+.hint {
+  font-size: 12px; color: var(--muted);
+  min-height: 1.35em; text-align: center; margin-bottom: 8px;
+}
+.escalate-bar {
+  height: 6px; border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  overflow: hidden; margin: 0 auto 8px; width: 70%;
+  opacity: 0; transition: opacity .2s;
+}
+.escalate-bar.on { opacity: 1; }
+.escalate-bar > i {
+  display: block; height: 100%; width: 0%;
+  background: linear-gradient(90deg, #ffb060, #ff6b6b);
+  transition: width .25s linear;
+}
+.tools { display: flex; gap: 8px; justify-content: center; }
+.btn {
+  border: 1px solid rgba(212,168,75,.4);
+  background: rgba(60,36,24,.85); color: var(--cream);
+  border-radius: 12px; padding: 10px 14px; font-size: 13px;
+  min-height: 42px; cursor: pointer;
+}
+.btn:active { transform: scale(.97); }
+.btn.primary { border-color: var(--gold); color: var(--gold); }
+.outside {
+  width: 390px; max-width: 100%; margin-top: 10px;
+  font-size: 12px; color: #9a9084; text-align: center; line-height: 1.45;
+}
+.busy .seat-slot { pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="stage-outer">
+  <div class="banner" role="status">
+    表现候选 / 非正式 — 不是正式三关
+    <small>唯一公网可玩：<a href="https://zhousong-xd.github.io/demo001/">https://zhousong-xd.github.io/demo001/</a></small>
+  </div>
+  <div class="phone" id="phone" aria-label="生动小样 390x844">
+    <div class="top">
+      <span class="mark"><span class="crest" aria-hidden="true"></span>这桌不能坐</span>
+      <span class="beat" id="beat">…</span>
+    </div>
+    <div class="stage" id="stage">
+      <div class="world cam-idle" id="world">
+        <div class="layer-floor" data-layer="floor"></div>
+        <div class="layer-table" data-layer="table">
+          <div class="table-top"></div>
+          <svg class="dishes" viewBox="0 0 220 168" aria-hidden="true">
+            <ellipse cx="110" cy="48" rx="18" ry="8" fill="#6a4028" opacity=".85"/>
+            <ellipse cx="110" cy="46" rx="14" ry="6" fill="#c8e070" opacity=".9"/>
+            <ellipse cx="70" cy="84" rx="16" ry="7" fill="#6a4028" opacity=".85"/>
+            <ellipse cx="150" cy="84" rx="16" ry="7" fill="#6a4028" opacity=".85"/>
+            <ellipse cx="110" cy="118" rx="12" ry="6" fill="#5a3820" opacity=".7"/>
+          </svg>
+          <svg class="centerpiece" viewBox="0 0 54 54" aria-hidden="true">
+            <ellipse cx="27" cy="40" rx="14" ry="6" fill="#4a3020" opacity=".5"/>
+            <rect x="22" y="22" width="10" height="16" rx="3" fill="#c8b090"/>
+            <ellipse cx="27" cy="20" rx="10" ry="8" fill="#f0c060"/>
+            <circle cx="27" cy="16" r="4" fill="#fff4c8" opacity=".9"/>
+          </svg>
+        </div>
+        <div class="layer-chairs" id="chairs" data-layer="chairs"></div>
+        <div class="layer-actors" id="actors" data-layer="actors"></div>
+        <div class="fx-layer" id="fx" data-layer="fx"></div>
+      </div>
+    </div>
+    <div class="dock">
+      <div class="hint" id="hint">点角色 → 点空座/换座</div>
+      <div class="escalate-bar" id="escBar" aria-hidden="true"><i id="escFill"></i></div>
+      <div class="tools">
+        <button class="btn" type="button" id="btnTip">怎么玩</button>
+        <button class="btn primary" type="button" id="btnReset">开席</button>
+      </div>
+    </div>
+  </div>
+  <p class="outside">T-068 · 精灵表切帧（走/闲/起/坐/拒）· 伪3D 遮挡微镜头 · 不加新规则</p>
+</div>
+<script>
+/** T-069 vivid playable — sheets/ primary + root strips; FRAME CUTS only (no CSS bob). tip 598c18d */
+const REL = {
+  fox: { rival: 'rabbit', friend: null },
+  rabbit: { rival: 'fox', friend: 'crane' },
+  crane: { rival: null, friend: 'rabbit' },
+};
+const LABEL = { fox: '狐', rabbit: '兔', crane: '鹤' };
+const FW = 96, FH = 112; /* display box; sheets 192×224 scale via background-size */
+/** Prefer assets/vivid/sheets/ (hi-res); root vivid/* same API fallback. Art tip 598c18d. */
+const CORE_ACTS = ['idle', 'walk', 'stand', 'rise', 'sit', 'refuse'];
+const LEFTOVER_ACTS = ['greet', 'mad', 'awkward', 'happy', 'held', 'clash'];
+const FALLBACK_META = {
+  idle: { count: 6, fps: 6 }, walk: { count: 4, fps: 8 },
+  stand: { count: 3, fps: 8 }, rise: { count: 3, fps: 8 },
+  sit: { count: 3, fps: 8 }, refuse: { count: 3, fps: 6 },
+  greet: { count: 4, fps: 7 }, mad: { count: 3, fps: 6 },
+  awkward: { count: 2, fps: 4 }, happy: { count: 2, fps: 5 },
+  held: { count: 2, fps: 4 }, clash: { count: 3, fps: 8 },
+};
+/* Known sheet presence (crane has no sheets/stand — use root). */
+const SHEET_HAS = {
+  fox: { idle:1, walk:1, stand:1, rise:1, sit:1, refuse:1 },
+  rabbit: { idle:1, walk:1, stand:1, rise:1, sit:1, refuse:1 },
+  crane: { idle:1, walk:1, rise:1, sit:1, refuse:1 },
+};
+function packFor(who, name) {
+  const fb = FALLBACK_META[name] || FALLBACK_META.idle;
+  const useSheet = !!(SHEET_HAS[who] && SHEET_HAS[who][name]);
+  const base = useSheet
+    ? `assets/vivid/sheets/${who}_${name}`
+    : `assets/vivid/${who}_${name}`;
+  return {
+    src: base + '.png',
+    metaUrl: base + '.json',
+    count: fb.count,
+    fps: fb.fps,
+    frameW: useSheet ? 192 : 96,
+    frameH: useSheet ? 224 : 112,
+    fromSheets: useSheet,
+  };
+}
+const SHEET = {};
+['fox', 'rabbit', 'crane'].forEach(who => {
+  SHEET[who] = {};
+  CORE_ACTS.concat(LEFTOVER_ACTS).forEach(name => {
+    SHEET[who][name] = packFor(who, name);
+  });
+});
+const ASSET_CHAIR = {
+  stool: 'assets/chairs/chair_stool.png',
+  round: 'assets/chairs/chair_round.png',
+  spike: 'assets/chairs/chair_spike.png',
+  classic: 'assets/chairs/chair_host.png',
+};
+const SEAT_ANGLE = [270, 0, 90, 180];
+const RADIUS = 148;
+
+let seats = ['fox', 'crane', 'rabbit', null];
+let selected = null;
+let busy = false;
+let escalateLv = 0;
+let escalateTimer = null;
+let escalateTick = null;
+let actorEls = {};
+let seatEls = [];
+let tipMode = false;
+let animState = {}; // who -> {name, frame, acc, loop, fps, count, src, onDone}
+let drag = null; // {who, pointerId, ox, oy}
+let raf = 0;
+let lastTs = 0;
+
+function setBeat(t, kind) {
+  const el = document.getElementById('beat');
+  el.textContent = t;
+  el.className = 'beat' + (kind ? ' ' + kind : '');
+}
+function setHint(t) { document.getElementById('hint').textContent = t || ''; }
+function phoneBusy(on) {
+  busy = on;
+  document.getElementById('phone').classList.toggle('busy', on);
+}
+function worldCam(mode) {
+  const w = document.getElementById('world');
+  w.classList.remove('cam-idle', 'cam-push');
+  if (mode) w.classList.add(mode);
+}
+
+function polar(angleDeg) {
+  const a = (angleDeg * Math.PI) / 180;
+  /* slight ellipse for pseudo-3D table arc */
+  return { x: Math.cos(a) * RADIUS, y: Math.sin(a) * RADIUS * 0.72 };
+}
+function shortestArc(from, to) {
+  let d = ((to - from + 540) % 360) - 180;
+  if (Math.abs(d) === 180) d = 180;
+  return { delta: d, steps: Math.max(14, Math.round(Math.abs(d) / 7)) };
+}
+function preferArc(fromIdx, toIdx) {
+  const fromA = angleAtSeat(fromIdx), toA = angleAtSeat(toIdx);
+  let d = ((toA - fromA + 540) % 360) - 180;
+  if (Math.abs(d) !== 180) {
+    return { delta: d, steps: Math.max(14, Math.round(Math.abs(d) / 7)), fromA, toA };
+  }
+  const score = (dirs) => seatsOnArc(fromIdx, toIdx, dirs).filter(i => seats[i]).length;
+  d = score(1) >= score(-1) ? 180 : -180;
+  return { delta: d, steps: Math.max(14, Math.round(180 / 7)), fromA, toA };
+}
+function angleAtSeat(i) { return SEAT_ANGLE[i]; }
+function adj(i, j) {
+  if (i < 0 || j < 0) return false;
+  const d = Math.abs(i - j);
+  return d === 1 || d === 3;
+}
+function neighbors(i) {
+  return [(i + 1) % 4, (i + 3) % 4].map(j => seats[j]).filter(Boolean);
+}
+function rivalsAdjacent() {
+  return adj(seats.indexOf('fox'), seats.indexOf('rabbit'));
+}
+function friendsAdjacent() {
+  return adj(seats.indexOf('rabbit'), seats.indexOf('crane'));
+}
+function seatsOnArc(fromIdx, toIdx, delta) {
+  const dirs = delta >= 0 ? 1 : -1;
+  const passed = [];
+  let cur = fromIdx;
+  for (let n = 0; n < 3; n++) {
+    cur = (cur + dirs + 4) % 4;
+    if (cur === toIdx) break;
+    passed.push(cur);
+  }
+  return passed;
+}
+
+function depthZ(angleDeg) {
+  /* front (bottom, 90°) highest z; back (top, 270°) lower — occlusion */
+  const y = Math.sin((angleDeg * Math.PI) / 180);
+  return 20 + Math.round((y + 1) * 40);
+}
+
+function placeActor(el, angleDeg, extra) {
+  const p = polar(angleDeg);
+  const lift = (extra && extra.lift) || 0;
+  const follow = (extra && extra.follow) || null;
+  el.style.left = ((follow ? follow.x : p.x)) + 'px';
+  el.style.top = ((follow ? follow.y : p.y) - lift) + 'px';
+  el.style.zIndex = String(depthZ(angleDeg) + (lift ? 30 : 0));
+  el.dataset.angle = String(angleDeg);
+  const sh = el.querySelector('.shadow');
+  if (sh) {
+    const scale = lift ? Math.max(0.45, 1 - lift / 80) : 1;
+    sh.style.transform = `scale(${scale})`;
+    sh.style.opacity = String(0.35 + 0.45 * scale);
+  }
+}
+
+/** Frame-cut sprite player — background-position crop only (no CSS bob). */
+function applyFrame(who, st) {
+  const el = actorEls[who];
+  if (!el || !st) return;
+  const sp = el.querySelector('.sprite');
+  const idx = ((st.frame % st.count) + st.count) % st.count;
+  const scale = FH / (st.frameH || FH);
+  const dispFw = (st.frameW || FW) * scale;
+  sp.style.backgroundImage = `url("${st.src}")`;
+  sp.style.backgroundRepeat = 'no-repeat';
+  sp.style.backgroundSize = `auto ${FH}px`;
+  sp.style.backgroundPosition = `${-idx * dispFw}px 0`;
+  sp.dataset.anim = st.name;
+  sp.dataset.frame = String(idx);
+  sp.dataset.src = st.fromSheets ? 'sheets' : 'root';
+}
+function resolveAnimName(who, name) {
+  if (SHEET[who][name]) return name;
+  if (name === 'stand' && SHEET[who].rise) return 'rise';
+  if (name === 'rise' && SHEET[who].stand) return 'stand';
+  return 'idle';
+}
+function playAnim(who, name, opts) {
+  opts = opts || {};
+  const key = resolveAnimName(who, name);
+  const pack = SHEET[who][key] || SHEET[who].idle;
+  animState[who] = {
+    name: key,
+    src: pack.src,
+    count: pack.count,
+    fps: opts.fps || pack.fps,
+    frameW: pack.frameW,
+    frameH: pack.frameH,
+    fromSheets: !!pack.fromSheets,
+    frame: 0,
+    acc: 0,
+    loop: opts.loop !== false,
+    holdLast: !!opts.holdLast,
+    onDone: opts.onDone || null,
+  };
+  applyFrame(who, animState[who]);
+}
+function stopAnim(who) {
+  const st = animState[who];
+  if (st) st.onDone = null;
+}
+function tickAnims(dt) {
+  Object.keys(animState).forEach(who => {
+    const st = animState[who];
+    if (!st) return;
+    st.acc += dt;
+    const step = 1 / st.fps;
+    while (st.acc >= step) {
+      st.acc -= step;
+      st.frame += 1;
+      if (st.frame >= st.count) {
+        if (st.loop) {
+          st.frame = 0;
+        } else {
+          st.frame = st.count - 1;
+          applyFrame(who, st);
+          const cb = st.onDone;
+          st.onDone = null;
+          if (cb) cb();
+          return;
+        }
+      }
+      applyFrame(who, st);
+    }
+  });
+}
+
+function showBubble(who, text, kind) {
+  const el = actorEls[who];
+  if (!el) return;
+  const b = el.querySelector('.bubble');
+  b.textContent = text;
+  b.className = 'bubble on' + (kind ? ' ' + kind : '');
+}
+function hideBubbles() {
+  Object.values(actorEls).forEach(el => {
+    const b = el.querySelector('.bubble');
+    if (b) { b.className = 'bubble'; b.textContent = ''; }
+  });
+}
+function fxPop(angleDeg, emoji) {
+  const layer = document.getElementById('fx');
+  const p = polar(angleDeg);
+  const n = document.createElement('div');
+  n.className = 'fx-pop';
+  n.textContent = emoji;
+  n.style.left = p.x + 'px';
+  n.style.top = (p.y - 40) + 'px';
+  layer.appendChild(n);
+  setTimeout(() => n.remove(), 700);
+}
+function fxClash(angleDeg) {
+  const layer = document.getElementById('fx');
+  const p = polar(angleDeg);
+  const n = document.createElement('img');
+  n.src = 'assets/fx/fx_clash.png';
+  n.alt = '';
+  n.className = 'fx-clash';
+  n.style.left = p.x + 'px';
+  n.style.top = (p.y - 20) + 'px';
+  layer.appendChild(n);
+  setTimeout(() => n.remove(), 650);
+}
+
+function chairKindFor(i, who) {
+  if (!who) return 'stool';
+  const ns = neighbors(i);
+  if (REL[who].rival && ns.includes(REL[who].rival)) return 'spike';
+  if (REL[who].friend && ns.includes(REL[who].friend)) return 'round';
+  return 'classic';
+}
+function moodAnimFor(who) {
+  if (!who) return 'idle';
+  const i = seats.indexOf(who);
+  if (i < 0) return 'idle';
+  const ns = neighbors(i);
+  if (REL[who].rival && ns.includes(REL[who].rival)) return who === 'fox' ? 'awkward' : 'mad';
+  if (REL[who].friend && ns.includes(REL[who].friend)) return 'happy';
+  return 'idle';
+}
+function chairVisual(kind) {
+  const k = kind === 'empty' ? 'stool' : kind === 'friend' ? 'round' : kind === 'rival' ? 'spike' : kind;
+  const src = ASSET_CHAIR[k] || ASSET_CHAIR.classic;
+  return `<img class="chair-img" data-asset="chair-${k}" src="${src}" alt="" draggable="false" />`;
+}
+
+function rebuildChairs() {
+  const root = document.getElementById('chairs');
+  root.innerHTML = '';
+  seatEls = [];
+  for (let i = 0; i < 4; i++) {
+    const who = seats[i];
+    const ang = angleAtSeat(i);
+    const p = polar(ang);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'seat-slot';
+    btn.dataset.seat = String(i);
+    btn.style.left = p.x + 'px';
+    btn.style.top = (p.y + 22) + 'px';
+    btn.style.zIndex = String(depthZ(ang) - 5);
+    btn.setAttribute('aria-label', who ? LABEL[who] : '空座');
+    const wrap = document.createElement('div');
+    wrap.className = 'chair-wrap';
+    wrap.innerHTML = chairVisual(chairKindFor(i, who));
+    btn.appendChild(wrap);
+    btn.addEventListener('click', () => onSeat(i));
+    btn.addEventListener('pointerenter', () => onHover(i, true));
+    btn.addEventListener('pointerleave', () => onHover(i, false));
+    root.appendChild(btn);
+    seatEls[i] = btn;
+  }
+}
+
+function rebuildActors() {
+  const root = document.getElementById('actors');
+  root.innerHTML = '';
+  actorEls = {};
+  animState = {};
+  seats.forEach((who, i) => {
+    if (!who) return;
+    const el = document.createElement('div');
+    el.className = 'actor';
+    el.dataset.char = who;
+    el.innerHTML = `<div class="bubble"></div><div class="shadow"></div><div class="sprite" role="img" aria-label="${LABEL[who]}"></div>`;
+    placeActor(el, angleAtSeat(i));
+    root.appendChild(el);
+    actorEls[who] = el;
+    playAnim(who, moodAnimFor(who), { loop: true });
+  });
+}
+
+function clearSeatHot() {
+  seatEls.forEach(s => s && s.classList.remove('hot', 'hot-friend', 'hot-rival'));
+}
+function wouldRefuse(who, targetIdx) {
+  if (seats[targetIdx]) return false;
+  const trial = seats.slice();
+  const from = trial.indexOf(who);
+  trial[from] = null;
+  trial[targetIdx] = who;
+  const ns = [(targetIdx + 1) % 4, (targetIdx + 3) % 4].map(j => trial[j]).filter(Boolean);
+  return !!(REL[who].rival && ns.includes(REL[who].rival));
+}
+function hoverKind(who, targetIdx) {
+  if (wouldRefuse(who, targetIdx)) return 'rival';
+  const trial = seats.slice();
+  const from = trial.indexOf(who);
+  const other = trial[targetIdx];
+  trial[from] = other;
+  trial[targetIdx] = who;
+  const ns = [(targetIdx + 1) % 4, (targetIdx + 3) % 4].map(j => trial[j]).filter(Boolean);
+  if (REL[who].friend && ns.includes(REL[who].friend)) return 'friend';
+  if (REL[who].rival && ns.includes(REL[who].rival)) return 'rival';
+  return 'ok';
+}
+function onHover(i, on) {
+  if (busy || selected === null) return;
+  const who = seats[selected];
+  if (!who || selected === i) return;
+  clearSeatHot();
+  if (!on) return;
+  const k = hoverKind(who, i);
+  seatEls[i].classList.add(k === 'friend' ? 'hot-friend' : k === 'rival' ? 'hot-rival' : 'hot');
+}
+
+function stopEscalate() {
+  if (escalateTimer) clearTimeout(escalateTimer);
+  if (escalateTick) clearInterval(escalateTick);
+  escalateTimer = escalateTick = null;
+  escalateLv = 0;
+  document.getElementById('escBar').classList.remove('on');
+  document.getElementById('escFill').style.width = '0%';
+}
+function startEscalate() {
+  stopEscalate();
+  if (!rivalsAdjacent()) return;
+  document.getElementById('escBar').classList.add('on');
+  setBeat('修罗场', 'bad');
+  setHint('不管会升级… 拉开他们');
+  showBubble('fox', '…', 'bad');
+  showBubble('rabbit', '💢', 'bad');
+  playAnim('fox', 'awkward', { loop: true });
+  playAnim('rabbit', 'mad', { loop: true });
+
+  let progress = 0;
+  escalateTick = setInterval(() => {
+    if (!rivalsAdjacent() || busy || selected !== null) return;
+    progress += 4;
+    document.getElementById('escFill').style.width = Math.min(100, progress) + '%';
+    if (progress >= 33 && escalateLv < 1) {
+      escalateLv = 1;
+      showBubble('fox', '哼', 'bad');
+      showBubble('rabbit', '💢💢', 'bad');
+      setBeat('升级·1', 'warn');
+      playAnim('fox', 'mad', { loop: true });
+      playAnim('rabbit', 'mad', { loop: true });
+      fxPop(angleAtSeat(seats.indexOf('rabbit')), '💢');
+    }
+    if (progress >= 66 && escalateLv < 2) {
+      escalateLv = 2;
+      showBubble('fox', '走开!', 'bad');
+      showBubble('rabbit', '可恶!', 'bad');
+      setBeat('升级·2', 'bad');
+      playAnim('fox', 'clash', { loop: true });
+      playAnim('rabbit', 'clash', { loop: true });
+    }
+    if (progress >= 100 && escalateLv < 3) {
+      escalateLv = 3;
+      showBubble('fox', '💥', 'bad');
+      showBubble('rabbit', '💥', 'bad');
+      setBeat('吵翻了', 'bad');
+      setHint('快拉开！');
+      fxPop(angleAtSeat(seats.indexOf('fox')), '💥');
+      fxPop(angleAtSeat(seats.indexOf('rabbit')), '💥');
+    }
+  }, 280);
+}
+
+function afterSettle() {
+  rebuildChairs();
+  hideBubbles();
+  Object.keys(actorEls).forEach(who => {
+    const i = seats.indexOf(who);
+    if (i >= 0) placeActor(actorEls[who], angleAtSeat(i));
+    actorEls[who].classList.remove('held');
+  });
+  if (rivalsAdjacent()) {
+    startEscalate();
+  } else {
+    stopEscalate();
+    if (friendsAdjacent()) {
+      setBeat('成了', 'ok');
+      showBubble('rabbit', '👋', 'ok');
+      showBubble('crane', '✨', 'ok');
+      playAnim('rabbit', 'greet', { loop: true });
+      playAnim('crane', 'greet', { loop: true });
+      setHint('');
+    } else {
+      Object.keys(actorEls).forEach(who => playAnim(who, moodAnimFor(who), { loop: true }));
+      setBeat('…');
+      setHint('点角色 → 点空座/换座');
+    }
+  }
+  worldCam('cam-idle');
+}
+
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function playOnce(who, name, fps) {
+  return new Promise(resolve => {
+    playAnim(who, name, { loop: false, holdLast: true, fps, onDone: resolve });
+  });
+}
+
+async function animateWalk(who, fromIdx, toIdx) {
+  const el = actorEls[who];
+  if (!el) return { passed: [] };
+  const { delta, steps, fromA, toA } = preferArc(fromIdx, toIdx);
+  const passed = seatsOnArc(fromIdx, toIdx, delta);
+  /* stand-up frames first */
+  await playOnce(who, 'stand', 9);
+  playAnim(who, 'walk', { loop: true });
+  hideBubbles();
+  const triggered = new Set();
+  await new Promise(resolve => {
+    let step = 0;
+    const iv = setInterval(() => {
+      step++;
+      const t = step / steps;
+      const ang = fromA + delta * t;
+      placeActor(el, ang, { lift: 8 });
+      passed.forEach(si => {
+        if (triggered.has(si)) return;
+        const sa = angleAtSeat(si);
+        let diff = Math.abs(((ang - sa + 540) % 360) - 180);
+        if (diff < 12) {
+          triggered.add(si);
+          const other = seats[si];
+          if (other) onWalkBy(who, other, si);
+        }
+      });
+      if (step >= steps) {
+        clearInterval(iv);
+        placeActor(el, toA, { lift: 8 });
+        resolve();
+      }
+    }, 28);
+  });
+  /* sit with weight — frame sequence */
+  await playOnce(who, 'sit', 8);
+  placeActor(el, toA);
+  return { passed };
+}
+
+function onWalkBy(walker, other, seatIdx) {
+  if (REL[walker].friend === other || REL[other].friend === walker) {
+    setBeat('打招呼', 'ok');
+    showBubble(walker, '嗨', 'ok');
+    showBubble(other, '👋', 'ok');
+    /* body+face same beat via greet sheet */
+    playAnim(walker, 'greet', { loop: true });
+    playAnim(other, 'greet', { loop: false, holdLast: true });
+    fxPop(angleAtSeat(seatIdx), '✨');
+    /* resume walk frames on walker shortly */
+    setTimeout(() => {
+      if (animState[walker] && animState[walker].name === 'greet') {
+        playAnim(walker, 'walk', { loop: true });
+      }
+    }, 420);
+  } else if (REL[walker].rival === other || REL[other].rival === walker) {
+    setBeat('撞一下', 'bad');
+    showBubble(walker, '哼', 'bad');
+    showBubble(other, '💢', 'bad');
+    playAnim(walker, 'clash', { loop: false, holdLast: true });
+    playAnim(other, 'clash', { loop: false, holdLast: true });
+    fxPop(angleAtSeat(seatIdx), '💢');
+    fxClash(angleAtSeat(seatIdx));
+    setTimeout(() => {
+      if (actorEls[walker]) playAnim(walker, 'walk', { loop: true });
+      if (actorEls[other]) playAnim(other, moodAnimFor(other), { loop: true });
+    }, 380);
+  }
+}
+
+async function doRefuse(who, fromIdx, targetIdx) {
+  setBeat('拒坐', 'bad');
+  setHint('站立拒坐');
+  phoneBusy(true);
+  const el = actorEls[who];
+  const fromA = angleAtSeat(fromIdx);
+  const toA = angleAtSeat(targetIdx);
+  const { delta } = shortestArc(fromA, toA);
+  const approach = fromA + delta * 0.55;
+  await playOnce(who, 'stand', 9);
+  playAnim(who, 'walk', { loop: true });
+  await new Promise(r => {
+    let step = 0, steps = 10;
+    const iv = setInterval(() => {
+      step++;
+      placeActor(el, fromA + (approach - fromA) * (step / steps), { lift: 8 });
+      if (step >= steps) { clearInterval(iv); r(); }
+    }, 30);
+  });
+  /* refuse: body cross-arms + mad face same sheet beat */
+  playAnim(who, 'refuse', { loop: false, holdLast: true });
+  showBubble(who, '不坐', 'bad');
+  fxPop(approach, '💢');
+  await wait(700);
+  playAnim(who, 'walk', { loop: true });
+  await new Promise(r => {
+    let step = 0, steps = 12;
+    const start = parseFloat(el.dataset.angle);
+    const iv = setInterval(() => {
+      step++;
+      placeActor(el, start + (fromA - start) * (step / steps), { lift: 8 });
+      if (step >= steps) { clearInterval(iv); r(); }
+    }, 28);
+  });
+  await playOnce(who, 'sit', 8);
+  placeActor(el, fromA);
+  hideBubbles();
+  selected = null;
+  clearSeatHot();
+  phoneBusy(false);
+  setBeat('不坐', 'bad');
+  setHint('换别处试试');
+  afterSettle();
+}
+
+async function doMove(who, fromIdx, toIdx) {
+  phoneBusy(true);
+  stopEscalate();
+  hideBubbles();
+  const other = seats[toIdx];
+  setBeat(other ? '换座' : '落座');
+  setHint('');
+  const el = actorEls[who];
+  if (el) el.classList.remove('held');
+  worldCam('cam-push');
+
+  await animateWalk(who, fromIdx, toIdx);
+
+  seats[fromIdx] = other;
+  seats[toIdx] = who;
+
+  if (other) {
+    const otherEl = actorEls[other];
+    if (otherEl) {
+      await playOnce(other, 'stand', 9);
+      playAnim(other, 'walk', { loop: true });
+      const fromA = angleAtSeat(toIdx);
+      const toA = angleAtSeat(fromIdx);
+      const { delta, steps } = shortestArc(fromA, toA);
+      await new Promise(r => {
+        let step = 0;
+        const iv = setInterval(() => {
+          step++;
+          placeActor(otherEl, fromA + delta * (step / steps), { lift: 8 });
+          if (step >= steps) { clearInterval(iv); r(); }
+        }, 22);
+      });
+      await playOnce(other, 'sit', 8);
+      placeActor(otherEl, toA);
+    }
+  }
+
+  selected = null;
+  clearSeatHot();
+  phoneBusy(false);
+  afterSettle();
+}
+
+function onSeat(i) {
+  if (busy) return;
+  const who = seats[i];
+  if (selected === null) {
+    if (!who) return;
+    selected = i;
+    stopEscalate();
+    hideBubbles();
+    const el = actorEls[who];
+    if (el) {
+      el.classList.add('held');
+      playAnim(who, 'stand', { loop: false, holdLast: true, onDone: () => {
+        playAnim(who, 'held', { loop: true });
+      }});
+    }
+    worldCam('cam-push');
+    setBeat('拿起');
+    setHint('拖/点空座落座，或点别人换座');
+    return;
+  }
+  if (selected === i) {
+    const w = seats[selected];
+    if (actorEls[w]) {
+      actorEls[w].classList.remove('held');
+      playAnim(w, 'sit', { loop: false, holdLast: true, onDone: () => afterSettle() });
+    } else {
+      afterSettle();
+    }
+    selected = null;
+    clearSeatHot();
+    setHint('点角色 → 点空座/换座');
+    return;
+  }
+  const from = selected;
+  const mover = seats[from];
+  if (!mover) { selected = null; return; }
+  if (wouldRefuse(mover, i)) {
+    const el = actorEls[mover];
+    if (el) el.classList.remove('held');
+    doRefuse(mover, from, i);
+    return;
+  }
+  doMove(mover, from, i);
+}
+
+/* Drag / tap follow while held */
+function onPointerDown(e) {
+  if (busy || selected === null) return;
+  const who = seats[selected];
+  if (!who || !actorEls[who]) return;
+  const stage = document.getElementById('stage');
+  const rect = stage.getBoundingClientRect();
+  drag = {
+    who,
+    pointerId: e.pointerId,
+    originAngle: parseFloat(actorEls[who].dataset.angle),
+  };
+  stage.setPointerCapture(e.pointerId);
+  e.preventDefault();
+}
+function onPointerMove(e) {
+  if (!drag || e.pointerId !== drag.pointerId) return;
+  const who = drag.who;
+  const el = actorEls[who];
+  if (!el) return;
+  const actors = document.getElementById('actors');
+  const rect = actors.getBoundingClientRect();
+  /* actors layer is a 0x0 at table center — convert pointer to offset */
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const ang = parseFloat(el.dataset.angle) || 0;
+  placeActor(el, ang, { lift: 16, follow: { x, y } });
+  if (animState[who] && animState[who].name !== 'held' && animState[who].name !== 'walk') {
+    playAnim(who, 'held', { loop: true });
+  }
+}
+function onPointerUp(e) {
+  if (!drag || e.pointerId !== drag.pointerId) return;
+  const who = drag.who;
+  const el = actorEls[who];
+  drag = null;
+  if (!el || selected === null) return;
+  /* snap back to seat angle with held pose until seat chosen */
+  placeActor(el, angleAtSeat(selected), { lift: 14 });
+}
+
+function reset() {
+  stopEscalate();
+  selected = null;
+  busy = false;
+  drag = null;
+  phoneBusy(false);
+  seats = ['fox', 'crane', 'rabbit', null];
+  clearSeatHot();
+  rebuildChairs();
+  rebuildActors();
+  setBeat('开席');
+  setHint('点角色 → 点空座/换座');
+  worldCam('cam-idle');
+  setTimeout(afterSettle, 200);
+}
+function showTip() {
+  tipMode = !tipMode;
+  if (tipMode) {
+    setHint('试：①兔→空座(拒坐) ②狐↔兔对座(走路遇鹤) ③换到挨坐等升级');
+    setBeat('提示');
+  } else {
+    setHint('点角色 → 点空座/换座');
+  }
+}
+
+function loop(ts) {
+  if (!lastTs) lastTs = ts;
+  const dt = Math.min(0.05, (ts - lastTs) / 1000);
+  lastTs = ts;
+  tickAnims(dt);
+  /* idle gossip: if rivals not escalating and friends adj, occasional greet blink already in idle sheets */
+  raf = requestAnimationFrame(loop);
+}
+
+document.getElementById('btnReset').addEventListener('click', reset);
+document.getElementById('btnTip').addEventListener('click', showTip);
+const stage = document.getElementById('stage');
+stage.addEventListener('pointerdown', onPointerDown);
+stage.addEventListener('pointermove', onPointerMove);
+stage.addEventListener('pointerup', onPointerUp);
+stage.addEventListener('pointercancel', onPointerUp);
+
+/* preload sheets + hydrate json meta (frameW/H/count/fpsHint) */
+async function hydrateSheets() {
+  const jobs = [];
+  Object.values(SHEET).forEach(ch => {
+    Object.values(ch).forEach(s => {
+      const img = new Image();
+      img.src = s.src;
+      jobs.push(fetch(s.metaUrl).then(r => r.ok ? r.json() : null).then(j => {
+        if (!j) return;
+        if (j.frameW) s.frameW = j.frameW;
+        if (j.frameH) s.frameH = j.frameH;
+        if (j.count) s.count = j.count;
+        if (j.fpsHint) s.fps = j.fpsHint;
+      }).catch(() => {}));
+    });
+  });
+  await Promise.all(jobs);
+}
+hydrateSheets().then(() => {
+  reset();
+  raf = requestAnimationFrame(loop);
+});
+</script>
+</body>
+</html>

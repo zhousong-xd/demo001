@@ -1,0 +1,62 @@
+{
+  "task": "T-033",
+  "kind": "candidates-playtest-ui-mouse-sim-swap-displace",
+  "shippedClaim": false,
+  "input": "mouse-sim (CDP Input.dispatchMouseEvent)",
+  "deviceUntested": true,
+  "multitouchUntested": true,
+  "results": [
+    {
+      "step": "swap_c02",
+      "pass": true,
+      "snap": {
+        "fileId": "c02",
+        "levelId": "C02",
+        "title": "隔桌也算陪伴",
+        "assignment": {
+          "fox": "A2",
+          "rabbit": "A1",
+          "crane": null,
+          "otter": null,
+          "tanuki": null,
+          "hedgehog": null
+        },
+        "historyLen": 3,
+        "seated": 2,
+        "url": "?c=c02",
+        "hasStatus": true,
+        "status": "已入座 2/6 · 历史 3 · 点选角色再点座位",
+        "shippedClaim": false
+      }
+    },
+    {
+      "step": "displace_c01",
+      "pass": true,
+      "snap": {
+        "fileId": "c01",
+        "levelId": "C01",
+        "title": "先让大家坐下",
+        "assignment": {
+          "fox": null,
+          "rabbit": "A1",
+          "crane": null,
+          "otter": null
+        },
+        "historyLen": 2,
+        "seated": 1,
+        "url": "?c=c01",
+        "hasStatus": true,
+        "status": "已入座 1/4 · 历史 2 · 点选角色再点座位",
+        "shippedClaim": false
+      }
+    }
+  ],
+  "pageErrors": [],
+  "dist": {
+    "bytes": 73182,
+    "sha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+    "hasCR": false
+  },
+  "expectedProductSha256": "19b8e65bbde285719ee43d74d83fcc60cdb3709ae7cc3ccc80d3f36d45d1bcf5",
+  "refTip": "1d7d286 (T-031)"
+}

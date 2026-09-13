@@ -1,0 +1,14 @@
+{
+  "frameW": 96,
+  "frameH": 112,
+  "count": 3,
+  "fpsHint": 8,
+  "order": [
+    "weight_L",
+    "center",
+    "weight_R"
+  ],
+  "note": "站立重心微移（非 bob 整图）",
+  "layout": "horizontal",
+  "source": "sheets/fox_stand.png"
+}

@@ -1,0 +1,669 @@
+{
+  "console": [
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "otter"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "otter",
+        "->",
+        "A2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "crane"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "crane",
+        "->",
+        "B1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "rabbit"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "rabbit",
+        "->",
+        "B2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "feast",
+        "L01"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L02",
+        "隔桌也算陪伴"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "otter"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "otter",
+        "->",
+        "A2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "hedgehog"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "hedgehog",
+        "->",
+        "A3"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "rabbit"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "rabbit",
+        "->",
+        "B1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "tanuki"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "tanuki",
+        "->",
+        "B2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "crane"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "crane",
+        "->",
+        "B3"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "feast",
+        "L02"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "rabbit"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "rabbit",
+        "->",
+        "A2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "swap",
+        "fox",
+        "->",
+        "A2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "blur",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "otter"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "otter",
+        "->",
+        "A2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "crane"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "crane",
+        "->",
+        "B1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "rabbit"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "rabbit",
+        "->",
+        "B2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "feast",
+        "L01"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "rabbit"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "rabbit",
+        "->",
+        "A2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "rabbit"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "swap",
+        "fox",
+        "->",
+        "A2"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "crane"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-tap",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "displace",
+        "crane",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-end",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "action",
+        "move",
+        "fox",
+        "->",
+        "A1"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointercancel",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "gesture-cancel",
+        "pointerup-drag",
+        "fox"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "invalid-drop"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[banquet]",
+        "level",
+        "L01",
+        "先让大家坐下"
+      ]
+    }
+  ],
+  "pageErrors": []
+}

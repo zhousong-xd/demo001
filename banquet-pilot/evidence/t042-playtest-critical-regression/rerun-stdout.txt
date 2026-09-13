@@ -1,0 +1,21 @@
+[PASS] place fox→A1
+[PASS] undo empty
+[PASS] switch c01→c02
+[PASS] swap c02
+[PASS] displace c01
+[PASS] calm miss fox
+[PASS] calm hit rabbit
+[未测] 真机 / 多指（CDP mouse-sim ≠ 真机）
+{
+  "ok": true,
+  "evid": "/workspace/demo001-t002/repo/banquet-pilot/evidence/t041-playtest-ui-critical-regression",
+  "steps": [
+    "place_c01",
+    "undo_c01",
+    "switch_c02",
+    "swap_c02",
+    "displace_c01",
+    "calm_miss_fox",
+    "calm_hit_rabbit"
+  ]
+}
