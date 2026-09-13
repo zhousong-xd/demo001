@@ -12,6 +12,7 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{anim
 @media(max-height:720px) and (max-width:600px){.shell{padding-top:8px!important}.heading{padding:8px 0 10px!important}.heading .eyebrow{font-size:8px}.heading h1{font-size:28px;margin:5px 0}.heading p{font-size:10px}.table-caption{padding-top:8px!important}.actions{padding-top:6px!important;padding-bottom:10px}.rules{margin-top:7px}.status-strip{min-height:33px;padding:6px 9px}footer{padding-top:9px;font-size:9px;gap:5px}.sample-tag{font-size:7px}}
 @media(max-width:390px){.shell{padding:13px 14px 18px}.heading{padding:18px 0 15px}h1{font-size:33px}.topbar{gap:6px}.brand{font-size:10px}.table-caption{padding-top:12px}.rules{gap:8px}.actions{gap:7px;padding-top:9px}.bell-button{min-height:50px}.status-strip{font-size:10px}.game{border-radius:20px}}
 @media(min-width:760px){.shell{padding-top:30px}body:before{content:"一顿饭的工夫，\a 把小心事慢慢放下。";white-space:pre;position:fixed;left:max(24px,calc(50% - 560px));top:42%;font-family:"SimSun",serif;line-height:2.4;color:#aa997b;font-size:18px;writing-mode:vertical-rl;letter-spacing:5px;pointer-events:none}.heading{padding-top:28px}.game{box-shadow:0 20px 70px #80694520}.shell:after{content:"FOX & RABBIT · A LITTLE SEAT OF PEACE";display:block;text-align:center;font-size:8px;letter-spacing:2px;color:#afa087;margin-top:18px}}
+.direction-defs{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}.guest[data-row="A"]{z-index:3}.guest[data-row="B"],.guest[data-row="waiting"]{z-index:6}.room.table-occluder{z-index:4;clip-path:inset(34.09% 0 37.05% 0)}.relation-layer{z-index:5}.seat{z-index:3}.guest.in-transit{z-index:8!important}.guest.in-transit .breath{animation:travel-step .16s ease-in-out infinite alternate}.guest.in-transit .ground-shadow{opacity:.1}.guest.noticing .head{animation:notice .48s ease-out}.direction-entry{font-size:10px;background:#edead9;color:#71856a;border:1px solid #d8d4bc;border-radius:9px;padding:5px 9px;margin-top:-5px;min-height:30px}.direction-entry:hover{background:#dfe7d4}.table-caption{gap:6px;align-items:center}.guest[data-facing="N"] .head,.guest[data-facing="NE"] .head,.guest[data-facing="NW"] .head{transform-origin:70px 100px}.guest[data-facing="N"] .tail{transform-origin:70px 139px}.guest[data-row="A"] .guest-name{background:#f8e8ccaa;border-radius:6px;padding:1px 4px;bottom:18px;left:90%}.guest[data-row="A"] .calm-mark{top:24%;right:-3px}.guest[data-row="B"] .calm-mark{top:45%}#direction-dialog{max-width:470px;max-height:calc(100dvh - 28px);padding:25px 18px 18px;overflow-y:auto}#direction-dialog h2{font-size:22px;margin:12px 0}.direction-controls{display:flex;gap:14px;font-size:11px;color:#82725b;align-items:center}.direction-controls select{font:inherit;padding:7px 8px;color:#635740;background:#f7efdc;border:1px solid #d9cbae;border-radius:7px}.direction-preview{position:relative;height:205px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;margin:12px 0;background:radial-gradient(ellipse at center,#e9dfc5 0%,#f8f3e5 70%);border-radius:18px;overflow:hidden}.direction-preview:after{content:"";position:absolute;bottom:44px;left:20%;right:20%;border-bottom:1px dashed #bcb298}#inspect-hero{position:relative;inset:auto;width:136px;height:155px;transform:none;z-index:1}.view-caption{padding:3px 0 8px;display:flex;flex-direction:column;text-align:center;gap:3px;z-index:2}.view-caption strong{font-size:11px;color:#786749}.view-caption small{font-size:8px;color:#a39275}.direction-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.view-tile{background:#f1ead9;border:1px solid #e1d6bd;border-radius:11px;padding:5px 3px 6px;display:flex;align-items:center;flex-direction:column;min-width:0}.view-tile[aria-pressed="true"]{background:#e0e8d6;border-color:#849c77;box-shadow:0 0 0 1px #849c77}.view-tile>svg{width:100%;max-width:75px;height:82px}.view-tile>span{font-size:9px;color:#887657;margin-top:4px}.view-tile .eyes-happy{display:none}.view-tile[data-mood="calm"] .eyes-happy{display:block}.view-tile[data-mood="calm"] .eyes-open{display:none}.head-controls{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:13px;color:#928064}.head-controls>span{font-size:10px;margin-right:4px}.head-controls button{border:1px solid #d6c8aa;background:#f1e6cc;border-radius:8px;min-width:32px;height:32px;color:#7d6b4b}@keyframes travel-step{from{transform:translateY(0)}to{transform:translateY(-2px)}}@keyframes notice{0%{transform:translateY(0)}40%{transform:translateY(-3px) rotate(-3deg)}100%{transform:translateY(0)}}@media(max-height:720px){.direction-preview{height:170px}#inspect-hero{width:111px;height:127px}.view-tile>svg{height:64px}#direction-dialog h2{font-size:19px}.head-controls{margin-top:9px}}
 </style>
 </head>
 <body>
@@ -28,7 +29,7 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{anim
 <header class="topbar"><span class="brand"><svg class="icon"><use href="#i-leaf"/></svg> 妖怪小食堂</span><div class="settings"><button id="sound" class="icon-button" aria-label="开启声音" aria-pressed="false"><svg class="icon"><use href="#i-sound"/></svg><span class="mute-slash"></span></button><button id="motion" class="icon-button" aria-label="减少动画" aria-pressed="false"><svg class="icon"><use href="#i-motion"/></svg></button><button id="info" class="icon-button" aria-label="玩法与版本说明"><svg class="icon"><use href="#i-info"/></svg></button></div></header>
 <section class="heading"><div class="eyebrow"><span></span> 暖绘本 · 交互小样 01</div><h1>这桌，<em>刚刚好。</em></h1><p>换一个座位，让一顿饭舒服一点。</p></section>
 <section class="game" aria-label="狐兔换座表现小样">
-<div class="table-caption"><span>今日两位客人</span><span id="move-count">尚未换座</span></div>
+<div class="table-caption"><span>今日两位客人</span><button id="open-directions" class="direction-entry">八向检视 ↗</button><span id="move-count">尚未换座</span></div>
 <div class="stage" id="stage">
 <svg class="room" viewBox="0 0 420 440" aria-hidden="true">
 <defs>
@@ -43,6 +44,7 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{anim
 <path d="M327 45v25m-13 0q13-24 26 0" stroke="#9aa184" fill="none" stroke-width="2"/><ellipse cx="327" cy="76" rx="24" ry="18" fill="#d9b888"/><path d="M307 78h40" stroke="#eee1bd" stroke-width="2"/><path d="M321 94h12" stroke="#b28d65" stroke-width="2"/>
 <path d="M37 138q173-8 346 0M34 346q176 8 352 0" fill="none" stroke="#ded3bf" stroke-width="1" stroke-dasharray="2 7"/>
 <g class="chair-art" data-chair="A1" transform="translate(112 141)"><use href="#chair"/></g><g class="chair-art" data-chair="A2" transform="translate(308 141)"><use href="#chair"/></g>
+<g transform="translate(210 0) scale(.84 1) translate(-210 0)">
 <ellipse cx="210" cy="255" rx="164" ry="80" fill="#74533c" opacity=".09"/>
 <path d="M82 257v43M338 257v43" stroke="#ad794e" stroke-width="12" stroke-linecap="round"/>
 <rect x="43" y="161" width="334" height="127" rx="58" fill="#b88055"/>
@@ -58,6 +60,7 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{anim
 <g transform="translate(308 218)"><ellipse rx="18" ry="10" fill="#eed7b6"/><path d="M-12-6h24l-3 15q-9 6-18 0Z" fill="#f9eacc" stroke="#c8a681"/><ellipse cy="-6" rx="12" ry="5" fill="#a87c4a"/></g>
 <g class="steam" stroke="#fff8e8" stroke-width="2" fill="none" stroke-linecap="round"><path d="M107 200q-5-7 1-13t0-12"/><path d="M311 200q5-7-1-13t0-12"/></g>
 <g transform="translate(208 169)"><path d="M-9 0h18l-3 19h-12Z" fill="#879782"/><path d="M0 1v-15m0 6-9-8m9 13 9-9" stroke="#748d64" stroke-width="2"/><ellipse cx="-9" cy="-15" rx="6" ry="3" fill="#9bab77" transform="rotate(30 -9 -15)"/><ellipse cx="9" cy="-10" rx="6" ry="3" fill="#97a672" transform="rotate(-30 9 -10)"/></g>
+</g>
 <g class="chair-art" data-chair="B1" transform="translate(112 340)"><use href="#chair"/></g><g class="chair-art" data-chair="B2" transform="translate(308 340)"><use href="#chair"/></g>
 <path d="M67 388h286" stroke="#ded4bf" stroke-dasharray="3 5"/><path d="M106 425q104 9 208 0" fill="none" stroke="#decdb3" stroke-width="7" stroke-linecap="round"/>
 </svg>
@@ -135,6 +138,15 @@ body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{anim
 <footer><span>点选再点座位，或直接拖动客人</span><span class="sample-tag">表现候选 · 非正式关卡</span></footer>
 </main>
 <dialog id="help"><button id="close-help" class="close-help" aria-label="关闭说明">×</button><span class="eyebrow">两位客人，一点小心事</span><h2>让这一桌舒服一点。</h2><p>狐喜欢窗边 A1。兔没安心时，不愿坐在狐的正对面。</p><p>可以给兔换座，也可以点<strong>安心铃</strong>，再点兔。误投不消耗；撤销会同时恢复座位、安心状态和库存。</p><p>点选客人后，点已占座位可交换；候客入座可顶替原客人。键盘也可用 Tab、Enter 操作，Esc 取消选择。</p><p class="fine-print">原创 SVG 分层角色 · 离线单文件 · 不保存进度，不请求网络。声音默认关闭；支持减少动画。本小样复用冻结版本的规则内核与道具逻辑，仅抽取双角色情境，不是新的正式关卡。</p><button id="help-play" class="primary">知道了，开桌</button></dialog>
+<dialog id="direction-dialog" aria-label="角色八向与注视检视">
+<button id="close-directions" class="close-help" aria-label="关闭八向检视">×</button>
+<span class="eyebrow">CHARACTER TURNAROUND · 02</span><h2>坐在哪里，看向哪里。</h2>
+<div class="direction-controls"><label>角色 <select id="inspect-character"><option value="fox">阿狐</option><option value="rabbit">小兔</option></select></label><label>神态 <select id="inspect-mood"><option value="neutral">平静</option><option value="uneasy">警惕</option><option value="calm">安心</option></select></label></div>
+<div class="direction-preview"><div id="inspect-hero" class="guest" data-mood="neutral"></div><div class="view-caption"><strong id="inspect-label">正面 · S</strong><small>脚底锚点固定，身体与头部分开</small></div></div>
+<div class="direction-grid" id="direction-grid"></div>
+<div class="head-controls"><span>身体不动，转头看一眼</span><button id="look-left" aria-label="头部向左转45度">↶</button><button id="look-center" aria-label="头部回正">正</button><button id="look-right" aria-label="头部向右转45度">↷</button></div>
+<p class="fine-print">五种原始视角覆盖八向。左右几何复用；围巾垂片独立于镜像层。此处仅检视资源，不改变座位、规则或道具。</p>
+</dialog>
 <script type="module">/** Seat geometry for Banquet Pilot (browser-reusable ESM).
  *
  * Rows A (top) and B (bottom); column index increases left → right.
@@ -989,13 +1001,109 @@ function createWarmTable() {
 }
 
 ;
+const VIEW_DIRECTIONS = ["S", "SW", "W", "NW", "N", "NE", "E", "SE"];
+const VIEW_LABELS = { S: "正面", SW: "左前", W: "左侧", NW: "左后", N: "背面", NE: "右后", E: "右侧", SE: "右前" };
+function seatFacing(seat) { return seat?.startsWith("A") ? "S" : seat?.startsWith("B") ? "N" : "S"; }
+function vectorFacing(deltaX, deltaY) {
+  if (Math.abs(deltaX) + Math.abs(deltaY) < .01) return "S";
+  const directions = ["E", "SE", "S", "SW", "W", "NW", "N", "NE"];
+  return directions[(Math.round(Math.atan2(deltaY, deltaX) / (Math.PI / 4)) + 8) % 8];
+}
+function gazeFacing(body, target, maximumSteps = 1) {
+  const origin = VIEW_DIRECTIONS.indexOf(body);
+  const destination = VIEW_DIRECTIONS.indexOf(target);
+  const distance = (destination - origin + 12) % 8 - 4;
+  return VIEW_DIRECTIONS[(origin + Math.sign(distance) * Math.min(Math.abs(distance), maximumSteps) + 8) % 8];
+}
+function tableRoute(from, to, lane = 0) {
+  const start = from.slice(); const finish = to.slice();
+  const sameRow = (from[1] < 220) === (to[1] < 220);
+  if (sameRow) {
+    const outerY = from[1] < 220 ? 112 - lane * 12 : 377 + lane * 12;
+    return [start, [from[0], outerY], [to[0], outerY], finish];
+  }
+  const side = (from[0] + to[0]) / 2 < 210 ? 61 + lane * 6 : 359 - lane * 6;
+  return [start, [side, from[1] < 220 ? 112 : 377], [side, to[1] < 220 ? 112 : 377], finish];
+}
+
+function createDirectionalArt(guestElements) {
+  const fronts = {};
+  for (const [character, element] of Object.entries(guestElements)) {
+    const original = element.querySelector("svg");
+    const head = original.querySelector(".head").outerHTML;
+    const body = original.querySelector(".breath").cloneNode(true);
+    body.querySelector(".head").remove();
+    const bank = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    bank.classList.add("direction-defs"); bank.setAttribute("aria-hidden", "true");
+    bank.appendChild(original.querySelector("defs").cloneNode(true));
+    original.querySelector("defs").remove();
+    document.body.appendChild(bank);
+    fronts[character] = { head, body: body.innerHTML };
+  }
+  const mirror = (markup, direction) => ["SW", "W", "NW"].includes(direction) ? '<g transform="translate(140 0) scale(-1 1)">' + markup + '</g>' : markup;
+  const profile = direction => direction === "N" ? "back" : ["NE", "NW"].includes(direction) ? "rear" : ["E", "W"].includes(direction) ? "side" : "quarter";
+  function headArt(character, direction) {
+    if (direction === "S") return fronts[character].head;
+    const view = profile(direction);
+    const fox = character === "fox";
+    const fur = fox ? "#de9256" : "#f1e2c9";
+    const stroke = fox ? "#b77144" : "#c5b08e";
+    const fill = 'fill="url(#' + character + '-fur)" stroke="' + stroke + '" stroke-width="1.5"';
+    const ear = fox
+      ? '<g class="ear ear-left"><path d="M39 53 30 13q22 3 31 25Z" fill="' + fur + '" stroke="' + stroke + '"/><path d="m38 24 13 18-12 2Z" fill="' + (view === "back" || view === "rear" ? "#c7804b" : "#775143") + '"/></g><g class="ear ear-right"><path d="M80 42 101 15q12 16 7 43Z" fill="' + fur + '" stroke="' + stroke + '"/><path d="m99 27-11 19 13 3Z" fill="' + (view === "back" ? "#c7804b" : "#775143") + '"/></g>'
+      : '<g class="ear ear-left"><path d="M47 56C25 16 38-8 47 7c10 17 12 32 11 47Z" fill="' + fur + '" stroke="' + stroke + '"/>' + (view === "back" || view === "rear" ? '' : '<path d="M47 44C36 17 41 6 45 17l7 28Z" fill="#dfb0a0"/>') + '</g><g class="ear ear-right"><path d="M79 54C77 17 94-7 102 7c7 13-5 39-12 50Z" fill="' + fur + '" stroke="' + stroke + '"/>' + (view === "back" ? '' : '<path d="M86 43c1-19 10-35 11-23l-7 25Z" fill="#dfb0a0"/>') + '</g>';
+    let face;
+    if (view === "back") {
+      face = '<path d="M34 55q13-23 37-21 29-1 40 24l7 18-7 13q-13 18-41 17-31-2-40-22l-6-10Z" ' + fill + '/><path d="M46 87q24 21 48 0" fill="none" stroke="' + (fox ? '#edb17b' : '#fff2d8') + '" stroke-width="3"/><path d="m62 40 8-5 9 6" fill="none" stroke="' + (fox ? '#efad73' : '#fff3dc') + '" stroke-width="2"/>';
+    } else if (view === "rear") {
+      face = '<path d="M32 57q11-25 40-23 26 1 37 24l9 16-10 17q-22 19-54 11-24-8-24-28Z" ' + fill + '/><path d="M102 72q18 2 18 10l-16 11" fill="' + (fox ? '#f2dab2' : '#f8ead2') + '" stroke="' + stroke + '"/><path d="M38 83q20 20 46 15" fill="none" stroke="' + (fox ? '#edb17b' : '#fff2dc') + '" stroke-width="3"/><path d="M104 65v5" stroke="#4b3e32" stroke-width="2.5" stroke-linecap="round"/><circle cx="119" cy="81" r="2.5" fill="' + (fox ? '#4b3d31' : '#bd8a7b') + '"/>';
+    } else if (view === "side") {
+      face = '<path d="M39 50q22-25 48-9 15 9 16 26l' + (fox ? '23 14-22 16' : '12 11-13 18') + 'q-17 15-41 6-30-6-29-30Z" ' + fill + '/><path d="M85 76q' + (fox ? '21 0 38 6l-23 15q-12 9-28-2' : '20-6 28 5l-12 16q-13 7-23-3') + 'Z" fill="' + (fox ? '#f6e4bf' : '#faecd4') + '"/><g class="eyes-open"><ellipse cx="93" cy="66" rx="4.2" ry="6" fill="#4b3e32"/><circle cx="94" cy="64" r="1.4" fill="#fff4db"/></g><g class="eyes-happy"><path d="M89 67q4-5 8 0" fill="none" stroke="#4b3e32" stroke-width="2"/></g><path class="brows" d="m87 55 11 3" stroke="' + stroke + '" stroke-width="2"/><circle cx="' + (fox ? '124' : '113') + '" cy="81" r="3.2" fill="' + (fox ? '#4b3d31' : '#bd8a7b') + '"/><path d="M104 92q6 2 10-2" fill="none" stroke="' + stroke + '" stroke-width="1.5"/><ellipse cx="87" cy="83" rx="6" ry="3" fill="#d79478" opacity=".3"/>';
+    } else {
+      face = '<path d="M31 51q15-24 42-21 29 0 39 24l9 18-12 20q-18 20-49 10-29-5-33-26Z" ' + fill + '/><path d="M39 73q17 1 41 13 20-14 36-10-10 23-34 28-29-2-43-31Z" fill="' + (fox ? '#f9e7c3' : '#faecd4') + '"/><g class="eyes-open"><ellipse cx="59" cy="65" rx="6" ry="7" fill="#463c31"/><ellipse cx="99" cy="65" rx="4" ry="6" fill="#463c31"/><circle cx="61" cy="63" r="1.7" fill="#fff7df"/><circle cx="100" cy="63" r="1.4" fill="#fff7df"/></g><g class="eyes-happy"><path d="M53 67q6-7 12 0m30 0q4-5 8 0" fill="none" stroke="#514335" stroke-width="2"/></g><g class="brows" stroke="' + stroke + '" stroke-width="2"><path d="m52 54 13-1m31 1 8 2"/></g><path d="m80 80 12 1-6 6Z" fill="' + (fox ? '#4b3d31' : '#bd8a7b') + '"/><path d="M86 86v5m0 0q-5 4-9 0m9 0q5 3 9-1" fill="none" stroke="' + stroke + '" stroke-width="1.5"/><ellipse cx="47" cy="80" rx="7" ry="4" fill="#d79478" opacity=".3"/>';
+    }
+    return '<g class="head">' + mirror(ear + face, direction) + '</g>';
+  }
+  function bodyArt(character, direction) {
+    if (direction === "S") return fronts[character].body;
+    const fox = character === "fox";
+    const view = profile(direction);
+    const rear = view === "back" || view === "rear";
+    const outline = fox ? "#b87948" : "#c7b391";
+    const torso = '<ellipse cx="70" cy="120" rx="' + (view === "side" ? 24 : 30) + '" ry="29" fill="url(#' + character + '-fur)" stroke="' + outline + '" stroke-width="1.4"/>';
+    const feet = '<g class="feet"><ellipse cx="55" cy="146" rx="16" ry="6" fill="' + (fox ? '#694c39' : '#f0e0c4') + '"/><ellipse cx="85" cy="146" rx="16" ry="6" fill="' + (fox ? '#694c39' : '#f0e0c4') + '"/></g>';
+    const paws = '<g class="paw paw-left"><path d="M45 111q-8 18 0 21l8-4" fill="' + (fox ? '#df9960' : '#f9ecd5') + '" stroke="' + outline + '"/></g><g class="paw paw-right"><path d="M91 111q13 12 5 20l-10-6" fill="' + (fox ? '#df9960' : '#f9ecd5') + '" stroke="' + outline + '"/></g>';
+    const tail = fox ? '<g class="tail"><path d="M70 137q-31 13-35-15-2-13-12-21-4 38 17 48 22 10 36-5Z" fill="#cb7e45" stroke="#b87543"/><path d="M35 122q-2-13-12-21-2 19 2 31Z" fill="#f8e7c7"/></g>' : '<g class="tail"><circle cx="' + (rear ? '72' : '45') + '" cy="135" r="12" fill="#fff1d8" stroke="#d7c3a2"/><path d="m67 131 5-3 5 4" fill="none" stroke="#fffaf0" stroke-width="2"/></g>';
+    const bib = rear ? '' : '<path d="M59 111q11 5 22-2l-3 23q-12 7-19-4Z" fill="' + (fox ? '#f6e1b9' : '#fff2db') + '"/>';
+    const scarf = '<path d="M45 99q26 10 49 0l-2 10q-24 8-45-1Z" fill="' + (fox ? '#aa533f' : '#819980') + '"/>' + (rear ? '<path d="M78 105l12 1-2 23-12-4Z" fill="' + (fox ? '#bc674a' : '#92aa8b') + '"/><path d="m78 121 10 3" stroke="' + (fox ? '#e8a681' : '#cfdbb5') + '" stroke-width="2"/>' : '<path d="M66 108 78 125 86 109" fill="' + (fox ? '#bc674a' : '#a7ba99') + '"/>');
+    return mirror((rear ? '' : tail) + feet + torso + bib + paws, direction) + scarf + (rear ? mirror(tail, direction) : '');
+  }
+  function svg(character, bodyDirection, headDirection = bodyDirection) {
+    if (!VIEW_DIRECTIONS.includes(bodyDirection) || !VIEW_DIRECTIONS.includes(headDirection)) throw new Error("Unknown direction");
+    return '<svg viewBox="0 0 140 160" role="img" aria-label="' + character + ' ' + VIEW_LABELS[bodyDirection] + '" data-art-direction="' + bodyDirection + '" data-head-direction="' + headDirection + '"><ellipse class="ground-shadow" cx="70" cy="148" rx="34" ry="7" fill="#75452e" opacity=".14"/><g class="breath"><g class="body-view">' + bodyArt(character, bodyDirection) + '</g>' + headArt(character, headDirection) + '</g></svg>';
+  }
+  function paint(element, character, bodyDirection, headDirection = bodyDirection) {
+    const key = bodyDirection + ":" + headDirection;
+    if (element.dataset.viewKey === key) return;
+    element.querySelector("svg")?.remove();
+    element.insertAdjacentHTML("afterbegin", svg(character, bodyDirection, headDirection));
+    element.dataset.viewKey = key;
+    element.dataset.facing = bodyDirection;
+    element.dataset.gaze = headDirection;
+  }
+  return { paint, svg };
+}
+
+;
+
 
 
 const warmStore = createWarmTable();
 const stage = document.getElementById("stage");
 const guests = Object.fromEntries(WARM_LEVEL.characters.map(character => [character, document.getElementById(character)]));
+const directionArt = createDirectionalArt(guests);
 const seatButtons = [...document.querySelectorAll(".seat")];
-const warmCoordinates = { A1: [112, 142], A2: [308, 142], B1: [112, 341], B2: [308, 341] };
+const warmCoordinates = { A1: [112, 165], A2: [308, 165], B1: [112, 341], B2: [308, 341] };
 const waitingCoordinates = { fox: [155, 429], rabbit: [265, 429] };
 const guestNames = { fox: "阿狐", rabbit: "小兔" };
 const warmTimers = new Set();
@@ -1012,6 +1120,13 @@ let hoverTimer = null;
 let soundOn = false;
 let audioContext = null;
 let dismissedFeast = false;
+const lookOverrides = {};
+const transitGuests = new Set();
+const tableOccluder = document.querySelector(".room").cloneNode(true);
+tableOccluder.querySelector("defs")?.remove();
+tableOccluder.querySelectorAll("[id]").forEach(element => element.removeAttribute("id"));
+tableOccluder.classList.add("table-occluder");
+stage.appendChild(tableOccluder);
 
 function later(action, delay) {
   const timer = setTimeout(() => { warmTimers.delete(timer); action(); }, delay);
@@ -1023,6 +1138,10 @@ function cleanPresentation() {
   warmTimers.clear();
   warmAnimations.forEach(animation => animation.cancel());
   warmAnimations.clear();
+  transitGuests.clear();
+  Object.keys(lookOverrides).forEach(character => delete lookOverrides[character]);
+  Object.values(guests).forEach(guest => guest.classList.remove("in-transit"));
+  Object.values(guests).forEach(guest => guest.classList.remove("noticing"));
   Object.values(guests).forEach(guest => guest.classList.remove("hop", "react"));
   document.getElementById("fx").replaceChildren();
   document.getElementById("speech").classList.remove("visible");
@@ -1064,6 +1183,34 @@ function say(text) {
   later(() => speech.classList.remove("visible"), 1700);
 }
 function ruleStatus(state, id) { return state.result.rules.find(rule => rule.id === id)?.status || "PENDING"; }
+function setGuestView(character, targetDirection = null) {
+  const state = warmStore.read();
+  const body = seatFacing(state.assignment[character]);
+  const target = targetDirection || lookOverrides[character];
+  let head = target ? gazeFacing(body, target, lookOverrides[character] ? 2 : 1) : body;
+  if (!target && character === "rabbit" && ruleStatus(state, "eye-contact") === "CONFLICT") head = body === "N" ? "NE" : "SW";
+  if (!target && selectedGuest === character) head = body === "N" ? "NE" : "SE";
+  directionArt.paint(guests[character], character, body, head);
+}
+function relationshipBeat(character, usedBell = false) {
+  if (reducedMotion) return;
+  const state = warmStore.read();
+  const other = character === "fox" ? "rabbit" : "fox";
+  if (!state.assignment[character] || !state.assignment[other]) return;
+  const point = currentPosition(character);
+  const target = currentPosition(other);
+  lookOverrides[character] = usedBell ? "E" : vectorFacing(target[0] - point[0], target[1] - point[1]);
+  setGuestView(character);
+  guests[character].classList.add("noticing");
+  later(() => {
+    guests[character].classList.remove("noticing");
+    delete lookOverrides[character];
+    setGuestView(character);
+    lookOverrides[other] = vectorFacing(point[0] - target[0], point[1] - target[1]);
+    setGuestView(other);
+  }, usedBell ? 520 : 360);
+  later(() => { delete lookOverrides[other]; setGuestView(other); }, usedBell ? 900 : 720);
+}
 function render() {
   const state = warmStore.read();
   const relationStatus = ruleStatus(state, "eye-contact");
@@ -1073,6 +1220,8 @@ function render() {
     element.style.setProperty("--x", point[0] / 420 * 100 + "%");
     element.style.setProperty("--y", point[1] / 440 * 100 + "%");
     element.classList.toggle("waiting-guest", state.assignment[character] === null);
+    element.dataset.row = state.assignment[character]?.[0] || "waiting";
+    if (!transitGuests.has(character)) setGuestView(character);
     element.classList.toggle("selected", selectedGuest === character);
     element.classList.toggle("calm", state.calm.includes(character));
     element.setAttribute("aria-pressed", String(selectedGuest === character));
@@ -1142,23 +1291,53 @@ function previewAt(seatId) {
   document.getElementById("preview-path").setAttribute("d", "M" + origin[0] + " " + origin[1] + "Q210 217 " + target[0] + " " + target[1]);
   const action = preview.kind === "swap" ? "交换座位" : preview.kind === "displace" ? "原客人回候客区" : "可以放下";
   setStatus(action + (status === "CONFLICT" ? " · 可放，但仍有规则未满足" : preview.won ? " · 这样就能开席" : " · 还有客人没入座"), status === "SATISFIED" ? status : "PENDING");
-  hoverTimer = later(() => { guests[selectedGuest].dataset.mood = status === "CONFLICT" ? "uneasy" : "expectant"; }, 150);
+  const actor = selectedGuest;
+  hoverTimer = later(() => {
+    if (selectedGuest !== actor) return;
+    guests[actor].dataset.mood = status === "CONFLICT" ? "uneasy" : "expectant";
+    setGuestView(actor, vectorFacing(target[0] - origin[0], target[1] - origin[1]));
+  }, 150);
 }
-function animatePlacement(before) {
+function animatePlacement(before, beforeState, lifted = false) {
   if (reducedMotion) return;
+  let routeLane = 0;
   for (const [character, element] of Object.entries(guests)) {
     const after = element.getBoundingClientRect();
     const deltaX = before[character].left - after.left;
     const deltaY = before[character].top - after.top;
     if (Math.abs(deltaX) + Math.abs(deltaY) < 1) continue;
-    const animation = element.animate([
-      { transform: "translate(calc(-50% + " + deltaX + "px), calc(-100% + " + deltaY + "px))" },
-      { transform: "translate(calc(-50% + " + deltaX * .45 + "px), calc(-100% + " + (deltaY * .45 - 12) + "px))", offset: .55 },
-      { transform: "translate(-50%, -100%)" }
-    ], { duration: 310, easing: "cubic-bezier(.22,.65,.3,1)" });
+    const origin = warmCoordinates[beforeState.assignment[character]] || waitingCoordinates[character];
+    const destination = currentPosition(character);
+    const route = tableRoute(origin, destination, routeLane++);
+    const stageBounds = stage.getBoundingClientRect();
+    const duration = lifted ? 230 : 580;
+    const transformAt = (offsetX, offsetY) => "translate(calc(-50% + " + offsetX + "px), calc(-100% + " + offsetY + "px))";
+    const keyframes = lifted ? [
+      { transform: transformAt(deltaX, deltaY) },
+      { transform: transformAt(deltaX * .45, deltaY * .45 - 12), offset: .55 },
+      { transform: transformAt(0, 0) }
+    ] : route.map((point, index) => ({
+      transform: transformAt((point[0] - destination[0]) / 420 * stageBounds.width, (point[1] - destination[1]) / 440 * stageBounds.height),
+      offset: index / (route.length - 1)
+    }));
+    transitGuests.add(character);
+    element.classList.add("in-transit");
+    if (!lifted) {
+      for (let index = 0; index < route.length - 1; index++) {
+        const face = vectorFacing(route[index + 1][0] - route[index][0], route[index + 1][1] - route[index][1]);
+        const turn = () => directionArt.paint(element, character, face, face);
+        if (index === 0) turn(); else later(turn, index / (route.length - 1) * duration);
+      }
+    }
+    const animation = element.animate(keyframes, { duration, easing: "linear" });
     warmAnimations.add(animation);
-    animation.onfinish = () => { warmAnimations.delete(animation); };
-    element.classList.add("hop");
+    animation.onfinish = () => {
+      warmAnimations.delete(animation);
+      transitGuests.delete(character);
+      element.classList.remove("in-transit");
+      setGuestView(character);
+      element.classList.add("hop");
+    };
   }
 }
 function effect(character, kind) {
@@ -1175,12 +1354,13 @@ function effect(character, kind) {
     later(() => element.remove(), 1000);
   }
 }
-function act(kind, character, seat) {
+function act(kind, character, seat, lifted = false, liftedBounds = null) {
   cancelGesture(false);
   clearPreview();
   cleanPresentation();
   const beforeState = warmStore.read();
   const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()]));
+  if (liftedBounds) before[character] = liftedBounds;
   const result = kind === "bell" ? warmStore.bell(character) : kind === "waiting" ? warmStore.wait(character) : warmStore.move(character, seat);
   selectedGuest = null;
   bellMode = false;
@@ -1188,7 +1368,9 @@ function act(kind, character, seat) {
   if (!afterState.won || !beforeState.won) dismissedFeast = false;
   render();
   if (result.changed) {
-    animatePlacement(before);
+    animatePlacement(before, beforeState, lifted);
+    if (kind === "bell") relationshipBeat(character, true);
+    else later(() => relationshipBeat(character), reducedMotion ? 0 : lifted ? 250 : 610);
     if (kind === "bell") { effect(character, "bell"); say("小兔：呼……好像没那么紧张了。"); sound("bell"); }
     else {
       const reaction = afterState.result.rules.some(rule => rule.status === "CONFLICT") ? "阿狐：先坐下，慢慢商量。" : "这样坐，舒服多了。";
@@ -1276,10 +1458,11 @@ window.addEventListener("pointerup", event => {
   if (!active || active.pointerId !== event.pointerId) return;
   const target = active.moved ? pointerTarget(event.clientX, event.clientY) : null;
   const moved = active.moved;
+  const liftedBounds = active.ghost?.getBoundingClientRect();
   cancelGesture(moved);
   if (!moved) return;
   clearPreview();
-  if (target) act(target === "waiting" ? "waiting" : "move", active.character, target);
+  if (target) act(target === "waiting" ? "waiting" : "move", active.character, target, true, liftedBounds);
   else { selectedGuest = null; render(); say("没放到座位上，回到原位。 "); }
 });
 window.addEventListener("pointercancel", event => { if (pointerGesture?.pointerId === event.pointerId) cancelInteraction(); });
@@ -1292,7 +1475,7 @@ for (const seat of seatButtons) {
 }
 document.getElementById("waiting").addEventListener("click", () => { if (selectedGuest && performance.now() >= suppressClickUntil) act("waiting", selectedGuest); });
 document.getElementById("bell").addEventListener("click", () => { cancelGesture(); clearPreview(); cleanPresentation(); selectedGuest = null; bellMode = !bellMode; render(); });
-document.getElementById("undo").addEventListener("click", () => { cancelInteraction(); const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()])); warmStore.undo(); dismissedFeast = false; render(); animatePlacement(before); say("刚才的安排，已经一起撤回。"); });
+document.getElementById("undo").addEventListener("click", () => { cancelInteraction(); const beforeState = warmStore.read(); const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()])); warmStore.undo(); dismissedFeast = false; render(); animatePlacement(before, beforeState, true); say("刚才的安排，已经一起撤回。"); });
 document.getElementById("restart").addEventListener("click", () => { cancelInteraction(); warmStore.reset(); dismissedFeast = false; render(); say("重新开桌，安心铃也回来了。"); });
 document.getElementById("dismiss-feast").addEventListener("click", () => { dismissedFeast = true; render(); });
 function updateSettings() {
@@ -1306,6 +1489,38 @@ document.getElementById("motion").addEventListener("click", () => { manualMotion
 reducedQuery.addEventListener("change", event => { if (!manualMotion) { reducedMotion = event.matches; cancelInteraction(); updateSettings(); } });
 document.getElementById("sound").addEventListener("click", () => { soundOn = !soundOn; if (!soundOn) audioContext?.suspend().catch(() => {}); updateSettings(); sound("bell"); });
 const help = document.getElementById("help");
+const directionDialog = document.getElementById("direction-dialog");
+let inspectDirection = "S";
+let inspectHead = "S";
+function renderInspector() {
+  const character = document.getElementById("inspect-character").value;
+  const mood = document.getElementById("inspect-mood").value;
+  const hero = document.getElementById("inspect-hero");
+  hero.className = "guest " + character;
+  hero.dataset.mood = mood;
+  hero.innerHTML = directionArt.svg(character, inspectDirection, inspectHead);
+  document.getElementById("inspect-label").textContent = VIEW_LABELS[inspectDirection] + " · " + inspectDirection + (inspectHead !== inspectDirection ? " / 头朝" + VIEW_LABELS[inspectHead] : "");
+  const grid = document.getElementById("direction-grid");
+  grid.replaceChildren();
+  for (const direction of VIEW_DIRECTIONS) {
+    const button = document.createElement("button");
+    button.className = "view-tile " + character;
+    button.dataset.direction = direction;
+    button.dataset.mood = mood;
+    button.setAttribute("aria-label", VIEW_LABELS[direction]);
+    button.setAttribute("aria-pressed", String(direction === inspectDirection));
+    button.innerHTML = directionArt.svg(character, direction) + '<span>' + VIEW_LABELS[direction] + '</span>';
+    button.addEventListener("click", () => { inspectDirection = direction; inspectHead = direction; renderInspector(); });
+    grid.appendChild(button);
+  }
+}
+document.getElementById("open-directions").addEventListener("click", () => { cancelInteraction(); renderInspector(); directionDialog.showModal(); });
+document.getElementById("close-directions").addEventListener("click", () => directionDialog.close());
+for (const id of ["inspect-character", "inspect-mood"]) document.getElementById(id).addEventListener("change", renderInspector);
+for (const [id, offset] of [["look-left", 1], ["look-center", 0], ["look-right", -1]]) document.getElementById(id).addEventListener("click", () => {
+  inspectHead = VIEW_DIRECTIONS[(VIEW_DIRECTIONS.indexOf(inspectDirection) + offset + 8) % 8];
+  renderInspector();
+});
 document.getElementById("info").addEventListener("click", () => { cancelInteraction(); help.showModal(); });
 for (const id of ["close-help", "help-play"]) document.getElementById(id).addEventListener("click", () => help.close());
 window.addEventListener("keydown", event => { if (event.key === "Escape") cancelInteraction(); });
@@ -1313,7 +1528,7 @@ window.addEventListener("blur", cancelInteraction);
 window.addEventListener("resize", cancelInteraction);
 window.addEventListener("pagehide", () => { cancelInteraction(); audioContext?.suspend().catch(() => {}); });
 document.addEventListener("visibilitychange", () => { if (document.hidden) { cancelInteraction(); audioContext?.suspend().catch(() => {}); } });
-Object.defineProperty(window, "__WARM_TABLE__", { value: Object.freeze({ snapshot: () => ({ ...warmStore.read(), selected: selectedGuest, bellMode, reducedMotion, soundOn, gestureActive: !!pointerGesture, ghostCount: document.querySelectorAll(".drag-ghost").length, activeAnimations: warmAnimations.size }) }), writable: false });
+Object.defineProperty(window, "__WARM_TABLE__", { value: Object.freeze({ snapshot: () => ({ ...warmStore.read(), selected: selectedGuest, bellMode, reducedMotion, soundOn, gestureActive: !!pointerGesture, ghostCount: document.querySelectorAll(".drag-ghost").length, activeAnimations: warmAnimations.size, directions: Object.fromEntries(Object.entries(guests).map(([character, guest]) => [character, { body: guest.dataset.facing, head: guest.dataset.gaze, row: guest.dataset.row, moving: transitGuests.has(character) }])) }) }), writable: false });
 updateSettings(); render();
 </script>
 </body></html>

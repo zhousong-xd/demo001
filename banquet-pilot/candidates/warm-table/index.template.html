@@ -21,7 +21,7 @@
 <header class="topbar"><span class="brand"><svg class="icon"><use href="#i-leaf"/></svg> 妖怪小食堂</span><div class="settings"><button id="sound" class="icon-button" aria-label="开启声音" aria-pressed="false"><svg class="icon"><use href="#i-sound"/></svg><span class="mute-slash"></span></button><button id="motion" class="icon-button" aria-label="减少动画" aria-pressed="false"><svg class="icon"><use href="#i-motion"/></svg></button><button id="info" class="icon-button" aria-label="玩法与版本说明"><svg class="icon"><use href="#i-info"/></svg></button></div></header>
 <section class="heading"><div class="eyebrow"><span></span> 暖绘本 · 交互小样 01</div><h1>这桌，<em>刚刚好。</em></h1><p>换一个座位，让一顿饭舒服一点。</p></section>
 <section class="game" aria-label="狐兔换座表现小样">
-<div class="table-caption"><span>今日两位客人</span><span id="move-count">尚未换座</span></div>
+<div class="table-caption"><span>今日两位客人</span><button id="open-directions" class="direction-entry">八向检视 ↗</button><span id="move-count">尚未换座</span></div>
 <div class="stage" id="stage">
 <svg class="room" viewBox="0 0 420 440" aria-hidden="true">
 <defs>
@@ -36,6 +36,7 @@
 <path d="M327 45v25m-13 0q13-24 26 0" stroke="#9aa184" fill="none" stroke-width="2"/><ellipse cx="327" cy="76" rx="24" ry="18" fill="#d9b888"/><path d="M307 78h40" stroke="#eee1bd" stroke-width="2"/><path d="M321 94h12" stroke="#b28d65" stroke-width="2"/>
 <path d="M37 138q173-8 346 0M34 346q176 8 352 0" fill="none" stroke="#ded3bf" stroke-width="1" stroke-dasharray="2 7"/>
 <g class="chair-art" data-chair="A1" transform="translate(112 141)"><use href="#chair"/></g><g class="chair-art" data-chair="A2" transform="translate(308 141)"><use href="#chair"/></g>
+<g transform="translate(210 0) scale(.84 1) translate(-210 0)">
 <ellipse cx="210" cy="255" rx="164" ry="80" fill="#74533c" opacity=".09"/>
 <path d="M82 257v43M338 257v43" stroke="#ad794e" stroke-width="12" stroke-linecap="round"/>
 <rect x="43" y="161" width="334" height="127" rx="58" fill="#b88055"/>
@@ -51,6 +52,7 @@
 <g transform="translate(308 218)"><ellipse rx="18" ry="10" fill="#eed7b6"/><path d="M-12-6h24l-3 15q-9 6-18 0Z" fill="#f9eacc" stroke="#c8a681"/><ellipse cy="-6" rx="12" ry="5" fill="#a87c4a"/></g>
 <g class="steam" stroke="#fff8e8" stroke-width="2" fill="none" stroke-linecap="round"><path d="M107 200q-5-7 1-13t0-12"/><path d="M311 200q5-7-1-13t0-12"/></g>
 <g transform="translate(208 169)"><path d="M-9 0h18l-3 19h-12Z" fill="#879782"/><path d="M0 1v-15m0 6-9-8m9 13 9-9" stroke="#748d64" stroke-width="2"/><ellipse cx="-9" cy="-15" rx="6" ry="3" fill="#9bab77" transform="rotate(30 -9 -15)"/><ellipse cx="9" cy="-10" rx="6" ry="3" fill="#97a672" transform="rotate(-30 9 -10)"/></g>
+</g>
 <g class="chair-art" data-chair="B1" transform="translate(112 340)"><use href="#chair"/></g><g class="chair-art" data-chair="B2" transform="translate(308 340)"><use href="#chair"/></g>
 <path d="M67 388h286" stroke="#ded4bf" stroke-dasharray="3 5"/><path d="M106 425q104 9 208 0" fill="none" stroke="#decdb3" stroke-width="7" stroke-linecap="round"/>
 </svg>
@@ -72,5 +74,14 @@
 <footer><span>点选再点座位，或直接拖动客人</span><span class="sample-tag">表现候选 · 非正式关卡</span></footer>
 </main>
 <dialog id="help"><button id="close-help" class="close-help" aria-label="关闭说明">×</button><span class="eyebrow">两位客人，一点小心事</span><h2>让这一桌舒服一点。</h2><p>狐喜欢窗边 A1。兔没安心时，不愿坐在狐的正对面。</p><p>可以给兔换座，也可以点<strong>安心铃</strong>，再点兔。误投不消耗；撤销会同时恢复座位、安心状态和库存。</p><p>点选客人后，点已占座位可交换；候客入座可顶替原客人。键盘也可用 Tab、Enter 操作，Esc 取消选择。</p><p class="fine-print">原创 SVG 分层角色 · 离线单文件 · 不保存进度，不请求网络。声音默认关闭；支持减少动画。本小样复用冻结版本的规则内核与道具逻辑，仅抽取双角色情境，不是新的正式关卡。</p><button id="help-play" class="primary">知道了，开桌</button></dialog>
+<dialog id="direction-dialog" aria-label="角色八向与注视检视">
+<button id="close-directions" class="close-help" aria-label="关闭八向检视">×</button>
+<span class="eyebrow">CHARACTER TURNAROUND · 02</span><h2>坐在哪里，看向哪里。</h2>
+<div class="direction-controls"><label>角色 <select id="inspect-character"><option value="fox">阿狐</option><option value="rabbit">小兔</option></select></label><label>神态 <select id="inspect-mood"><option value="neutral">平静</option><option value="uneasy">警惕</option><option value="calm">安心</option></select></label></div>
+<div class="direction-preview"><div id="inspect-hero" class="guest" data-mood="neutral"></div><div class="view-caption"><strong id="inspect-label">正面 · S</strong><small>脚底锚点固定，身体与头部分开</small></div></div>
+<div class="direction-grid" id="direction-grid"></div>
+<div class="head-controls"><span>身体不动，转头看一眼</span><button id="look-left" aria-label="头部向左转45度">↶</button><button id="look-center" aria-label="头部回正">正</button><button id="look-right" aria-label="头部向右转45度">↷</button></div>
+<p class="fine-print">五种原始视角覆盖八向。左右几何复用；围巾垂片独立于镜像层。此处仅检视资源，不改变座位、规则或道具。</p>
+</dialog>
 <!--WARM_SCRIPT-->
 </body></html>

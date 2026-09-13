@@ -2,6 +2,15 @@
 
 2026-09-13。状态：可操作表现候选，不是正式新关卡，不替换冻结三关或线上遗留预览。
 
+## 八向升级（本次）
+
+- 点桌面上方“八向检视”，切换狐/兔、平静/警惕/安心，逐个检查正面、前侧、侧面、后侧、背面及独立转头。检视不改变游戏模型。
+- 五种原始视角覆盖八向，侧面有独立嘴鼻和单眼，后侧有侧脸，背面有后脑/耳背/围巾背面/尾巴。不是旋转或压扁正面图。侧向几何镜像复用，围巾垂片在独立层中处理。
+- directions.mjs 管理方向资产、座位朝向、头部注视和桌边短路线。身体朝向由座位行决定：A排面向桌内，B排背向玩家面向桌内。头部可独立转45度，关系短表演最多转90度。
+- 兔冲突时别过头；安心铃触发看向侧面、平静，再转回桌内；另一位稍后回应。减少动画模式保留状态，不播放这段注视演出。
+- 桌面前景遮住桌后客人腿部；桌前客人盖住桌沿。桌体略收窄，留出移动通道；点选换座沿桌边短路径、移动时切方向，落座后恢复目标方向。拖拽保持拿起态，松手后从实际落点收势，不回原位重播。
+- 这仍是SVG分层方向与短移位小样，不是八向完整逐帧走路/跑步动画，也未制作举杯手部越桌的完整演出。
+
 ## 打开
 
 直接打开本目录的 index.html。它是一个自包含 HTML：内联 SVG、CSS 和 JavaScript，无外部图片、字体、网络请求或依赖安装。声音默认关闭，不持久化进度。
@@ -34,7 +43,7 @@
 从仓库根目录运行（须先审查脚本；测试子进程不继承凭据）：
 
 ~~~sh
-node --test banquet-pilot/candidates/warm-table/tests/model.test.mjs
+node --test banquet-pilot/candidates/warm-table/tests/model.test.mjs banquet-pilot/candidates/warm-table/tests/directions.test.mjs
 node banquet-pilot/candidates/warm-table/build.mjs
 node banquet-pilot/candidates/warm-table/tests/browser-smoke.mjs
 ~~~
@@ -45,8 +54,9 @@ node banquet-pilot/candidates/warm-table/tests/browser-smoke.mjs
 
 ## 本次实际验证
 
-- 13/13 新模型测试通过：真实规则状态、换座、铃误投/重复施用、撤销、重玩、交换、顶替、候客、预览不提交、快照不可变及历史上限。
-- 14 组浏览器检查通过；详见 evidence/summary.json。
+- 18/18 测试通过：13项模型状态用例，加5项八向映射、头身解耦、座位朝向与桌边路线用例。
+- 18 组浏览器检查通过；详见 evidence/summary.json。
+- 额外检查双角色八向检视与独立转头不改模型、桌前后遮挡层级、铃反应后恢复朝向，以及交换/连续撤销后不残留移动方向。检视截图见 evidence/turnaround-fox.png 与 turnaround-rabbit.png。
 - 390×844、360×640、1280×900：无横向溢出，鼠标选中/换座通关/撤销/铃误投/正确施用/撤销通过。
 - Chrome CDP：鼠标拖拽、单指触摸、取消、第二指打断；键盘Enter选中/落座；减少动画；动画开启时连续操作压力检查。
 - 失焦检查通过合成 blur 事件进行，不冒充真实设备切后台。
@@ -60,6 +70,7 @@ node banquet-pilot/candidates/warm-table/tests/browser-smoke.mjs
 - index.html：唯一需要拿去打开的成品。
 - 其他 HTML/CSS/MJS：可维护源码和构建脚本，不是额外对外试玩入口。
 - evidence/initial-*.png、win-*.png、calm-*.png：实际浏览器截图。
+- evidence/turnaround-*.png、swapped-directions.png：八向资源检视和换座后的朝向截图。
 - evidence/summary.json：检查摘要与已测/未测范围。
 
 ## 停点

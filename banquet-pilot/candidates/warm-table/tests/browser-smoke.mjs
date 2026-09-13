@@ -88,6 +88,40 @@ try {
     record(width + "x" + height + " no horizontal overflow; actual mouse select/seat/win/undo/invalid bell/valid bell/undo");
   }
   await boot(390, 844);
+  assert.equal((await snapshot()).directions.fox.body, "S");
+  assert.equal((await snapshot()).directions.rabbit.body, "N");
+  assert.equal(await evaluate("getComputedStyle(document.getElementById('fox')).zIndex < getComputedStyle(document.querySelector('.table-occluder')).zIndex"), true);
+  assert.equal(await evaluate("Number(getComputedStyle(document.getElementById('rabbit')).zIndex) > Number(getComputedStyle(document.querySelector('.table-occluder')).zIndex)"), true);
+  record("seat-driven front/back facing and tabletop layering");
+  const inspectorBefore = await snapshot();
+  await click("#open-directions");
+  for (const character of ["fox", "rabbit"]) {
+    await evaluate("document.getElementById('inspect-character').value=" + JSON.stringify(character) + ";document.getElementById('inspect-character').dispatchEvent(new Event('change'))");
+    const directions = ["S", "SW", "W", "NW", "N", "NE", "E", "SE"];
+    const markup = [];
+    for (const direction of directions) {
+      await click('[data-direction="' + direction + '"]');
+      assert.equal(await evaluate("document.querySelector('#inspect-hero svg').dataset.artDirection"), direction);
+      markup.push(await evaluate("document.querySelector('#inspect-hero svg').innerHTML"));
+    }
+    assert.equal(new Set(markup).size, 8);
+    await click('[data-direction="N"]');
+    await click("#look-right");
+    assert.equal(await evaluate("document.querySelector('#inspect-hero svg').dataset.artDirection"), "N");
+    assert.equal(await evaluate("document.querySelector('#inspect-hero svg').dataset.headDirection"), "NW");
+    await shot("turnaround-" + character);
+  }
+  await click("#close-directions");
+  assert.deepEqual((await snapshot()).assignment, inspectorBefore.assignment);
+  assert.equal((await snapshot()).historyLength, inspectorBefore.historyLength);
+  record("both characters have eight distinct view assets; inspector/head turns do not mutate game");
+  await click("#bell"); await click("#rabbit");
+  assert.equal((await snapshot()).directions.rabbit.body, "N");
+  assert.equal((await snapshot()).directions.rabbit.head, "E");
+  await sleep(1000);
+  assert.equal((await snapshot()).directions.rabbit.head, "N");
+  record("bell reaction turns head without turning seated body, then restores gaze");
+  await click("#restart");
   await click("#rabbit"); await click("#fox");
   assert.deepEqual((await snapshot()).assignment, { fox: "B1", rabbit: "A1" }); record("occupied guest click swaps atomically");
   await click("#restart"); await click("#rabbit"); await click("#waiting");
@@ -150,6 +184,15 @@ try {
   await sleep(1800);
   assert.equal((await snapshot()).won, false); assert.equal((await snapshot()).inventory.calm_bell, 1); assert.equal((await snapshot()).ghostCount, 0);
   assert.equal((await snapshot()).activeAnimations, 0); record("rapid DOM-action stress cannot revive old victory or inventory effects");
+  assert.equal((await snapshot()).directions.fox.body, "S");
+  assert.equal((await snapshot()).directions.rabbit.body, "N");
+  assert.equal((await snapshot()).directions.rabbit.moving, false);
+  await click("#rabbit"); await click("#fox"); await sleep(1450);
+  assert.equal((await snapshot()).directions.fox.body, "N");
+  assert.equal((await snapshot()).directions.rabbit.body, "S");
+  assert.equal((await snapshot()).activeAnimations, 0);
+  await shot("swapped-directions");
+  record("exchange settles in destination-seat facing without leftover travel state");
   assert.equal(errors.length, 0, JSON.stringify(errors)); assert.equal(requests.filter(url => /^https?:/.test(url)).length, 0);
   record("zero runtime exceptions and zero HTTP asset requests");
   const summary = { ok: true, testedAt: new Date().toISOString(), checks, runtimeErrors: errors, httpRequests: 0, realDevice: "NOT TESTED", audioListening: "NOT TESTED", input: "CDP mouse, touch (including second pointer), keyboard; rapid stress uses DOM clicks; blur is synthetic", viewports: [[390, 844], [360, 640], [1280, 900]] };

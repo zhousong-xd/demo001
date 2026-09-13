@@ -1,10 +1,12 @@
 import { createWarmTable, WARM_LEVEL } from "./model.mjs";
+import { createDirectionalArt, seatFacing, vectorFacing, gazeFacing, tableRoute, VIEW_DIRECTIONS, VIEW_LABELS } from "./directions.mjs";
 
 const warmStore = createWarmTable();
 const stage = document.getElementById("stage");
 const guests = Object.fromEntries(WARM_LEVEL.characters.map(character => [character, document.getElementById(character)]));
+const directionArt = createDirectionalArt(guests);
 const seatButtons = [...document.querySelectorAll(".seat")];
-const warmCoordinates = { A1: [112, 142], A2: [308, 142], B1: [112, 341], B2: [308, 341] };
+const warmCoordinates = { A1: [112, 165], A2: [308, 165], B1: [112, 341], B2: [308, 341] };
 const waitingCoordinates = { fox: [155, 429], rabbit: [265, 429] };
 const guestNames = { fox: "阿狐", rabbit: "小兔" };
 const warmTimers = new Set();
@@ -21,6 +23,13 @@ let hoverTimer = null;
 let soundOn = false;
 let audioContext = null;
 let dismissedFeast = false;
+const lookOverrides = {};
+const transitGuests = new Set();
+const tableOccluder = document.querySelector(".room").cloneNode(true);
+tableOccluder.querySelector("defs")?.remove();
+tableOccluder.querySelectorAll("[id]").forEach(element => element.removeAttribute("id"));
+tableOccluder.classList.add("table-occluder");
+stage.appendChild(tableOccluder);
 
 function later(action, delay) {
   const timer = setTimeout(() => { warmTimers.delete(timer); action(); }, delay);
@@ -32,6 +41,10 @@ function cleanPresentation() {
   warmTimers.clear();
   warmAnimations.forEach(animation => animation.cancel());
   warmAnimations.clear();
+  transitGuests.clear();
+  Object.keys(lookOverrides).forEach(character => delete lookOverrides[character]);
+  Object.values(guests).forEach(guest => guest.classList.remove("in-transit"));
+  Object.values(guests).forEach(guest => guest.classList.remove("noticing"));
   Object.values(guests).forEach(guest => guest.classList.remove("hop", "react"));
   document.getElementById("fx").replaceChildren();
   document.getElementById("speech").classList.remove("visible");
@@ -73,6 +86,34 @@ function say(text) {
   later(() => speech.classList.remove("visible"), 1700);
 }
 function ruleStatus(state, id) { return state.result.rules.find(rule => rule.id === id)?.status || "PENDING"; }
+function setGuestView(character, targetDirection = null) {
+  const state = warmStore.read();
+  const body = seatFacing(state.assignment[character]);
+  const target = targetDirection || lookOverrides[character];
+  let head = target ? gazeFacing(body, target, lookOverrides[character] ? 2 : 1) : body;
+  if (!target && character === "rabbit" && ruleStatus(state, "eye-contact") === "CONFLICT") head = body === "N" ? "NE" : "SW";
+  if (!target && selectedGuest === character) head = body === "N" ? "NE" : "SE";
+  directionArt.paint(guests[character], character, body, head);
+}
+function relationshipBeat(character, usedBell = false) {
+  if (reducedMotion) return;
+  const state = warmStore.read();
+  const other = character === "fox" ? "rabbit" : "fox";
+  if (!state.assignment[character] || !state.assignment[other]) return;
+  const point = currentPosition(character);
+  const target = currentPosition(other);
+  lookOverrides[character] = usedBell ? "E" : vectorFacing(target[0] - point[0], target[1] - point[1]);
+  setGuestView(character);
+  guests[character].classList.add("noticing");
+  later(() => {
+    guests[character].classList.remove("noticing");
+    delete lookOverrides[character];
+    setGuestView(character);
+    lookOverrides[other] = vectorFacing(point[0] - target[0], point[1] - target[1]);
+    setGuestView(other);
+  }, usedBell ? 520 : 360);
+  later(() => { delete lookOverrides[other]; setGuestView(other); }, usedBell ? 900 : 720);
+}
 function render() {
   const state = warmStore.read();
   const relationStatus = ruleStatus(state, "eye-contact");
@@ -82,6 +123,8 @@ function render() {
     element.style.setProperty("--x", point[0] / 420 * 100 + "%");
     element.style.setProperty("--y", point[1] / 440 * 100 + "%");
     element.classList.toggle("waiting-guest", state.assignment[character] === null);
+    element.dataset.row = state.assignment[character]?.[0] || "waiting";
+    if (!transitGuests.has(character)) setGuestView(character);
     element.classList.toggle("selected", selectedGuest === character);
     element.classList.toggle("calm", state.calm.includes(character));
     element.setAttribute("aria-pressed", String(selectedGuest === character));
@@ -151,23 +194,53 @@ function previewAt(seatId) {
   document.getElementById("preview-path").setAttribute("d", "M" + origin[0] + " " + origin[1] + "Q210 217 " + target[0] + " " + target[1]);
   const action = preview.kind === "swap" ? "交换座位" : preview.kind === "displace" ? "原客人回候客区" : "可以放下";
   setStatus(action + (status === "CONFLICT" ? " · 可放，但仍有规则未满足" : preview.won ? " · 这样就能开席" : " · 还有客人没入座"), status === "SATISFIED" ? status : "PENDING");
-  hoverTimer = later(() => { guests[selectedGuest].dataset.mood = status === "CONFLICT" ? "uneasy" : "expectant"; }, 150);
+  const actor = selectedGuest;
+  hoverTimer = later(() => {
+    if (selectedGuest !== actor) return;
+    guests[actor].dataset.mood = status === "CONFLICT" ? "uneasy" : "expectant";
+    setGuestView(actor, vectorFacing(target[0] - origin[0], target[1] - origin[1]));
+  }, 150);
 }
-function animatePlacement(before) {
+function animatePlacement(before, beforeState, lifted = false) {
   if (reducedMotion) return;
+  let routeLane = 0;
   for (const [character, element] of Object.entries(guests)) {
     const after = element.getBoundingClientRect();
     const deltaX = before[character].left - after.left;
     const deltaY = before[character].top - after.top;
     if (Math.abs(deltaX) + Math.abs(deltaY) < 1) continue;
-    const animation = element.animate([
-      { transform: "translate(calc(-50% + " + deltaX + "px), calc(-100% + " + deltaY + "px))" },
-      { transform: "translate(calc(-50% + " + deltaX * .45 + "px), calc(-100% + " + (deltaY * .45 - 12) + "px))", offset: .55 },
-      { transform: "translate(-50%, -100%)" }
-    ], { duration: 310, easing: "cubic-bezier(.22,.65,.3,1)" });
+    const origin = warmCoordinates[beforeState.assignment[character]] || waitingCoordinates[character];
+    const destination = currentPosition(character);
+    const route = tableRoute(origin, destination, routeLane++);
+    const stageBounds = stage.getBoundingClientRect();
+    const duration = lifted ? 230 : 580;
+    const transformAt = (offsetX, offsetY) => "translate(calc(-50% + " + offsetX + "px), calc(-100% + " + offsetY + "px))";
+    const keyframes = lifted ? [
+      { transform: transformAt(deltaX, deltaY) },
+      { transform: transformAt(deltaX * .45, deltaY * .45 - 12), offset: .55 },
+      { transform: transformAt(0, 0) }
+    ] : route.map((point, index) => ({
+      transform: transformAt((point[0] - destination[0]) / 420 * stageBounds.width, (point[1] - destination[1]) / 440 * stageBounds.height),
+      offset: index / (route.length - 1)
+    }));
+    transitGuests.add(character);
+    element.classList.add("in-transit");
+    if (!lifted) {
+      for (let index = 0; index < route.length - 1; index++) {
+        const face = vectorFacing(route[index + 1][0] - route[index][0], route[index + 1][1] - route[index][1]);
+        const turn = () => directionArt.paint(element, character, face, face);
+        if (index === 0) turn(); else later(turn, index / (route.length - 1) * duration);
+      }
+    }
+    const animation = element.animate(keyframes, { duration, easing: "linear" });
     warmAnimations.add(animation);
-    animation.onfinish = () => { warmAnimations.delete(animation); };
-    element.classList.add("hop");
+    animation.onfinish = () => {
+      warmAnimations.delete(animation);
+      transitGuests.delete(character);
+      element.classList.remove("in-transit");
+      setGuestView(character);
+      element.classList.add("hop");
+    };
   }
 }
 function effect(character, kind) {
@@ -184,12 +257,13 @@ function effect(character, kind) {
     later(() => element.remove(), 1000);
   }
 }
-function act(kind, character, seat) {
+function act(kind, character, seat, lifted = false, liftedBounds = null) {
   cancelGesture(false);
   clearPreview();
   cleanPresentation();
   const beforeState = warmStore.read();
   const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()]));
+  if (liftedBounds) before[character] = liftedBounds;
   const result = kind === "bell" ? warmStore.bell(character) : kind === "waiting" ? warmStore.wait(character) : warmStore.move(character, seat);
   selectedGuest = null;
   bellMode = false;
@@ -197,7 +271,9 @@ function act(kind, character, seat) {
   if (!afterState.won || !beforeState.won) dismissedFeast = false;
   render();
   if (result.changed) {
-    animatePlacement(before);
+    animatePlacement(before, beforeState, lifted);
+    if (kind === "bell") relationshipBeat(character, true);
+    else later(() => relationshipBeat(character), reducedMotion ? 0 : lifted ? 250 : 610);
     if (kind === "bell") { effect(character, "bell"); say("小兔：呼……好像没那么紧张了。"); sound("bell"); }
     else {
       const reaction = afterState.result.rules.some(rule => rule.status === "CONFLICT") ? "阿狐：先坐下，慢慢商量。" : "这样坐，舒服多了。";
@@ -285,10 +361,11 @@ window.addEventListener("pointerup", event => {
   if (!active || active.pointerId !== event.pointerId) return;
   const target = active.moved ? pointerTarget(event.clientX, event.clientY) : null;
   const moved = active.moved;
+  const liftedBounds = active.ghost?.getBoundingClientRect();
   cancelGesture(moved);
   if (!moved) return;
   clearPreview();
-  if (target) act(target === "waiting" ? "waiting" : "move", active.character, target);
+  if (target) act(target === "waiting" ? "waiting" : "move", active.character, target, true, liftedBounds);
   else { selectedGuest = null; render(); say("没放到座位上，回到原位。 "); }
 });
 window.addEventListener("pointercancel", event => { if (pointerGesture?.pointerId === event.pointerId) cancelInteraction(); });
@@ -301,7 +378,7 @@ for (const seat of seatButtons) {
 }
 document.getElementById("waiting").addEventListener("click", () => { if (selectedGuest && performance.now() >= suppressClickUntil) act("waiting", selectedGuest); });
 document.getElementById("bell").addEventListener("click", () => { cancelGesture(); clearPreview(); cleanPresentation(); selectedGuest = null; bellMode = !bellMode; render(); });
-document.getElementById("undo").addEventListener("click", () => { cancelInteraction(); const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()])); warmStore.undo(); dismissedFeast = false; render(); animatePlacement(before); say("刚才的安排，已经一起撤回。"); });
+document.getElementById("undo").addEventListener("click", () => { cancelInteraction(); const beforeState = warmStore.read(); const before = Object.fromEntries(Object.entries(guests).map(([name, element]) => [name, element.getBoundingClientRect()])); warmStore.undo(); dismissedFeast = false; render(); animatePlacement(before, beforeState, true); say("刚才的安排，已经一起撤回。"); });
 document.getElementById("restart").addEventListener("click", () => { cancelInteraction(); warmStore.reset(); dismissedFeast = false; render(); say("重新开桌，安心铃也回来了。"); });
 document.getElementById("dismiss-feast").addEventListener("click", () => { dismissedFeast = true; render(); });
 function updateSettings() {
@@ -315,6 +392,38 @@ document.getElementById("motion").addEventListener("click", () => { manualMotion
 reducedQuery.addEventListener("change", event => { if (!manualMotion) { reducedMotion = event.matches; cancelInteraction(); updateSettings(); } });
 document.getElementById("sound").addEventListener("click", () => { soundOn = !soundOn; if (!soundOn) audioContext?.suspend().catch(() => {}); updateSettings(); sound("bell"); });
 const help = document.getElementById("help");
+const directionDialog = document.getElementById("direction-dialog");
+let inspectDirection = "S";
+let inspectHead = "S";
+function renderInspector() {
+  const character = document.getElementById("inspect-character").value;
+  const mood = document.getElementById("inspect-mood").value;
+  const hero = document.getElementById("inspect-hero");
+  hero.className = "guest " + character;
+  hero.dataset.mood = mood;
+  hero.innerHTML = directionArt.svg(character, inspectDirection, inspectHead);
+  document.getElementById("inspect-label").textContent = VIEW_LABELS[inspectDirection] + " · " + inspectDirection + (inspectHead !== inspectDirection ? " / 头朝" + VIEW_LABELS[inspectHead] : "");
+  const grid = document.getElementById("direction-grid");
+  grid.replaceChildren();
+  for (const direction of VIEW_DIRECTIONS) {
+    const button = document.createElement("button");
+    button.className = "view-tile " + character;
+    button.dataset.direction = direction;
+    button.dataset.mood = mood;
+    button.setAttribute("aria-label", VIEW_LABELS[direction]);
+    button.setAttribute("aria-pressed", String(direction === inspectDirection));
+    button.innerHTML = directionArt.svg(character, direction) + '<span>' + VIEW_LABELS[direction] + '</span>';
+    button.addEventListener("click", () => { inspectDirection = direction; inspectHead = direction; renderInspector(); });
+    grid.appendChild(button);
+  }
+}
+document.getElementById("open-directions").addEventListener("click", () => { cancelInteraction(); renderInspector(); directionDialog.showModal(); });
+document.getElementById("close-directions").addEventListener("click", () => directionDialog.close());
+for (const id of ["inspect-character", "inspect-mood"]) document.getElementById(id).addEventListener("change", renderInspector);
+for (const [id, offset] of [["look-left", 1], ["look-center", 0], ["look-right", -1]]) document.getElementById(id).addEventListener("click", () => {
+  inspectHead = VIEW_DIRECTIONS[(VIEW_DIRECTIONS.indexOf(inspectDirection) + offset + 8) % 8];
+  renderInspector();
+});
 document.getElementById("info").addEventListener("click", () => { cancelInteraction(); help.showModal(); });
 for (const id of ["close-help", "help-play"]) document.getElementById(id).addEventListener("click", () => help.close());
 window.addEventListener("keydown", event => { if (event.key === "Escape") cancelInteraction(); });
@@ -322,5 +431,5 @@ window.addEventListener("blur", cancelInteraction);
 window.addEventListener("resize", cancelInteraction);
 window.addEventListener("pagehide", () => { cancelInteraction(); audioContext?.suspend().catch(() => {}); });
 document.addEventListener("visibilitychange", () => { if (document.hidden) { cancelInteraction(); audioContext?.suspend().catch(() => {}); } });
-Object.defineProperty(window, "__WARM_TABLE__", { value: Object.freeze({ snapshot: () => ({ ...warmStore.read(), selected: selectedGuest, bellMode, reducedMotion, soundOn, gestureActive: !!pointerGesture, ghostCount: document.querySelectorAll(".drag-ghost").length, activeAnimations: warmAnimations.size }) }), writable: false });
+Object.defineProperty(window, "__WARM_TABLE__", { value: Object.freeze({ snapshot: () => ({ ...warmStore.read(), selected: selectedGuest, bellMode, reducedMotion, soundOn, gestureActive: !!pointerGesture, ghostCount: document.querySelectorAll(".drag-ghost").length, activeAnimations: warmAnimations.size, directions: Object.fromEntries(Object.entries(guests).map(([character, guest]) => [character, { body: guest.dataset.facing, head: guest.dataset.gaze, row: guest.dataset.row, moving: transitGuests.has(character) }])) }) }), writable: false });
 updateSettings(); render();

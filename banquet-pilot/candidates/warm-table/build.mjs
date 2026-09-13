@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 
 const folder = new URL("./", import.meta.url);
 const readSource = source => readFileSync(new URL(source, folder), "utf8").replace(/\r\n/g, "\n");
-const sourcePaths = ["../../src/core/geometry.js", "../../src/core/rules.js", "../../src/ui/board.js", "model.mjs", "app.mjs"];
+const sourcePaths = ["../../src/core/geometry.js", "../../src/core/rules.js", "../../src/ui/board.js", "model.mjs", "directions.mjs", "app.mjs"];
 const script = sourcePaths.map(source => readSource(source)
   .replace(/^import .+;\r?$/gm, "")
   .replace(/^export /gm, "")).join("\n;\n");
